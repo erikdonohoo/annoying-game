@@ -1,0 +1,502 @@
+<html>
+<head>
+<title></title>
+<script src = "js/jQuery.js"></script>
+<style type = "text/css">
+#screen {
+	width:400px;
+	height:400px;
+	margin: 0 auto;
+	position:relative;
+	border:2px solid black;
+	overflow:hidden;
+	background-image:url('images/pokemon/Pokemon-GSC-Kanto.png');
+	background-position: -1146px -1039px;
+	background-size: 8000px;
+}
+#trainer {
+	background-image:url('images/pokemon/trainer.png');
+	position:absolute;
+	top:200px;
+	left:200px;
+	width:40px;
+	height:40px;
+	background-repeat:no-repeat;
+	background-position: -260px -52px;
+	background-size: 450px 198px;
+}
+#attack {
+	background-image:url('images/pokemon/attack.jpg');
+	background-repeat:no-repeat;
+	width:400px;
+	height:400px;
+	border:2px solid black;
+	overflow:hidden;
+	margin: 0 auto;
+	position:relative;
+	background-size: 400px 400px;
+}
+button {
+	position:relative;
+	margin-top:80%;
+	margin-left:40px;
+}
+select {
+	position:relative;
+	margin-left:40%;
+}
+input {
+	position:relative;
+}
+#report {
+	left:43%;
+	margin:0 auto;
+	position:relative;
+}
+</style>
+<script type = "text/javascript">
+//VARIABLES
+	var updatespeed = 33;
+	var screensize = 400;
+	var moveup = false;
+	var movedown = false;
+	var moveleft = false;
+	var moveright = false;
+	var originx = -160;
+	var orgincolumn = 48;
+	var originy = -3;
+	var originrow = 48;
+	var pictureright = 25;
+	var picturedown = 30;
+	var trainermove = 6;
+	var trainery = 200;
+	var trainerx = 200;
+	var backgroundmove = 200;
+	var backgroundx = -1146;
+	var backgroundy = -1039;
+	var timeup = 0;
+	var timedown = 0;
+	var timeleft = 0;
+	var timeright = 0;
+	var moveinterval;
+	var legright = false;
+	var legleft = false;
+	var walkspeed = 4;
+	var borderright = 350;
+	var borderleft = 50;
+	var bordertop = 50;
+	var borderbottom = 350;
+	var tries = 0;
+	var attacktries = 0;
+	var moveguy = true;
+	var monster = false;
+function setflat(position)
+{
+	console.log("stopped moving");
+	switch(position)
+	{
+		case 1:
+			$('#trainer').css('background-position-x',originx);
+			$('#trainer').css('background-position-y',originy-2*originrow);
+			timeleft =0;
+		break;
+		case 2:
+			$('#trainer').css('background-position-x',originx);
+			$('#trainer').css('background-position-y',originy);
+			timeup =0;
+		break;
+		case 3:
+			$('#trainer').css('background-position-x',originx-orgincolumn);
+			$('#trainer').css('background-position-y',originy);
+			timeright = 0;
+		break;
+		case 4:
+			$('#trainer').css('background-position-x',originx-2*orgincolumn);
+			$('#trainer').css('background-position-y',originy-originrow);
+			timedown = 0;
+		break;
+	}
+}
+function checkbackgroundup() {
+	///up limits
+	// if(moveup&&backgroundy+backgroundmove>=-19&&(backgroundx<=-5436&&backgroundx-screensize>-5166))
+	// {
+	// 	return false;
+	// }
+	// else if(moveup&&backgroundy+backgroundmove>=-1039&&(backgroundx<=-1146&&backgroundx-screensize>-2300)||(backgroundx<=-5166&&backgroundx-screensize>-5436)||(backgroundx<=-6066&&backgroundx-screensize>-6306))
+	// {
+	// 	return false;
+	// }
+	// else if(moveup&&backgroundy+backgroundmove>=-1339&&(backgroundx<=-2286&&backgroundx-screensize>-5166))
+	// {
+	// 	return false;
+	// }
+	// 	else if(moveup&&backgroundy+backgroundmove>=-1549&&(backgroundx<=-6306&&backgroundx-screensize>-7986))
+	// {
+	// 	return false;
+	// }
+	// else if(moveup&&backgroundy+backgroundmove>=-2569&&(backgroundx<=-5166&&backgroundx-screensize>-5436)||(backgroundx<=-6008&&backgroundx-screensize>-6306))
+	// {
+	// 	return false;
+	// }
+	// else if(moveup&&backgroundy+backgroundmove>=-2809&&(backgroundx<=-3426&&backgroundx-screensize>-4566))
+	// {
+	// 	return false;
+	// }
+	// else if(moveup&&backgroundy+backgroundmove>=-3109&&(backgroundx<=-4566&&backgroundx-screensize>-5166)||(backgroundx<=-6306&&backgroundx-screensize>-7746))
+	// {
+	// 	return false;
+	// }
+	// else if(moveup&&backgroundy+backgroundmove>=-3319&&(backgroundx<=-2856&&backgroundx-screensize>-3426))
+	// {
+	// 	return false;
+	// }
+	// else if(moveup&&backgroundy+backgroundmove>=-3619&&(backgroundx<=-1146&&backgroundx-screensize>-1716)||(backgroundx<=-2016&&backgroundx-screensize>-2286))
+	// {
+	// 	return false;
+	// }
+	// else if(moveup&&backgroundy+backgroundmove>=-3829&&(backgroundx<=24&&backgroundx-screensize>-1146))
+	// {
+	// 	return false;
+	// }
+	// else if(moveup&&backgroundy+backgroundmove>=-3619&&(backgroundx<=-1146&&backgroundx-screensize>-1716)||(backgroundx<=-2016&&backgroundx-screensize>-2286))
+	// {
+	// 	return false;
+	// }
+	// else if(moveup&&backgroundy+backgroundmove>=-4159&&(backgroundx<=-5136&&backgroundx-screensize>-5436)||(backgroundx<=-6008&&backgroundx-screensize>-7746))
+	// {
+	// 	return false;
+	// }
+	// else if(moveup&&backgroundy+backgroundmove>=-5149&&(backgroundx<=-6306&&backgroundx-screensize>-7746))
+	// {
+	// 	return false;
+	// }
+	// else if(moveup&&backgroundy+backgroundmove>=-5649&&(backgroundx<=-3996&&backgroundx-screensize>-5136))
+	// {
+	// 	return false;
+	// }
+	// else if(moveup&&backgroundy+backgroundmove>=-6079&&(backgroundx<=-3426&&backgroundx-screensize>-3996))
+	// {
+	// 	return false;
+	// }
+	// else if(moveup&&backgroundy+backgroundmove>=-6109&&(backgroundx<=-5136&&backgroundx-screensize>-6306))
+	// {
+	// 	return false;
+	// }
+	// else if(moveup&&backgroundy+backgroundmove>=-7219&&(backgroundx<=-2286&&backgroundx-screensize>-3996))
+	// {
+	// 	return false;
+	// }
+	return true;
+}
+function checkbackgroundleft() {
+
+	return true;
+}
+function checkbackgrounddown() {
+	return true;
+}
+function checkbackgroundright() {
+	return true;
+}
+function guymove() {
+	if((backgroundx<-3000||backgroundy<-3000)&&moveguy)
+	{
+		monsterappear();
+		moveguy = false;
+	}
+	if(moveup) {
+		if(timeup == 0)
+		{
+			$('#trainer').css('background-position-x',originx);
+			$('#trainer').css('background-position-y',originy);
+		}
+		else
+		{
+			if(timeup ==1)
+			{
+				$('#trainer').css('background-position-x',originx-2*orgincolumn);
+				$('#trainer').css('background-position-y',originy);
+			}
+			if(timeup%walkspeed==0)
+			{
+				if(!legright)
+				{
+					$('#trainer').css('background-position-x',originx);
+					$('#trainer').css('background-position-y',originy);
+					
+					legright = !legright;
+				}
+				else
+				{
+					if(!legleft){
+						$('#trainer').css('background-position-x',originx-2*orgincolumn);
+						$('#trainer').css('background-position-y',originy);
+						
+					}
+					else{
+						$('#trainer').css('background-position-x',originx-orgincolumn);
+						$('#trainer').css('background-position-y',originy-3*originrow);
+						
+					}
+
+					legright = !legright;
+					legleft = !legleft;
+				}
+			}
+			if(trainery >bordertop)
+				trainery -= trainermove;
+			else
+			{
+				if(checkbackgroundup())
+				{
+					backgroundy += backgroundmove;
+					trainery +=backgroundmove;
+				}
+			}
+			$('#screen').css('background-position-y',backgroundy);
+			$('#screen').css('background-position-x',backgroundx);
+			$('#trainer').css('top',trainery);
+		}
+		
+		timeup++;
+	}
+	else if(movedown) {
+		if(timedown ==0)
+		{
+			$('#trainer').css('background-position-x',originx-2*orgincolumn);
+			$('#trainer').css('background-position-y',originy-originrow);
+		}
+		else
+		{
+			if(timedown==1)
+			{
+				$('#trainer').css('background-position-x',originx-2*orgincolumn);
+				$('#trainer').css('background-position-y',originy-2*originrow);
+			}
+			if(timedown%walkspeed==0)
+			{
+				if(!legleft)
+				{
+					$('#trainer').css('background-position-x',originx-2*orgincolumn);
+					$('#trainer').css('background-position-y',originy-originrow);
+					legleft = !legleft;
+				}
+				else
+				{
+					if(!legright)
+					{
+						$('#trainer').css('background-position-x',originx-2*orgincolumn);
+						$('#trainer').css('background-position-y',originy-3*originrow);
+					}
+					else
+					{
+						$('#trainer').css('background-position-x',originx-2*orgincolumn);
+						$('#trainer').css('background-position-y',originy-2*originrow);
+					}
+					legright = !legright;
+					legleft = !legleft;
+				}
+			}
+			if(trainery <borderbottom)
+				trainery += trainermove;
+			else
+			{
+				if(checkbackgrounddown())
+				{
+					backgroundy -= backgroundmove;
+					trainery -=backgroundmove;
+				}
+			}
+			$('#trainer').css('top',trainery);
+			$('#screen').css('background-position-y',backgroundy);
+			$('#screen').css('background-position-x',backgroundx);
+		}
+		timedown++;
+
+	}
+	else if(moveleft) {
+		if(timeleft ==0)
+		{
+			$('#trainer').css('background-position-x',originx);
+			$('#trainer').css('background-position-y',originy-2*originrow);
+		}
+		else
+		{
+			if(timeleft==1)
+			{
+				$('#trainer').css('background-position-x',originx);
+				$('#trainer').css('background-position-y',originy-originrow);
+			}
+			if(timeleft%walkspeed==0)
+			{
+				if(!legleft)
+				{
+					$('#trainer').css('background-position-x',originx);
+					$('#trainer').css('background-position-y',originy-2*originrow);
+					legleft = !legleft;
+				}
+				else
+				{
+					if(!legright)
+					{
+						$('#trainer').css('background-position-x',originx);
+						$('#trainer').css('background-position-y',originy-3*originrow);
+					}
+					else
+					{
+						$('#trainer').css('background-position-x',originx);
+						$('#trainer').css('background-position-y',originy-originrow);
+					}
+					legright = !legright;
+					legleft = !legleft;
+				}
+			}
+			if(trainerx > borderleft)
+				trainerx -= trainermove;
+			else
+			{
+				if(checkbackgroundleft())
+				{
+					backgroundx += backgroundmove;
+					trainerx += backgroundmove;
+				}
+			}
+			$('#trainer').css('left',trainerx);
+			$('#screen').css('background-position-x',backgroundx);
+			$('#screen').css('background-position-y',backgroundy);
+		}
+		timeleft++;
+	}
+	else if(moveright) {
+		if(timeright==0)
+		{
+			$('#trainer').css('background-position-x',originx-orgincolumn);
+			$('#trainer').css('background-position-y',originy);
+		}
+		else
+		{
+			if(timeright ==1)
+			{
+				$('#trainer').css('background-position-x',originx-orgincolumn);
+				$('#trainer').css('background-position-y',originy-originrow);
+			}
+			if(timeright%walkspeed==0)
+			{
+				if(!legleft)
+				{
+					$('#trainer').css('background-position-x',originx-orgincolumn);
+					$('#trainer').css('background-position-y',originy);
+					legleft = !legleft;
+				}
+				else
+				{
+					if(!legright)
+					{
+						$('#trainer').css('background-position-x',originx-orgincolumn);
+					$('#trainer').css('background-position-y',originy-2*originrow);
+					}
+					else
+					{
+						$('#trainer').css('background-position-x',originx-orgincolumn);
+						$('#trainer').css('background-position-y',originy-originrow);
+					}
+					legright = !legright;
+					legleft = !legleft;
+				}
+			}
+			if(trainerx < borderright)
+				trainerx += trainermove;
+			else
+			{
+				if(checkbackgroundright())
+				{
+					backgroundx -= backgroundmove;
+					trainerx -= backgroundmove;
+				}
+			}
+			$('#trainer').css('left',trainerx);
+			$('#screen').css('background-position-x',backgroundx);
+			$('#screen').css('background-position-y',backgroundy);
+		}
+		timeright++;
+	}
+	//console.log(timeup);
+	moveinterval = setTimeout(guymove,updatespeed);
+}
+function throwball() {
+	tries++;
+	if(attacktries <=1)
+		$('#report').html('<h2>try Weakening him first</h2>');
+	if(tries ==5&&attacktries >1)
+		$('#poke').html('Throw Masterball!');
+	if(tries>=6&&attacktries > 1)
+	{
+		$('#report').html('<h2>Your persistance has paid off!</h2>');
+		setTimeout(function(){window.location = "mario2.html";},1000);
+	}
+	else
+		$('#report').html('<h2>Keep trying you almost caught him!</h2>');
+}
+function run() {
+	$('#report').html('<h2>why would you ever run from him!</h2>');
+	setTimeout(function(){window.location = "frogger.html";},1000);
+}
+function lose() {
+	$('#report').html("<h2>wouldn't that be easy!</h2>");
+}
+function attack() {
+	if($('select').val() == "HyperBeam")
+	{
+		attacktries++;
+		if(attacktries==2)
+			$('#report').html("<h2>Enemy is weak! catch him</h2>");
+		else if(attacktries ==1)
+			$('#report').html("<h2>enemy is getting weaker!</h2>");
+		else if(attactries == 3)
+		{
+			$('#report').html("<h2>Enemy has fainted!</h2>");
+			
+			setTimeout(function(){window.location = "pokemon.html";},1000);
+		}
+
+	}
+	else
+		$('#report').html("<h2>who uses Splash!</h2>");
+}
+function monsterappear() {
+	if(!monster)
+	{
+		monster = true;
+		$('body').html('<div id = "attack"><button id = "poke" onclick = "throwball();">Throw Pokeball</button><button onclick = "run();">Run</button><button onclick = "lose();">Go to next lvl</button><select>Attack<option>Splash</option><option>HyperBeam</option></select><input type = "submit" onclick = "attack();" value = "ATTACK"/></div>');
+		$('body').append('<div id = "report"></div>');
+		$('#report').html("<h2>wild pokemon attacks</h2>");
+	}
+}
+$(function() {
+	moveinterval = setTimeout(guymove,updatespeed);
+	setTimeout(monsterappear,100000);
+});
+$(document).keydown(function(e){
+	if(e.which == 37) {moveleft = true;}
+	if(e.which == 38) {moveup = true;}
+	if(e.which == 39) {moveright = true;}
+	if(e.which == 40) {movedown = true;}
+});
+
+$(document).keyup(function(e){
+	if(e.which == 37) {moveleft = false;setflat(1);}
+	if(e.which == 38) {moveup = false;setflat(2);}
+	if(e.which == 39) {moveright = false;setflat(3);}
+	if(e.which == 40) {movedown = false;setflat(4);}
+});
+</script>
+</head>
+<body>
+	<div id = "screen">
+		<div id = "trainer">
+		</div>
+	</div>
+	<div id = "report"></div>
+</body>
+</html>

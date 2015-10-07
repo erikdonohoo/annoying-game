@@ -1,0 +1,413 @@
+<html>
+<head>
+<title></title>
+<script src = "js/jQuery.js"></script>
+<style type = "text/css">
+	body {position:relative;}
+	#level {position:absolute;margin-right:10%;border:2px solid black;width:50px;height:50px;text-align:center;}
+	#Roadmap {position:relative;margin:0 auto;border: 2px solid green;width:703px;height:800px;background-color:green;overflow:hidden;}
+	#road {position:absolute;background-color:gray;border:2px solid gray;width:700px;height:600px;top:100px;background-image:url('images/frogger/road.jpg'); ;}
+	.truck {position:absolute;width:90px;height:70px;z-index:2;}
+	.frog {position:absolute;top:730px;left:350px;width:40px;height:40px;z-index:1;}
+	.plane {position:absolute;z-index:2;width:170px;height:154px;}
+	.right {}
+	.left{}
+</style>
+<script type = "text/javascript">
+//Variables
+	var up = true;
+	var moveup = false;
+	var movedown = false;
+	var moveleft = false;
+	var moveright = false;
+	var frogy = 730;
+	var frogx = 350;
+	var frogdown = false;
+	var updatespeed = 100;
+	var move = 9;
+	var movetruck = 15;
+	var movetruck2 = 20;
+	var carcount=0;
+	var truckwidth = 90;
+	var truckheight = 70;
+	var frogheight = 40;
+	var frogwidth = 40;
+	var roadtop = 20;
+	var roadbottom = 730;
+	var roadright = 700;
+	var roadleft = 0;
+	var timeOuts= new Array();
+	var addCarInterval = 1000;
+	var positionRightTop = -100;
+	var positionRightOne = 580;
+	var positionRightTwo = 440;
+	var positionLeftTopOne = 120;
+	var positionLeftTopTwo = 270;
+	var positionLeft = roadright;
+	var levelnumber = 1;
+	var hitbuffer = 10;
+	var plane = false;
+	var planeheight = 154;
+	var planewidth = 170;
+	var planeappearance = 16;
+	var deathwait = 2000;
+function carmove() {
+	$('.truck').each(function() {
+		if($(this).hasClass('right'))
+		{
+			var truckleft = $(this).position().left;
+			if(truckleft > roadright)
+				$(this).remove();
+			else
+				$(this).css('left',truckleft+movetruck);
+		}
+		else
+		{
+			var truckleft2 = $(this).position().left;
+			if(truckleft2 < roadleft-truckwidth||truckleft2>roadright+200)
+				$(this).remove();
+			else
+				$(this).css('left',truckleft2-movetruck2);
+		}
+	});
+	if(plane)
+		$('.plane').each(function() {
+		if($(this).hasClass('right'))
+		{
+			var truckleft = $(this).position().left;
+			if(truckleft > roadright)
+				$(this).remove();
+			else
+				$(this).css('left',truckleft+movetruck);
+		}
+		else
+		{
+			var truckleft2 = $(this).position().left;
+			if(truckleft2 < roadleft-truckwidth||truckleft2>roadright+200)
+				$(this).remove();
+			else
+				$(this).css('left',truckleft2-movetruck2);
+		}
+	});
+
+}
+function continueon() {
+	window.location = "pokemon.html";
+}
+function increaseLevel() {
+	levelnumber++;
+	console.log(levelnumber);
+	$('#level').html('<div>Level:<br/>'+levelnumber+'</div>');
+	if(levelnumber>=3)
+		plane = true;
+	if(levelnumber ==4)
+		planeappearance-=4;
+	if(levelnumber>=5)
+	{
+		move+=2;
+		$('#level').css('width','100');
+		$('#level').css('height','75');
+		$('#level').html('<div>Level:<br/>'+levelnumber+'<br/><button onclick = "continueon();">Continue</button></div>');
+	}
+	if(addCarInterval>600)
+		addCarInterval-=400;
+	else
+		if(addCarInterval>300)
+			addCarInterval-=100;
+		else
+			if(addCarInterval>100)
+				addCarInterval-=25;
+	if(movetruck<50)
+		movetruck+=4;
+	else
+		movetruck+=2;
+	if(movetruck2<50)
+		movetruck2+=4;
+	else
+		movetruck2+=2;
+}
+function frogmove() {
+	if(!frogdown)
+	{
+		if(moveup)
+		{
+			if(frogy>=roadtop)
+				frogy -=move;
+			if(frogy<=roadtop)
+			{
+				if(up)
+					increaseLevel();
+				$('#frog').attr('src',"images/frogger/frog2.jpg");
+				up = false;
+			}
+			$('#frog').css('top',frogy);
+		}
+		else if(movedown)
+		{
+			if(frogy<=roadbottom)
+				frogy +=move;
+			if(frogy>=roadbottom)
+			{
+				if(!up)
+					increaseLevel();
+				$('#frog').attr('src',"images/frogger/frog.jpg");
+				up = true;
+			}
+			$('#frog').css('top',frogy);
+		}
+		if(moveright)
+		{
+			if(frogx+frogwidth<=roadright)
+				frogx +=move;
+			$('#frog').css('left',frogx);
+		}
+		else if(moveleft)
+		{
+			if(frogx>=roadleft)
+				frogx -=move;
+			$('#frog').css('left',frogx);
+		}
+		hit();
+	}
+}
+function addCar() {
+	var randomcar = Math.floor(Math.random()*4);
+	var cartag;
+	switch(randomcar)
+	{
+		case 0:
+		cartag = "<img src='images/frogger/truck.png' class = 'truck'/>";
+		break;
+		case 1:
+		cartag = "<img src='images/frogger/truck1.jpg' class = 'truck'/>";
+		break;
+		case 2:
+		cartag = "<img src='images/frogger/truck2.png' class = 'truck' />";
+		break;
+		case 3:
+		cartag = "<img src='images/frogger/truck3.png' class = 'truck' />";
+		break;
+
+	}
+	if(plane)
+	{
+		var randomplane = Math.floor(Math.random()*planeappearance);
+		if(randomplane== 3)
+		{
+			cartag = "<img src='images/frogger/planeattack.png' class = 'plane'/>";
+			randomcar = 0;
+		}
+		else if(randomplane == 6)
+		{
+			cartag = "<img src='images/frogger/planeattack2.png' class = 'plane'/>";
+			randomcar = 2;
+		}
+	}
+	$('#Roadmap').prepend(cartag);
+	var newEnemy = $('#Roadmap > img:first-child');
+	var randomPosition = Math.floor(Math.random()*2);
+	if(randomplane == 3)
+		randomPosition = 0;
+	if(randomplane ==6)
+		randomPosition = 1;
+	var startingLeft = 100;
+
+		if(randomcar == 0)
+		{
+			$(newEnemy).addClass('right');
+			if(randomPosition == 1)
+			{
+				$(newEnemy).css('top',positionRightOne);
+				$(newEnemy).css('left',positionRightTop);
+			}
+			else
+			{
+				$(newEnemy).css('top',positionRightTwo);
+				$(newEnemy).css('left',positionRightTop);
+			}
+		}
+		else if(randomcar == 1)
+		{
+			$(newEnemy).addClass('right');
+			if(randomPosition == 1)
+			{
+				$(newEnemy).css('top',positionRightOne);
+				$(newEnemy).css('left',positionRightTop);
+			}
+			else
+			{
+				$(newEnemy).css('top',positionRightTwo);
+				$(newEnemy).css('left',positionRightTop);
+			}
+		}
+		if(randomcar == 2)
+		{
+			$(newEnemy).addClass('left');
+			if(randomPosition == 1)
+			{
+				$(newEnemy).css('top',positionLeftTopOne);
+				$(newEnemy).css('left',positionLeft);
+			}
+			else
+			{
+				$(newEnemy).css('top',positionLeftTopTwo);
+				$(newEnemy).css('left',positionLeft);
+			}
+		}
+		else if(randomcar == 3)
+		{
+			$(newEnemy).addClass('left');
+			if(randomPosition == 1)
+			{
+				$(newEnemy).css('top',positionLeftTopOne);
+				$(newEnemy).css('left',positionLeft);
+			}
+			else
+			{
+				$(newEnemy).css('top',positionLeftTopTwo);
+				$(newEnemy).css('left',positionLeft);
+			}
+		}
+	carcount++;
+	timeOuts['cartimer'] = setTimeout('addCar();',addCarInterval);
+
+}
+function hit() {
+	$('.truck').each(function() {
+		var truckleft = $(this).position().left;
+		var trucktop = $(this).position().top;
+		var truckright = $(this).position().left + truckwidth;
+		var truckbottom = $(this).position().top + truckheight;
+		if((frogy+hitbuffer <= truckbottom&&frogy-hitbuffer+frogheight >= trucktop)&&(frogx+hitbuffer<=truckright&&frogx-hitbuffer+frogwidth >=truckleft))
+		{
+				console.log("frog down!");
+				if(up)
+					$('#frog').attr('src',"images/frogger/frog3.jpg");
+				else
+					$('#frog').attr('src',"images/frogger/frog4.jpg");
+				frogdown = true;
+				if(levelnumber>=5)
+				{
+					setTimeout('window.location = "pokemon.html";',deathwait);
+				}
+				else
+					setTimeout('window.location = "frogger.html";',deathwait);
+		}
+
+	});
+	if(plane)
+		$('.plane').each(function() {
+			if($('.plane').hasClass('right'))
+			{
+				var truckleft = $(this).position().left;
+				var trucktop = $(this).position().top;
+				var truckright = $(this).position().left + planewidth;
+				var truckbottom = $(this).position().top + planeheight;
+				if((frogx+hitbuffer<=truckright&&frogx-hitbuffer>=truckright-40)&&(frogy+hitbuffer<=truckbottom&&frogy-hitbuffer+frogheight>=trucktop))
+				{
+					console.log("frog down!");
+					if(up)
+						$('#frog').attr('src',"images/frogger/frog3.jpg");
+					else
+						$('#frog').attr('src',"images/frogger/frog4.jpg");
+					frogdown = true;
+					if(levelnumber>=5)
+					{
+						setTimeout('window.location = "pokemon.html";',deathwait);
+					}
+					else
+						setTimeout('window.location = "frogger.html";',deathwait);
+				}
+				if((frogx-hitbuffer>=truckleft&&frogx+hitbuffer<=truckright-40)&&(frogy+hitbuffer<=truckbottom-50&&frogy-hitbuffer+frogheight>=trucktop+50))
+				{
+					console.log("frog down!");
+					if(up)
+						$('#frog').attr('src',"images/frogger/frog3.jpg");
+					else
+						$('#frog').attr('src',"images/frogger/frog4.jpg");
+					frogdown = true;
+					if(levelnumber>=5)
+					{
+						setTimeout('window.location = "pokemon.html";',deathwait);
+					}
+					else
+						setTimeout('window.location = "frogger.html";',deathwait);
+				}
+			}
+			else if($('.plane').hasClass('left'))
+			{
+				var truckleft = $(this).position().left;
+				var trucktop = $(this).position().top;
+				var truckright = $(this).position().left + planewidth;
+				var truckbottom = $(this).position().top + planeheight;
+				if((frogx-hitbuffer<=truckleft&&frogx-hitbuffer>=truckleft-40)&&(frogy-hitbuffer<=truckbottom&&frogy-hitbuffer+frogheight>=trucktop))
+				{
+					console.log("frog down!");
+					if(up)
+						$('#frog').attr('src',"images/frogger/frog3.jpg");
+					else
+						$('#frog').attr('src',"images/frogger/frog4.jpg");
+					frogdown = true;
+					if(levelnumber>=5)
+					{
+						setTimeout('window.location = "pokemon.html";',deathwait);
+					}
+					else
+						setTimeout('window.location = "frogger.html";',deathwait);
+				}
+				if((frogx-hitbuffer>=truckright&&frogx-hitbuffer<=truckleft-40)&&(frogy-hitbuffer<=truckbottom-50&&frogy-hitbuffer+frogheight>=trucktop+50))
+				{
+					console.log("frog down!");
+					if(up)
+						$('#frog').attr('src',"images/frogger/frog3.jpg");
+					else
+						$('#frog').attr('src',"images/frogger/frog4.jpg");
+					frogdown = true;
+					if(levelnumber>=5)
+					{
+						setTimeout('window.location = "pokemon.html";',deathwait);
+					}
+					else
+						setTimeout('window.location = "frogger.html";',deathwait);
+				}
+			}
+
+	});
+
+}
+$(function() {
+	moveinterval = setInterval(frogmove,updatespeed);
+	move2interval = setInterval(carmove,updatespeed);
+	addCar();
+	carmove();
+});
+
+$(document).keydown(function(e){
+	if(e.which == 37) {moveleft = true;}
+	if(e.which == 38) {moveup = true;}
+	if(e.which == 39) {moveright = true;}
+	if(e.which == 40) {movedown = true;}
+});
+
+$(document).keyup(function(e){
+	if(e.which == 37) {moveleft = false;}
+	if(e.which == 38) {moveup = false;}
+	if(e.which == 39) {moveright = false;}
+	if(e.which == 40) {movedown = false;}
+});
+</script>
+</head>
+<body>
+	<div id = "level">Level:<br/>
+		1</div>
+	<div id = "Roadmap">
+		<img class = "frog" id = "frog"src = "images/frogger/frog.jpg"/>
+		<div id = "sidetop">
+		</div>
+		<div id = "road">
+		</div>
+		<div id = "sidebottom">
+		</div>
+	</div>
+</body>
+</html>

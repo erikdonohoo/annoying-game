@@ -1,0 +1,36 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="css/site.css" />
+<title>The Most Frustrating Game Ever</title>
+<script>
+var count = 0;
+function nextPage()
+{
+	count++;
+	if(count >= 3 && count < 5)
+	{
+		alert("Nope.  Not gonna work");	
+	}
+	else if(count >= 5)
+	{
+		alert('You are truly dumb.  Try clicking here.  I mean it.  The word on the page "here"');
+	}
+}
+</script>
+</head>
+
+<body>
+<div id="container">
+<div id="indexDiv">
+<h2>Prepare To Be Frustrated...</h2>
+<section>
+This game is meant to test you, body and soul.  To get to the next puzzle is never easy, think outside of the box!  PS This game is best played in <a href="https://www.google.com/chrome">Google Chrome</a> for now.
+</section>
+<section>Click <a id="startLink" href="TitlePuzzle.html">here</a> to get started!</section><br />
+<button onclick="nextPage();">START</button>
+</div>
+</div>
+</body>
+</html>

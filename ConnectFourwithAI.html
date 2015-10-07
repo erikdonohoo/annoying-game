@@ -1,0 +1,295 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>Connect Four</title>
+        <style>
+			#wrapper{width:700px;height:600px;}
+			#coverDivs > div{width:100px;height:600px;float:left;position:absolute;z-index:4;}
+			#gameArea > div:not(#coverDivs){width:100px;height:600px;float:left;position:relative;z-index:0;}
+			#gameArea > img{position:absolute;z-index:2;left:4px;top:10px;}
+			#gameArea > div:not(.red, .blue):hover{}
+			.circle{width:92px;height:92px;border-radius:44px;top:0px;position:absolute;}
+			.red{background: #d16464; /* Old browsers */
+background: -moz-linear-gradient(-45deg,  #d16464 0%, #ff0a0e 31%, #c10f0f 62%, #ffa3a4 100%); /* FF3.6+ */
+background: -webkit-gradient(linear, left top, right bottom, color-stop(0%,#d16464), color-stop(31%,#ff0a0e), color-stop(62%,#c10f0f), color-stop(100%,#ffa3a4)); /* Chrome,Safari4+ */
+background: -webkit-linear-gradient(-45deg,  #d16464 0%,#ff0a0e 31%,#c10f0f 62%,#ffa3a4 100%); /* Chrome10+,Safari5.1+ */
+background: -o-linear-gradient(-45deg,  #d16464 0%,#ff0a0e 31%,#c10f0f 62%,#ffa3a4 100%); /* Opera 11.10+ */
+background: -ms-linear-gradient(-45deg,  #d16464 0%,#ff0a0e 31%,#c10f0f 62%,#ffa3a4 100%); /* IE10+ */
+background: linear-gradient(-45deg,  #d16464 0%,#ff0a0e 31%,#c10f0f 62%,#ffa3a4 100%); /* W3C */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#d16464', endColorstr='#ffa3a4',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */}
+			.blue{background: #3171d8; /* Old browsers */
+background: -moz-linear-gradient(-45deg,  #3171d8 0%, #1920ea 40%, #1249e2 55%, #415bea 100%); /* FF3.6+ */
+background: -webkit-gradient(linear, left top, right bottom, color-stop(0%,#3171d8), color-stop(40%,#1920ea), color-stop(55%,#1249e2), color-stop(100%,#415bea)); /* Chrome,Safari4+ */
+background: -webkit-linear-gradient(-45deg,  #3171d8 0%,#1920ea 40%,#1249e2 55%,#415bea 100%); /* Chrome10+,Safari5.1+ */
+background: -o-linear-gradient(-45deg,  #3171d8 0%,#1920ea 40%,#1249e2 55%,#415bea 100%); /* Opera 11.10+ */
+background: -ms-linear-gradient(-45deg,  #3171d8 0%,#1920ea 40%,#1249e2 55%,#415bea 100%); /* IE10+ */
+background: linear-gradient(-45deg,  #3171d8 0%,#1920ea 40%,#1249e2 55%,#415bea 100%); /* W3C */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#3171d8', endColorstr='#415bea',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */}
+		</style>
+        <script src="js/jQuery.js"></script>
+        <script>
+			var arrayCap = 6;
+			var circleSize = 98;
+			var playerID = 0;
+			var column0 = new Array();
+			var column1 = new Array();
+			var column2 = new Array();
+			var column3 = new Array();
+			var column4 = new Array();
+			var column5 = new Array();
+			var column6 = new Array();
+			var columns = new Array(column0,column1,column2,column3,column4,column5,column6);
+			var down = false;
+			var leftRight = false;
+			var diagLeft = false;
+			var diagRight = false;
+			var connected = 1;
+			var turns = 0;
+			var allowClick = true;
+			
+			function newGame(){
+				playerID = 0;
+				column0.length = 0;
+				column1.length = 0;
+				column2.length = 0;
+				column3.length = 0;
+				column4.length = 0;
+				column5.length = 0;
+				column6.length = 0;
+				down = false;
+				leftRight = false;
+				diagLeft = false;
+				diagRight = false;
+				connected = 1;
+				turns = 0;
+				allowClick = true;
+				$('.red, .blue').animate({'top':'2000px'}, 500, 'linear', function(){
+					$('.red, .blue').remove();
+				});
+			}
+			
+			function calculate(x,y,curColor){
+				if(diagRight){
+					if((+x+1<columns.length-1 && +y+1<arrayCap) && columns[+x+1][+y+1] == curColor){
+						connected++;
+						if((+x+2<columns.length-1 && +y+2<arrayCap) && columns[+x+2][+y+2] == curColor){
+							connected++;
+							if((+x+3<columns.length-1 && +y+3<arrayCap) && columns[+x+3][+y+3] == curColor){
+								connected++;
+							}
+						}
+					}
+					if((x-1>=0 && y-1>=0) && columns[x-1][y-1] == curColor){
+						connected++;
+						if((x-2>=0 && y-2>=0) && columns[x-2][y-2] == curColor){
+							connected++;
+							if((x-3>=0 && y-3>=0) && columns[x-3][y-3] == curColor){
+								connected++;
+							}
+						}
+					}
+				}
+				else if(leftRight){
+					if((+x+1<columns.length) && columns[+x+1][y] == curColor){
+						connected++;
+						if((+x+2<columns.length) && columns[+x+2][y] == curColor){
+							connected++;
+							if((+x+3<columns.length) && columns[+x+3][y] == curColor){
+								connected++;
+							}
+						}
+					}
+					if((x-1>=0) && columns[x-1][y] == curColor){
+						connected++;
+						if((x-2>=0) && columns[x-2][y] == curColor){
+							connected++;
+							if((x-3>=0) && columns[x-3][y] == curColor){
+								connected++;
+							}
+						}
+					}
+				}
+				else if(diagLeft){
+					if((+x+1<columns.length && y-1>=0) && columns[+x+1][y-1] == curColor){
+						connected++;
+						if((+x+2<columns.length && y-2>=0) && columns[+x+2][y-2] == curColor){
+							connected++;
+							if((+x+3<columns.length && y-3>=0) && columns[+x+3][y-3] == curColor){
+								connected++;
+							}
+						}
+					}
+					if((x-1>=0 && +y+1<arrayCap) && columns[x-1][+y+1] == curColor){
+						connected++;
+						if((x-2>=0 && +y+2<arrayCap) && columns[x-2][+y+2] == curColor){
+							connected++;
+							if((x-3>=0 && +y+3<arrayCap) && columns[x-3][+y+3] == curColor){
+								connected++;
+							}
+						}
+					}
+				}
+				else if(down){
+					if((y>2) && (columns[x][y-1] == curColor) && (columns[x][y-2] == curColor) && (columns[x][y-3] == curColor))
+						connected = 4;
+				}
+				if(connected>=4){
+					allowClick = false;
+					var curPlayer = '';
+					if(playerID==0){curPlayer = 'Red';}
+					else{curPlayer = 'Blue';}
+					setTimeout(function(){alert(curPlayer+' Wins!!')},500);
+				}
+				else
+					connected = 1;
+			}
+			
+			function checkForWin(divID, arrayObj)
+			{
+				var usedX = new Array();
+				var usedY = new Array();
+				var x = divID; //The number of the div in which the tracing originates
+				var y = arrayObj.length-1; //The position within the array at which the tracing originates
+				var curColor = columns[x][y];
+				var R = '';
+				var DR = '';
+				var D = '';
+				var DL = '';
+				var L = '';
+				var UL = '';
+				var UR = '';
+								
+				if(y>0){
+					D = columns[x][y-1];
+					if(x>0)
+						DL = columns[x-1][y-1];
+					if(x<columns.length-1)
+						DR = columns[+x+1][y-1];
+				}
+				if(x>0){
+					L = columns[x-1][y];
+					if(y<columns.length-1)
+						UL = columns[x-1][+y+1];
+				}
+				if(y<arrayCap){
+					if(x<columns.length-1)
+						UR = columns[+x+1][+y+1];
+				}
+				if(x<columns.length-1)
+					R = columns[+x+1][y];
+				if(UR == curColor || DL == curColor){
+					diagRight = true;
+					calculate(x,y,curColor);
+					diagRight = false;
+				}
+				if(L == curColor || R == curColor){
+					leftRight = true;
+					calculate(x,y,curColor);
+					leftRight = false;
+				}
+				if(UL == curColor || DR == curColor){
+					diagLeft = true;
+					calculate(x,y,curColor);
+					diagLeft = false;
+				}
+				if(D == curColor){
+					down = true;
+					calculate(x,y,curColor);
+					down = false;
+				}
+			}
+			
+			function placeCircle(divID, arrayObj, usedSpaces){
+				var className = '';
+				var circleBottom = 600 - circleSize - (usedSpaces * circleSize);
+				if(playerID == 0)
+					className = 'red';
+				else
+					className = 'blue';
+				$('#'+divID).prepend('<div class="'+className+' circle"></div>');
+				$('#'+divID).children().first().animate({'top':circleBottom}, 500);
+				if(playerID == 0)
+					arrayObj.push('red');
+				else
+					arrayObj.push('blue');
+				turns++;
+				if(turns >= 7){checkForWin(divID, arrayObj);}
+			}
+			
+			function NPCTurn() {
+				var col = Math.floor(Math.random()*7);
+				
+				return col;
+			}
+
+			$(function(){
+				$('#coverDivs > div').click(function(){
+					if(allowClick == true){
+						var arrayObj;
+						if($(this).attr('id')==00){arrayObj = columns[0];}
+						else if($(this).attr('id')==11){arrayObj = columns[1];}
+						else if($(this).attr('id')==22){arrayObj = columns[2];}
+						else if($(this).attr('id')==33){arrayObj = columns[3];}
+						else if($(this).attr('id')==44){arrayObj = columns[4];}
+						else if($(this).attr('id')==55){arrayObj = columns[5];}
+						else if($(this).attr('id')==66){arrayObj = columns[6];}
+						var usedSpaces = arrayObj.length;
+						if(usedSpaces < arrayCap){
+							placeCircle($(this).attr('id').substr(1), arrayObj, usedSpaces);
+							//if(playerID == 0)
+								playerID++;
+							//else
+								//playerID = 0;
+						}					
+
+					}
+					if(playerID==1) {
+							
+						var NPCmove = NPCTurn();
+						arrayObj = columns[NPCmove];
+						usedSpaces = arrayObj.length;
+						while(usedSpaces >= arrayCap) { //if there's no more room in that row, move somewhere else
+							NPCmove = Math.floor(Math.random()*7);						
+							arrayObj = columns[NPCmove];
+							usedSpaces = arrayObj.length;
+						}
+						if(usedSpaces < arrayCap){
+							setTimeout(function(){
+							placeCircle(NPCmove, arrayObj, usedSpaces)
+							playerID = 0;
+							}, 200);
+						}
+						else {
+							{alert("No valid NPC moves?")}
+						}	
+					}					
+				});
+				$('#new').click(function(){newGame()});
+			});
+		</script>
+    </head>
+    
+    <body>
+        <div id="gameArea">
+            <div id="coverDivs">
+                <div id="00"></div>
+                <div id="11" style="left:100px;"></div>
+                <div id="22" style="left:200px;"></div>
+                <div id="33" style="left:300px;"></div>
+                <div id="44" style="left:400px;"></div>
+                <div id="55" style="left:500px;"></div>
+                <div id="66" style="left:600px;"></div>
+            </div>
+            <img src="images/connect-four.png" />
+            <div id="0"></div>
+            <div id="1"></div>
+            <div id="2"></div>
+            <div id="3"></div>
+            <div id="4"></div>
+            <div id="5"></div>
+            <div id="6"></div>
+            <button id="new">New Game</button>
+        </div>
+    </body>
+</html>

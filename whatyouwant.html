@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>whatyouwant</title>
+		<link href='http://fonts.googleapis.com/css?family=Pacifico' rel='stylesheet' type='text/css'>
+		<script src="js/jQuery.js" type="text/javascript"></script>
+		<script src="js/jquery_ui.js" type="text/javascript"></script>
+		
+<script>
+	var counter1=0;
+	var counter2=0;
+
+	function modify(thing){
+		$(thing).css('display','none');
+		counter1++;
+	}
+	function modify2(thing){
+		$(thing).css('display','none');
+		counter2++;
+	}
+	function modify3(thing){
+		$(thing).css('display','none');
+	}
+	function request(){
+		if (counter1 == 4 && counter2 == 0)
+			window.location="shootem.html";
+		else {
+			counter1 = 0;
+			counter2 = 0;
+			$('#totalDiv div div').css('display','');
+		}
+	}
+
+</script>
+
+		<style type="text/css">
+		body{width:100%;margin:0 auto;}
+			#wrapper{
+				position:relative;
+				width:850px;
+				margin:0 auto;
+			}
+			#totalDiv > div{position:relative;left:200px;}
+			#totalDiv > div div{float:left;position:relative;}
+			#totalDiv
+			{
+				position:relative;
+				margin:0 auto;
+				text-align:center;
+				font-weight:bold;
+				width:800px;
+				height:400px;
+				border:blue;
+				border-style:ridge;
+				border-width:8px;
+			}
+			p.hidden 
+			{
+				display:none;
+			}
+		</style>
+	</head>
+	
+<body>
+	<div id="wrapper">
+		<div id="totalDiv">
+			<br /><br /><br /><br />
+			<div>
+				<div onclick="modify2(this);">
+					The&nbsp
+				</div>
+				<div onclick="modify2(this);">
+					next&nbsp
+				</div>
+				<div onclick="modify(this);">
+					cheese&nbsp
+				</div>
+				<div onclick="modify(this);">
+					fail&nbsp
+				</div>
+				<div onclick="modify2(this);">
+					level&nbsp
+				</div>
+				<div onclick="modify(this);">
+					numberQ&nbsp 
+				</div>
+				<div onclick="modify2(this);">
+					please&nbsp
+				</div>
+				<div onclick="modify(this);">
+					clickMe!&nbsp 
+				</div>
+				<div onclick="modify3(this);">
+					:)
+				</div>
+			</div>
+			<br /><br />
+			<button type="button" onclick="request();"> Request </button>
+		</div>
+	</div>
+</body>
+</html>

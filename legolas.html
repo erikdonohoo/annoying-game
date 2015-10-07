@@ -1,0 +1,392 @@
+<html>
+<head>
+	<title>Jolly Good Sport</title>
+	<script src="js/jQuery.js" type="text/javascript"></script>
+	<script src="js/jquery_ui.js" type="text/javascript"></script>
+
+	<script type="text/javascript">
+
+		var moveup = false;
+		var movedown = false;
+		var curTop = 0;
+		var TOP = -125;
+		var pageHeight = 600;
+		var pageBuffer = 45;
+		var BOTTOM = pageHeight - 200 - pageBuffer;
+		var MOVE = 6;
+		var ARROWDEFAULTTOP = 133;
+		var arrowFiredAlready = false;
+		var characterDivWidth = 300;
+		var monsterSize = 75;
+		var monsterMove = 3;
+		var monsterMoveFast = 6;
+		var monstCount = 0;
+		var enemyAddInterval = 5000;
+		var arrowWidth = 187;
+		var monsterBuffer = 5;
+		var score = 0;
+		var enemiesLetThrough = 0;
+		var arrowsfired = 0;
+		var startedGettingHarder = false;
+		var arrowFireInterval = 300;
+		var audioOn = false;
+		var gameCountSeconds = 0;
+		var gameCountMinutes = 5;
+		var ended = false;
+		var timeOuts= new Array();
+		var secretAttackOk = true;
+		var gameWinScore = 85;
+
+		function getHarder()
+		{
+			monsterMove++;
+			monsterMoveFast += 2;
+			MOVE++;
+			if(arrowFireInterval > 50)
+				arrowFireInterval -= 50
+
+			timeOuts['getharder'] = setTimeout('getHarder();',15000);
+		}
+
+		function fasterEnemy()
+		{
+			// decrease interval
+			if(enemyAddInterval > 750){
+
+				enemyAddInterval -= 250;
+
+				// reset timer
+				timeOuts['fasterenemy'] = setTimeout('fasterEnemy();',10000);
+			}
+			if(enemyAddInterval == 750 && !startedGettingHarder) {timeOuts['getharder'] = setTimeout('getHarder();',10000);startedGettingHarder=true;}
+		}
+
+		function addAnEnemy()
+		{
+			// get a random top positioning for element
+			var randomPosition = Math.floor((Math.random()*(pageHeight - monsterSize - pageBuffer))+1);
+			var startingLeft = $('#EnemyDiv').width();
+			monstCount++;
+
+			// every third monster moves faster
+			if(monstCount % 3 == 0)
+				$('#EnemyDiv').append('<img src="images/monster.jpeg" class="monster monsterfast" />');
+			else
+				$('#EnemyDiv').append('<img src="images/monster.jpeg" class="monster" />');
+
+			var newEnemy = $('#EnemyDiv > img:last-child');
+			$(newEnemy).css('top',randomPosition);
+			$(newEnemy).css('left',startingLeft - monsterSize);
+
+			// restart timer
+			timeOuts['addanenemy'] = setTimeout('addAnEnemy();',enemyAddInterval);
+		}
+
+		function didWeHitSomething()
+		{
+			// check if any arrows on screen are on any enemies on screen
+			// loop through arrows on screen
+			$('.arrow').each(function(){
+				var arrowTip = $(this).position().left + arrowWidth*(2.5);
+				var arrowTop = $(this).position().top;
+				var curArrow = $(this);
+				var arrowMadeAHit = false;
+
+				// check each enemy on screen to see if he matches this arrow
+				$('.monster').each(function(){
+					if(!arrowMadeAHit)
+					{
+						var monstLeft = $(this).position().left + characterDivWidth;
+						var monstTop = $(this).position().top - monsterBuffer;
+
+						// check if arrow is within horizontal of monster
+						if(arrowTip > monstLeft && arrowTip < (monstLeft + (monsterSize - monsterBuffer)))
+						{	
+							// check within veritcal
+							if(arrowTop > (monstTop - monsterBuffer) && arrowTop < (monstTop + (monsterSize - monsterBuffer)))
+							{
+								// its a hit! Remove them, set boolean
+								score++;
+								arrowMadeAHit = true;
+								$(this).remove();
+								$(curArrow).remove();
+								if($(curArrow).hasClass('secret')) {arrowsfired++;}
+								$('#EnemyDiv').append('<img class="explode" src="images/explode.gif" style="top:'+monstTop+'px;left:'+(monstLeft-characterDivWidth)+'px;position:absolute" />');
+								$('.explode').animate({height: '125',width: '125'},750,function(){$(this).remove();});
+								$('#scores > label:first-child').html('Your Score: ' + score);
+
+								if(audioOn)
+								{
+									document.getElementById('laugh').load();
+									document.getElementById('laugh').play();
+								}
+
+								$('#accuracy').html('Accuracy: ' + Math.floor((score/arrowsfired)*100) + '%');
+							}
+						}
+					}
+				});
+			});
+
+			// start over
+			timeOuts['didwehitsomething'] = setTimeout('didWeHitSomething();',50);
+		}
+
+		function fireTimer()
+		{
+			// check for moving
+			if(moveup)
+			{
+				if(curTop > (TOP + MOVE))
+					curTop = curTop - MOVE;
+				else
+					curTop = TOP;
+			}
+
+			if(movedown)
+			{
+				if(curTop < (BOTTOM - MOVE))
+					curTop = curTop + MOVE;
+				else
+					curTop = BOTTOM;
+			}
+
+			// Move player to new position
+			$('body > div:first-child > div').css('top',curTop);
+
+			// Move monsters left
+			$('.monster').each(function(){
+				var curLeft = $(this).position().left;
+
+				// check if it has hit the end, remove it
+				if(curLeft < -250)
+				{
+					$(this).remove();
+					enemiesLetThrough++;
+					$('#scores > label:first-child + label').html("Monsters Let Through: " + enemiesLetThrough);
+				}
+				else
+				{
+					if($(this).hasClass('monsterfast'))
+						$(this).css('left',curLeft - monsterMoveFast);
+					else
+						$(this).css('left',curLeft - monsterMove);
+				}
+			});
+
+			// reset timer
+			timeOuts['firetimer'] = setTimeout('fireTimer();',17);
+
+		}
+
+		function fire()
+		{
+			if(!arrowFiredAlready)
+			{
+				// set arrow bool, to stop arrows for a second
+				arrowFiredAlready = true;
+
+				// insert new arrow in canvas where arrow currently is
+				$('body').append('<img src="images/arrow.png" class="arrow"/>');
+				var newArrow = $('body > img:last-child');
+				var arrowPosition = $('body > div:first-child > div').position();
+				$(newArrow).css('top',ARROWDEFAULTTOP + arrowPosition.top);
+
+				// animate to the right, get body size to know how far
+				// remove the arrow when it hits the wall
+				var bodyWidth = $('body').width();
+				$(newArrow).animate({left:(bodyWidth-187)+'px'},2500,'linear',function(){
+					$(this).remove();
+					$('#accuracy').html('Accuracy: ' + Math.floor((score/arrowsfired)*100) + '%');
+				});
+
+				// prevent arrow fires for a second
+				timeOuts['preventarrows'] = setTimeout(function(){arrowFiredAlready=false;},arrowFireInterval);
+
+				// update arrows fired
+				arrowsfired++;
+			}
+
+		}
+
+		function toggleAudio()
+		{
+			// Change button text
+			if(audioOn)
+				$('#audioButton').html('Audio Off');
+			else
+				$('#audioButton').html('Audio On');
+
+			audioOn = !audioOn;
+		}
+
+		function startOver()
+		{
+			fireTimer(); 
+			timeOuts['addanemeny'] = setTimeout('addAnEnemy();',5000);
+			timeOuts['fasterenemy'] = setTimeout('fasterEnemy();',20000);
+			timeOuts['didwehitsomething'] = setTimeout('didWeHitSomething();',5000);
+			timeOuts['gametimer'] = setTimeout('gameTimer();',1000);
+			gameCountSeconds = 0;
+			gameCountMinutes = 5;
+			enemyAddInterval = 5000;
+			MOVE = 6;
+			monsterMove = 3;
+			monsterMoveFast = 6;
+			curTop = 0;
+			arrowFireInterval = 300;
+			$('#time').html('Time Remaining: 5:00');
+			$('#accuracy').html("Accuracy: 100%");
+			$('#yourscore').html("Your Score: 0");
+			$('#monstersEscaped').html("Monsters Let Through: 0");
+			$('#EnemyDiv div').remove();
+		}
+
+		function calcScore()
+		{
+			var percentWeighted = ((score/arrowsfired) * 62) / 100;
+			var enemiesWeighted = ((score/(enemiesLetThrough+score))* 38) / 100;
+
+			return percentWeighted + enemiesWeighted;
+
+		}
+
+		function proceed()
+		{
+			window.location = "maze.html";
+		}
+
+		function endGame()
+		{
+			if(!ended){
+				for(key in timeOuts ){  
+					clearTimeout(timeOuts[key]);  
+				}
+
+				ended = true;
+				$('#EnemyDiv img').remove();
+				var overallScore = Math.floor(calcScore() * 100);
+				score = 0; enemiesLetThrough = 0; arrowsfired = 0;
+				$('#time').html('Time Remaining: 0:00');
+				$('body > div:first-child > div').css('top',0);
+
+				// Must score better than 90 to move on
+				if(overallScore < gameWinScore)
+					$('#EnemyDiv').append('<div><h1>Overall Score</h1><p>You must score a '+gameWinScore+' or better to proceed to the next page.</p><h2>Your Overall Score</h2><p>'+overallScore+'/100</p><button onclick="startOver();">Again?</button></div>');
+				else
+					$('#EnemyDiv').append('<div><h1>Congratulations!!!</h1><p>You must score a '+gameWinScore+' or better to proceed to the next page.</p><h2>Your Overall Score</h2><p>'+overallScore+'/100</p><button onclick="proceed();">Move On</button></div>');
+			}
+		}
+
+		function secretWeapon()
+		{
+			// shoot a wall of arrows
+			// insert new arrow in canvas where arrow currently is
+			if(secretAttackOk)
+			{
+				var arrowArray = new Array();
+
+				for(var i = 20; i > 0; i--)
+				{
+					$('body').append('<img src="images/arrow.png" class="arrow secret"/>');
+					arrowArray[i] = $('body > img:last-child');
+					var arrowPosition = $('body > div:first-child > div').position();
+					$(arrowArray[i]).css('top',(pageHeight/20)*i);
+
+					// animate to the right, get body size to know how far
+					// remove the arrow when it hits the wall
+					var bodyWidth = $('body').width();
+					$(arrowArray[i]).animate({left:(bodyWidth-187)+'px'},2500,'linear',function(){
+						$(this).remove();
+						$('#accuracy').html('Accuracy: ' + Math.floor((score/arrowsfired)*100) + '%');
+					});
+				}
+
+				secretAttackOk = false;
+
+				timeOuts['secretweapon'] = setTimeout(function(){secretAttackOk=true;},20000);
+			}
+		}
+
+		function gameTimer()
+		{
+			gameCountSeconds--;
+			timeOuts['gametimer'] = setTimeout('gameTimer();',1000);
+			var gameSeconds = "";
+			if(gameCountSeconds < 10 && gameCountSeconds >= 0)
+				gameSeconds = "0"+gameCountSeconds;
+			else
+				gameSeconds = gameCountSeconds;
+			if(gameCountSeconds < 0){
+				gameCountSeconds = 59;
+				gameSeconds = gameCountSeconds;
+				gameCountMinutes--;
+				if(gameCountMinutes < 0){
+					endGame();
+					return;
+				}
+			}
+			
+			$('#time').html('Time Remaining: ' + gameCountMinutes + ':' + gameSeconds);
+		}
+
+		$(function(){
+			fireTimer(); 
+			timeOuts['addanemeny'] = setTimeout('addAnEnemy();',5000);
+			timeOuts['fasterenemy'] = setTimeout('fasterEnemy();',20000);
+			timeOuts['didwehitsomething'] = setTimeout('didWeHitSomething();',5000);
+			timeOuts['gametimer'] = setTimeout('gameTimer();',1000);
+		});
+
+		$(document).keydown(function(e){
+				if(e.which == 32) {fire();}
+				if(e.which == 191) {secretWeapon();}
+				if(e.which == 38) {moveup = true;}
+				if(e.which == 40) {movedown = true;}
+			});
+
+		$(document).keyup(function(e){
+			if(e.which == 38) {moveup = false;}
+			if(e.which == 40) {movedown = false;}
+		});
+
+	</script>
+
+	<style type="text/css">
+		body {width:100%;margin:0;padding:0;}
+		body > div:first-child {width:300px;float:left;position:relative;height:600px;}
+		body > div:first-child > div {width:inherit;height:350px;position:relative;}
+		body > div:first-child > div > img:first-child {height:325px;position:absolute;}
+		body > div:first-child > div > img + img {width:187px;position:absolute;-webkit-transform: rotate(180deg);-moz-transform: rotate(180deg);top: 133px;left: 56px;}
+		body > div + div {height:600px;position:relative;}
+		body > img {position:absolute;width:187px;-webkit-transform: rotate(180deg);-moz-transform: rotate(180deg);left: 56px;}
+		.monster {width:75px;height:75px;position:absolute;}
+		.explode {width:50px;height:50px;}
+		#scores {width:100%;height:100px;}
+		#scores label {padding:30px;font-size:20px;}
+	</style>
+
+</head>
+<body>
+	<div>
+		<div>
+			<img src="images/archer.jpg"></img>
+			<img src="images/arrow.png"></img>
+		</div>
+	</div>
+	<div id="EnemyDiv">
+	</div>
+	<div id="scores">
+		<label id="yourscore">Your Score: 0</label>
+		<label id="monstersEscaped">Monsters Let Through: 0</label>
+		<label id="accuracy">Accuracy: 100%</label>
+		<label id="time">Time Remaining: 5:00</label>
+		<button id="audioButton" onclick="toggleAudio();">Audio Off</button>
+		<audio id="laugh" preload="none">
+		    <source src="audio/laugh.aac" type="audio/aac" />
+		    <source src="audio/laugh.mp3" type="audio/mpeg" />
+		    <source src="audio/laugh.ogg" type="audio/ogg" />
+		</audio>
+	</div>
+</body>
+</html>

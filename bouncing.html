@@ -1,0 +1,60 @@
+<html>
+<head>
+<script src="js/jQuery.js" type="text/javascript"></script>
+<script src="js/jquery_ui.js" type="text/javascript"></script>
+<script>
+
+	var timer;
+	var count = 0;
+
+	function startBounceTimer()
+	{
+		// Make ball bounce
+		$('body > img + img').animate({top:100},500).animate({top:500},850);
+		count++;
+
+		// make baby appear every 10 bounces
+		if(count%10 == 0 && count < 50)
+		{
+			$('body > img:first-child').fadeIn(150).delay(400).fadeOut(200);
+		}
+		else if (count > 50)
+		{
+			// Once the player has suffered enough, make the baby do his evil
+			// devil dance accross the page
+			$('body > img:first-child').show();
+			$('body > img:first-child').animate({left:-1000},675).animate({left:1500},675);
+		}
+
+		// restart timer
+		timer = setTimeout('startBounceTimer()',1350);
+	}
+
+	$(function(){
+
+		$('body > img:first-child').click(function(){
+			window.location = "colorblind.html";
+		});
+
+		$('body > img:first-child').hide();
+
+		startBounceTimer();
+	});
+
+</script>
+<style type="text/css">
+
+	img {position:absolute;}
+	body {margin:0;padding:0;}
+	body > img:first-child {top:550px;left:580px;}
+	body > img + img {top:500px;left:500px;}
+	body > div {position:relative;height:500px;width:100%;top:820px;background:green;}
+
+</style>
+</head>
+<body>
+	<img src="images/devilbaby.jpg"/>
+	<img src="images/beachball.jpg"/>
+	<div></div>
+</body>
+</html>

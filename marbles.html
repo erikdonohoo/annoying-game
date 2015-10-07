@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>Marbles</title>
+		<link href='http://fonts.googleapis.com/css?family=Pacifico' rel='stylesheet' type='text/css'>
+		<script src="js/jQuery.js" type="text/javascript"></script>
+
+		<script>
+			var selectedMarbles = new Array();
+			var marblesOnLeft = new Array();
+			var marblesOnRight = new Array();
+			var leftMarblePosition = -15;
+			var rightMarblePosition = 480;
+			var attemptsLeft = 2;
+			var randMarble = 0;
+			var fails = 0;
+			
+			function validate(){
+				var typed = $('#guessField').val();
+				if(typed == randMarble+1){
+					alert("Victory!");
+					window.location='pong.html'
+				}
+				else
+				{
+					alert("Fail!");
+					fails++;
+					if (fails == 1){
+						returnMarbles();
+						randMarble = Math.floor(Math.random()*9);
+						attemptsLeft = 2;
+						$('#attempts').html("attempts left: " + attemptsLeft);
+						$("#guessField").css('display', 'none');
+						$("#weighButton").show();
+					}
+					if (fails >= 2){
+						window.location = "legolas.html"
+					}
+				}
+
+			}
+
+			function returnMarbles(){
+				$('#balls > div').css({position: '', top: '', left: ''});
+				$('#balls > div').removeClass('pressed');
+				$('#balls > div').addClass('classy');
+				$('hr:nth-child(2)').height('100px');
+				$('hr:nth-child(5)').css('top', '275px');
+				$('hr:nth-child(3)').height('100px');
+				$('hr:nth-child(6)').css('top', '275px');
+				leftMarblePosition = -15;
+				rightMarblePosition = 480;
+				selectedMarbles = new Array();
+				marblesOnRight = new Array();
+				marblesOnLeft = new Array();
+			}
+			
+			function pressedMarble(marble){
+				var number = parseInt($(marble).attr('id'));
+				if($(marble).hasClass("pressed") == false) {
+					$(marble).addClass("pressed");
+					selectedMarbles.push(number);
+				}
+				else {
+					$(marble).removeClass("pressed");
+					for(var i = selectedMarbles.length-1; i >= 0; i--){
+    					if(selectedMarbles[i] == number){
+        					selectedMarbles.splice(i,1);
+    					}
+					}
+				}
+			}
+
+			function addMarbles(side){
+				if(side == "left side"){
+					var name = '';
+					for (var i = 0; i < selectedMarbles.length; i++) {
+						name = selectedMarbles[i];
+						$('#'+name).css({'position':'absolute', 'top':'245px', 'left': leftMarblePosition});
+						$(selectedMarbles[i]).removeClass('pressed');
+						leftMarblePosition += 35;
+					}
+					//for(var i = 0; i < selectedMarbles.length; i++){
+					//	marblesOnLeft.push(selectedMarbles[i]);
+					//}
+					marblesOnLeft = selectedMarbles;
+				}
+				if(side == "right side"){
+					for (var i = 0; i < selectedMarbles.length; i++) {
+						name = selectedMarbles[i];
+						$('#'+name).css({'position':'absolute', 'top':'245px', 'left': rightMarblePosition});
+						$(selectedMarbles[i]).removeClass('pressed');
+						rightMarblePosition += 35;
+					}
+					marblesOnRight = selectedMarbles;
+				}
+				selectedMarbles = new Array();
+				$('#balls > div').removeClass('pressed');
+			}
+
+			function weigh(){
+				if(marblesOnRight.length == 0 || marblesOnLeft.length == 0)
+					alert("Put marbles on both sides of the balance. To do so, click the marbles you want, then click the 'Add marbles to this side' buttons.");
+				else{
+					if(attemptsLeft <= 0)
+						{
+							window.location='marbles.html'
+						}
+					$('#attempts').html("attempts left: " + --attemptsLeft);
+					if(marblesOnLeft.indexOf(randMarble) != -1) {
+						for(var i = 0; i < marblesOnLeft.length; i++)
+						{
+							$('hr:nth-child(2)').height('200px');
+							$('hr:nth-child(5)').css('top', '375px');
+							$('#'+marblesOnLeft[i]).css('top', '345px');
+						}
+					}
+					else if(marblesOnRight.indexOf(randMarble) != -1){
+						for(var i = 0; i < marblesOnRight.length; i++)
+						{
+							$('hr:nth-child(3)').height('200px');
+							$('hr:nth-child(6)').css('top', '375px');
+							$('#'+marblesOnRight[i]).css('top', '345px');
+						}
+					}
+					if(attemptsLeft <= 0) {
+						$("#weighButton").css('display', 'none');
+						$("#guessField").show();
+						$("#guessField").attr('autofocus', 'autofocus');
+					}
+					selectedMarbles = new Array();
+				}
+			}
+			
+			$(function(){
+				randMarble = Math.floor(Math.random()*9);
+			});
+		</script>
+
+		<style type="text/css">
+			body{width:100%;margin:0 auto;text-align:center;}
+			#wrapper{width:700px;margin:0 auto;position:relative;}
+			#balls{width:360px;margin:50px auto 0 auto;}
+			hr:first-child{width:494px;margin:0 auto;}
+			hr:nth-child(2){width:0px;height:100px;position:absolute;left:100px;margin:0;}
+			hr:nth-child(3){width:0px;height:100px;position:absolute;right:100px;margin:0;}
+			hr:nth-child(4){width:200px;position:relative;margin:0 auto;top:302px;}
+			hr:nth-child(5){width:200px;height:0px;position:absolute;left:0px;top:275px;margin:0;}
+			hr:nth-child(6){width:200px;height:0px;position:absolute;right:0px;top:275px;margin:0;}
+			hr:last-child{width:0px;height:300px;margin:0 auto;}
+
+			#leftButton {
+				position:absolute;
+				left:0px;
+			}
+			#rightButton {
+				position:absolute;
+				right:0px;
+			}
+			#guessField {
+				display:none;
+			}
+
+			.pressed{
+				border-style:solid;
+				border-color:black;
+				border-width:2px;
+			}
+			.classy{background-color:blue;height:30px;width:30px;position:relative;border-radius:25px;float:left;margin:0 3px;cursor:pointer;color:white;
+			background: #4494d6; /* Old browsers */
+			background: -moz-linear-gradient(45deg,  #4494d6 13%, #1e5799 22%, #207cca 70%, #99c4e5 81%); /* FF3.6+ */
+			background: -webkit-gradient(linear, left bottom, right top, color-stop(13%,#4494d6), color-stop(22%,#1e5799), color-stop(70%,#207cca), color-stop(81%,#99c4e5)); /* Chrome,Safari4+ */
+			background: -webkit-linear-gradient(45deg,  #4494d6 13%,#1e5799 22%,#207cca 70%,#99c4e5 81%); /* Chrome10+,Safari5.1+ */
+			background: -o-linear-gradient(45deg,  #4494d6 13%,#1e5799 22%,#207cca 70%,#99c4e5 81%); /* Opera 11.10+ */
+			background: -ms-linear-gradient(45deg,  #4494d6 13%,#1e5799 22%,#207cca 70%,#99c4e5 81%); /* IE10+ */
+			background: linear-gradient(45deg,  #4494d6 13%,#1e5799 22%,#207cca 70%,#99c4e5 81%); /* W3C */
+			filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#4494d6', endColorstr='#99c4e5',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
+			box-shadow:-8px -2px 8px #959595;}
+
+		</style>
+	</head>
+	
+<body>
+	<div id="wrapper">
+		<h1>Intelligence Test</h1>
+		<h3>One marble is heavier than the rest. our job is to find it. You have only two weigh-ins to discover which it is. If you fail twice, you will be sent back to the arrow-shooting game. Good luck.</h3>
+		<button id="leftButton" onclick="addMarbles('left side');">Add marbles to this side</button>
+		<button id="weighButton" onclick="weigh();">weigh</button>
+		<input id="guessField" type="text" onkeypress="if(event.keyCode==13) validate();"/>
+		<button id="rightButton" onclick="addMarbles('right side');">Add marbles to this side</button>
+		<br />
+		<div id="scale">
+			<hr>
+            <hr>
+            <hr>
+            <hr>
+			<hr>
+			<hr>
+			<hr>
+		</div>
+		<button onclick="returnMarbles();">Return Marbles</button>
+		<h4 id="attempts">attempts left: 2</h4>
+		<div id="balls">
+        	<div class="classy" onclick="pressedMarble(this);" id="0">1</div>
+			<div class="classy" onclick="pressedMarble(this);" id="1">2</div>
+			<div class="classy" onclick="pressedMarble(this);" id="2">3</div>
+			<div class="classy" onclick="pressedMarble(this);" id="3">4</div>
+			<div class="classy" onclick="pressedMarble(this);" id="4">5</div>
+			<div class="classy" onclick="pressedMarble(this);" id="5">6</div>
+			<div class="classy" onclick="pressedMarble(this);" id="6">7</div>
+			<div class="classy" onclick="pressedMarble(this);" id="7">8</div>
+			<div class="classy" onclick="pressedMarble(this);" id="8">9</div>
+		</div>
+
+	</div>
+</body>
+</html>

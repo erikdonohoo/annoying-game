@@ -1,0 +1,263 @@
+<html>
+<head>
+	<title>Repeat the pattern</title>
+<script src = "js/jQuery.js"></script>
+<style type="text/css">
+body {width:600px;height:600px;margin:0 auto;}
+div {border:2px solid blue;width:125px;height:125px;position:absolute;}
+#wrapper {margin:0 auto;width: 504px;height: 600px;}
+#box1 {}
+#box2 {left:125px;}
+#box3 {left:250px;}
+#box4 {left:375px;}
+#box5 {top:125px;}
+#box6 {left:125px;top:125px;}
+#box7 {top:125px;left:250px;}
+#box8 {top:125px;left:375px;}
+#box9 {top:250px;}
+#box10 {top:250px;left:125px;}
+#box11 {top:250px;left:250px;}
+#box12 {top:250px;left:375px;}
+#box13 {top:375px;}
+#box14 {top:375px;left:125px;}
+#box15 {top:375px;left:250px;}
+#box16 {top:375px;left:375px;}
+#start {width:50px;height:50px;border:none;top: 527px;left: 225px;}
+.blue {	background-color:blue;}
+
+</style>
+<script type="text/javascript">
+var randomnumber=Math.floor(Math.random()*4)
+var blinkTimes = 3;
+var speedone = 500;
+var speed = 500;
+var pattern = {};
+var guessnumber = 0;
+var levelnumber = 0;
+var speedup = 1000;
+var misses = 0;
+var startbool = false;
+var startclicked = false;
+
+function start() {
+	if(!startbool&&!startclicked)
+	{
+		startclicked = true;
+		speedone=500;
+		pattern ={};
+		guessnumber = 0;
+		if(levelnumber==2)
+		{
+			speedup = 700;
+			speed = 550;
+		}
+		if(levelnumber==3)
+		{
+			speedup = 600;
+			speed = 450;
+		}
+		if(levelnumber==4)
+		{
+			blinkTimes = 4;
+			speedup = 600;
+			speed = 450;
+		}
+		if(levelnumber==5)
+		{
+			blinkTimes = 4;
+			speedup = 500;
+			speed = 350;
+		}
+		if(levelnumber>=6)
+		{
+			do
+			{
+			blinkTimes = Math.floor(Math.random()*levelnumber)+1;
+			}while(blinkTimes<=Math.floor(levelnumber/2))
+			if(speed>100)
+				speed-=25;
+			if(speedup>100)
+				speedup -= 30;
+
+		}
+		for(var i = 0;i<blinkTimes;i++)
+		{
+			setTimeout(function(){randomnumber=Math.floor(Math.random()*16);pattern[guessnumber] = randomnumber+1;guessnumber++;
+			blink(randomnumber+1);
+			},speedone);
+			speedone+=speedup;
+		}
+		setTimeout(function(){startbool = true;guessnumber=0;},speedone);
+	}
+
+}
+function blink(boxnumber) {
+	switch(boxnumber)
+	{
+		case 1:
+		$('#box1').addClass('blue')
+		setTimeout(function(){
+			$('#box1').removeClass('blue');
+		},speed);
+		break;
+		case 2:
+		$('#box2').addClass('blue')
+		setTimeout(function(){
+			$('#box2').removeClass('blue');
+		},speed);
+		break;
+		case 3:
+		$('#box3').addClass('blue')
+		setTimeout(function(){
+			$('#box3').removeClass('blue');
+		},speed);
+		break;
+		case 4:
+		$('#box4').addClass('blue')
+		setTimeout(function(){
+			$('#box4').removeClass('blue');
+		},speed);
+		break;
+		case 5:
+		$('#box5').addClass('blue')
+		setTimeout(function(){
+			$('#box5').removeClass('blue');
+		},speed);
+		break;
+		case 6:
+		$('#box6').addClass('blue')
+		setTimeout(function(){
+			$('#box6').removeClass('blue');
+		},speed);
+		break;
+		case 7:
+		$('#box7').addClass('blue')
+		setTimeout(function(){
+			$('#box7').removeClass('blue');
+		},speed);
+		break;
+		case 8:
+		$('#box8').addClass('blue')
+		setTimeout(function(){
+			$('#box8').removeClass('blue');
+		},speed);
+		break;
+		case 9:
+		$('#box9').addClass('blue')
+		setTimeout(function(){
+			$('#box9').removeClass('blue');
+		},speed);
+		break;
+		case 10:
+		$('#box10').addClass('blue')
+		setTimeout(function(){
+			$('#box10').removeClass('blue');
+		},speed);
+		break;
+		case 11:
+		$('#box11').addClass('blue')
+		setTimeout(function(){
+			$('#box11').removeClass('blue');
+		},speed);
+		break;
+		case 12:
+		$('#box12').addClass('blue')
+		setTimeout(function(){
+			$('#box12').removeClass('blue');
+		},speed);
+		break;
+		case 13:
+		$('#box13').addClass('blue')
+		setTimeout(function(){
+			$('#box13').removeClass('blue');
+		},speed);
+		break;
+		case 14:
+		$('#box14').addClass('blue')
+		setTimeout(function(){
+			$('#box14').removeClass('blue');
+		},speed);
+		break;
+		case 15:
+		$('#box15').addClass('blue')
+		setTimeout(function(){
+			$('#box15').removeClass('blue');
+		},speed);
+		break;
+		case 16:
+		$('#box16').addClass('blue')
+		setTimeout(function(){
+			$('#box16').removeClass('blue');
+		},speed);
+		break;
+	}
+}
+
+function checkPattern(patterncheck)
+{
+	if(startbool)
+	{
+		blink(patterncheck);
+		if(pattern[guessnumber]==patterncheck)
+		{
+			guessnumber++;
+		}
+		else
+		{
+			guessnumber++;
+			alert("incorrect pattern: restart level");
+			startbool = false;
+			startclicked = false;
+			if(levelnumber>=6)
+			{
+				if(speed>=100)
+					speed+=25;
+				if(speedup>=100)
+					speedup+=30;
+			}
+			misses++;
+			if(levelnumber>9&&misses==6)
+				window.location = "crossing.html";
+			else if(misses == 6)
+			{
+				alert("Failed! try again");
+				window.location = "pattern.html";
+			}
+		}
+		if(guessnumber==(blinkTimes)&&startbool)
+		{
+			if(levelnumber<4)
+			alert("correct");
+			startbool=false;
+			startclicked = false;
+			levelnumber++;
+			$('#start').html('Level:'+levelnumber+'<button onclick="start();">Start</button>');
+			//window.location = "more.html"
+		}
+	}
+
+}
+</script>
+</head>
+<body>
+	<div id = "wrapper">
+		<div id = "box1" onclick = "checkPattern(1);"></div>
+		<div id = "box2" onclick = "checkPattern(2);"></div>
+		<div id = "box3" onclick = "checkPattern(3);"></div>
+		<div id = "box4" onclick = "checkPattern(4);"></div>
+		<div id = "box5" onclick = "checkPattern(5);"></div>
+		<div id = "box6" onclick = "checkPattern(6);"></div>
+		<div id = "box7" onclick = "checkPattern(7);"></div>
+		<div id = "box8" onclick = "checkPattern(8);"></div>
+		<div id = "box9" onclick = "checkPattern(9);"></div>
+		<div id = "box10" onclick = "checkPattern(10);"></div>
+		<div id = "box11" onclick = "checkPattern(11);"></div>
+		<div id = "box12" onclick = "checkPattern(12);"></div>
+		<div id = "box13" onclick = "checkPattern(13);"></div>
+		<div id = "box14" onclick = "checkPattern(14);"></div>
+		<div id = "box15" onclick = "checkPattern(15);"></div>
+		<div id = "box16" onclick = "checkPattern(16);"></div>
+		<div id = "start" >Level:0<button onclick="start();">Start</button></div>
+	</div>
+</body>
+</html>

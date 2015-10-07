@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>Maze Meander</title>
+		<link rel="stylesheet" href="css/styles.css" type="text/css">
+		<link href='http://fonts.googleapis.com/css?family=Pacifico' rel='stylesheet' type='text/css'>
+		<script src="js/jQuery.js" type="text/javascript"></script>
+		<script type="text/javascript" src="js/mazeMeander.js"></script>
+		<script type="text/javascript" src="js/mouse.js"></script>
+		<script type="text/javascript" src="js/cat.js"></script>
+		<script type="text/javascript" src="js/mazes.js"></script>
+		
+	</head>
+	
+<body>
+	<div id="totalDiv">
+		<div id="titleDiv">
+			<h1>Maze Meander</h1>
+		</div>
+		
+		<div id="menuDiv">
+			<button type = "button" id = "mainMenuButton" class = "hidden" onclick = resetGame()><h4>Main Menu</h4></button>
+			<button type = "button" id="resetButton" class = "hidden"  onclick = startGame()><h4 id="resetText">Restart Level</h4></button>
+			<button type = "button" id="pauseButton" class = "hidden" onclick = pauseGame()><h4 id="Pause">Pause</h4></button>
+			<h2 id="level"></h2>
+			<h2 id="cheeseCount"></h2>	
+			<h3 id="key1Count"></h3>
+		</div>
+
+		<div id="gameDiv">
+				<button type = "button" id="newGameButton" onclick = startGame()><h3 id="resetText">New Game</h3></button>
+				<button type = "button" id = "loadGameButton" onclick = showLoadableLevels()><h3>Load Level</h3></button>
+				<button type = "button" id = "howToButton" onclick = howTo()><h3>How To Play</h3></button>
+
+				<label class = "hidden" id="howToText">
+					<u>Purpose:</u> <br />
+					&nbsp You are a mouse and therefore you want cheese. <br /> &nbsp Navigate your way through the mazes to find all of the cheeses. <br /> &nbsp Use your surroundings to collect hard to get cheeses and to avoid being eaten yourself. <br /><br />
+					<u>Controls:</u> <br />
+					&nbsp -To Move: Arrow keys or the 'wasd' letters. <br />
+					&nbsp -Pause/Play: Space bar.<br />
+					&nbsp -Next Level(if you just beat a level)/Restart: Enter.
+				</label>
+		</div>
+
+		<div id="menuDiv">
+			<h2 id="message"></h2>
+		</div>
+
+		<div id="copyrightDiv">
+			Pseudo Copyright  2012
+		</div>
+	</div>
+</body>
+</html>

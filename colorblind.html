@@ -1,0 +1,92 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Blind</title>
+	
+    <script src="js/jQuery.js"></script>
+    <script src="js/jquery_ui.js"></script>
+    <script>
+	$(function(){
+		$('h3').dblclick(function(){
+			window.location='Rightorder.html';
+		});
+	});
+	</script>
+    
+	<style type="text/css">
+		body{
+			width:100%;
+			margin:0 auto;
+			background-color:#FDFDFD;
+		}
+		p{
+			color:#FBFBFB;
+			/*color:#FBFBFB;*/
+			font-size:50px;
+			font-weight:100;
+		}
+		#textarea {
+			border: none;
+			overflow: auto;
+			height: 120px;
+			width: 335px;
+			margin:0 auto;
+			text-align:center;
+			cursor:default;
+		}
+		#wrapper {
+			position:relative;
+			top:250px;
+			overflow: hidden;
+			height: 120px;
+			margin:0 auto;
+			cursor:default;
+			overflow-x:hidden;
+		}
+		.the p::selection {
+			background:#FFF;
+			color:#FCFCFB;
+		}
+    </style>
+
+</head>
+
+	<body>
+        <div id="wrapper" class="the">
+            <div style="height:250px;">
+                <div id="textarea" class="the">
+                   <p>DOWN</p>
+                   <br /><br /><br /><br /><br />
+                   <br /><br /><br /><br /><br />
+                   <br /><br /><br /><br /><br />
+                   <br /><br /><br /><br /><br />
+                   <br /><br /><br /><br /><br />
+                   <br /><br /><br /><br /><br />
+                   <br /><br /><br /><br /><br />
+                   <br /><br /><br /><br /><br />
+                   <br /><br /><br /><br /><br />
+                   <br /><br /><br /><br /><br />
+                   <br /><br /><br /><br /><br />
+                   <br /><br /><br /><br /><br />
+                   <br /><br /><br /><br /><br />
+                   <br /><br /><br /><br /><br />
+                   <br /><br /><br /><br /><br />
+                   <br /><br /><br /><br /><br />
+                   <h3>Double-Click Here</h3>
+                </div>
+            </div>
+        </div>
+        
+        <!-- hide scrollbar -->
+        <script type="text/javascript" charset="utf-8">
+            // get the width of the textarea minus scrollbar
+            var textareaWidth = document.getElementById("textarea").scrollWidth;
+        
+            // width of our wrapper equals width of the inner part of the textarea
+            document.getElementById("wrapper").style.width = textareaWidth + 'px';
+        </script>
+    
+    </body>
+</html>

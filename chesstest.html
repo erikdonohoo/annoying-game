@@ -1,0 +1,416 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head>
+	    <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <!--<meta name="viewport" content="width=device-width; initial-scale=0.45; user-scalable=0;">-->
+        <link rel="stylesheet" href="css/jquery-ui-1.8.18.custom.css"/>
+        <title>Chess</title>
+        <style>
+			body{font-size:65px;}
+			#wrapper{width:700px;margin:0 auto;}
+			table {border-spacing:none;border-collapse:collapse;}
+			#gameTable{width:694px;height:700px;border:inset;}
+			tr {height:45px;}
+			td{width: 84px;height: 84px;text-align: center;border: 1px solid white;padding: 0;display: inline-block;vertical-align: middle;line-height: 81px;}
+			td:hover{cursor:default;}
+			td > div{margin:auto;}
+			#gameInfo {height:35px;font-size:20px;font-family:tahoma,sans-serif;text-align:center;width:310px;}
+			#new{position:relative;left:114px;top:50px;}
+			.selected{ border:1px solid red; background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2E5MDMyOSIgc3RvcC1vcGFjaXR5PSIwLjUiLz4KICAgIDxzdG9wIG9mZnNldD0iNDQlIiBzdG9wLWNvbG9yPSIjOGYwMjIyIiBzdG9wLW9wYWNpdHk9IjAuNSIvPgogICAgPHN0b3Agb2Zmc2V0PSIxMDAlIiBzdG9wLWNvbG9yPSIjNmQwMDE5IiBzdG9wLW9wYWNpdHk9IjAuNSIvPgogIDwvbGluZWFyR3JhZGllbnQ+CiAgPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+) !important;
+background: -moz-linear-gradient(top,  rgba(169,3,41,0.5) 0%, rgba(143,2,34,0.5) 44%, rgba(109,0,25,0.5) 100%) !important;
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(169,3,41,0.5)), color-stop(44%,rgba(143,2,34,0.5)), color-stop(100%,rgba(109,0,25,0.5))) !important;
+background: -webkit-linear-gradient(top,  rgba(169,3,41,0.5) 0%,rgba(143,2,34,0.5) 44%,rgba(109,0,25,0.5) 100%) !important;
+background: -o-linear-gradient(top,  rgba(169,3,41,0.5) 0%,rgba(143,2,34,0.5) 44%,rgba(109,0,25,0.5) 100%) !important;
+background: -ms-linear-gradient(top,  rgba(169,3,41,0.5) 0%,rgba(143,2,34,0.5) 44%,rgba(109,0,25,0.5) 100%) !important;
+background: linear-gradient(to bottom,  rgba(169,3,41,0.5) 0%,rgba(143,2,34,0.5) 44%,rgba(109,0,25,0.5) 100%) !important;
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#80a90329', endColorstr='#806d0019',GradientType=0 ) !important;
+}
+			.valid{border:1px solid rgb(107,186,112); background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2NkZWI4YiIgc3RvcC1vcGFjaXR5PSIwLjYiLz4KICAgIDxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iI2NkZWI4YiIgc3RvcC1vcGFjaXR5PSIwLjYiLz4KICA8L2xpbmVhckdyYWRpZW50PgogIDxyZWN0IHg9IjAiIHk9IjAiIHdpZHRoPSIxIiBoZWlnaHQ9IjEiIGZpbGw9InVybCgjZ3JhZC11Y2dnLWdlbmVyYXRlZCkiIC8+Cjwvc3ZnPg==) !important;background: -moz-linear-gradient(top,  rgba(205,235,139,0.6) 0%, rgba(205,235,139,0.6) 100%) !important;background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(205,235,139,0.6)), color-stop(100%,rgba(205,235,139,0.6))) !important;background: -webkit-linear-gradient(top,  rgba(205,235,139,0.6) 0%,rgba(205,235,139,0.6) 100%) !important;background: -o-linear-gradient(top,  rgba(205,235,139,0.6) 0%,rgba(205,235,139,0.6) 100%) !important;background: -ms-linear-gradient(top,  rgba(205,235,139,0.6) 0%,rgba(205,235,139,0.6) 100%) !important;background: linear-gradient(to bottom,  rgba(205,235,139,0.6) 0%,rgba(205,235,139,0.6) 100%) !important;filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#99cdeb8b', endColorstr='#99cdeb8b',GradientType=0 ) !important;}
+			.white{background: rgb(255,255,255); /* Old browsers */
+/* IE9 SVG, needs conditional override of 'filter' to 'none' */
+background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIxMDAlIiB5Mj0iMTAwJSI+CiAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdG9wLWNvbG9yPSIjZmZmZmZmIiBzdG9wLW9wYWNpdHk9IjEiLz4KICAgIDxzdG9wIG9mZnNldD0iNDYlIiBzdG9wLWNvbG9yPSIjZjNmM2YzIiBzdG9wLW9wYWNpdHk9IjEiLz4KICAgIDxzdG9wIG9mZnNldD0iNTMlIiBzdG9wLWNvbG9yPSIjZWRlZGVkIiBzdG9wLW9wYWNpdHk9IjEiLz4KICAgIDxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iI2ZmZmZmZiIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgPC9saW5lYXJHcmFkaWVudD4KICA8cmVjdCB4PSIwIiB5PSIwIiB3aWR0aD0iMSIgaGVpZ2h0PSIxIiBmaWxsPSJ1cmwoI2dyYWQtdWNnZy1nZW5lcmF0ZWQpIiAvPgo8L3N2Zz4=);
+background: -moz-linear-gradient(-45deg,  rgba(255,255,255,1) 0%, rgba(243,243,243,1) 46%, rgba(237,237,237,1) 53%, rgba(255,255,255,1) 100%); /* FF3.6+ */
+background: -webkit-gradient(linear, left top, right bottom, color-stop(0%,rgba(255,255,255,1)), color-stop(46%,rgba(243,243,243,1)), color-stop(53%,rgba(237,237,237,1)), color-stop(100%,rgba(255,255,255,1))); /* Chrome,Safari4+ */
+background: -webkit-linear-gradient(-45deg,  rgba(255,255,255,1) 0%,rgba(243,243,243,1) 46%,rgba(237,237,237,1) 53%,rgba(255,255,255,1) 100%); /* Chrome10+,Safari5.1+ */
+background: -o-linear-gradient(-45deg,  rgba(255,255,255,1) 0%,rgba(243,243,243,1) 46%,rgba(237,237,237,1) 53%,rgba(255,255,255,1) 100%); /* Opera 11.10+ */
+background: -ms-linear-gradient(-45deg,  rgba(255,255,255,1) 0%,rgba(243,243,243,1) 46%,rgba(237,237,237,1) 53%,rgba(255,255,255,1) 100%); /* IE10+ */
+background: linear-gradient(-45deg,  rgba(255,255,255,1) 0%,rgba(243,243,243,1) 46%,rgba(237,237,237,1) 53%,rgba(255,255,255,1) 100%); /* W3C */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#ffffff',GradientType=1 ); /* IE6-8 fallback on horizontal gradient */}
+			.black{/* IE9 SVG, needs conditional override of 'filter' to 'none' */
+background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIxMDAlIiB5Mj0iMTAwJSI+CiAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdG9wLWNvbG9yPSIjMDAwMDAwIiBzdG9wLW9wYWNpdHk9IjAuNjUiLz4KICAgIDxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iIzAwMDAwMCIgc3RvcC1vcGFjaXR5PSIwIi8+CiAgPC9saW5lYXJHcmFkaWVudD4KICA8cmVjdCB4PSIwIiB5PSIwIiB3aWR0aD0iMSIgaGVpZ2h0PSIxIiBmaWxsPSJ1cmwoI2dyYWQtdWNnZy1nZW5lcmF0ZWQpIiAvPgo8L3N2Zz4=);
+background: -moz-linear-gradient(-45deg,  rgba(0,0,0,0.65) 0%, rgba(0,0,0,0) 100%); /* FF3.6+ */
+background: -webkit-gradient(linear, left top, right bottom, color-stop(0%,rgba(0,0,0,0.65)), color-stop(100%,rgba(0,0,0,0))); /* Chrome,Safari4+ */
+background: -webkit-linear-gradient(-45deg,  rgba(0,0,0,0.65) 0%,rgba(0,0,0,0) 100%); /* Chrome10+,Safari5.1+ */
+background: -o-linear-gradient(-45deg,  rgba(0,0,0,0.65) 0%,rgba(0,0,0,0) 100%); /* Opera 11.10+ */
+background: -ms-linear-gradient(-45deg,  rgba(0,0,0,0.65) 0%,rgba(0,0,0,0) 100%); /* IE10+ */
+background: linear-gradient(-45deg,  rgba(0,0,0,0.65) 0%,rgba(0,0,0,0) 100%); /* W3C */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#a6000000', endColorstr='#00000000',GradientType=1 ); /* IE6-8 fallback on horizontal gradient */}
+		</style>
+        <script src="js/jQuery.js"></script>
+        <script src="js/jquery_ui.js"></script>
+        <script src="js/pieces.js"></script>
+        <script src="js/chessmaster.js"></script>
+        <script>
+			var wKnight = '&#9816;';
+			var wBishop = '&#9815;';
+			var wQueen = '&#9813;';
+			var wKing = '&#9812;';
+			var wPawn = '&#9817;';
+			var wRook = '&#9814;';
+			var bKing = '&#9818;';
+			var bQueen = '&#9819;';
+			var bRook = '&#9820;';
+			var bBishop = '&#9821;';
+			var bKnight = '&#9822;';
+			var bPawn = '&#9823;';
+			var curPiece;
+			var whiteTurn = true;
+			var master;
+			var hard;
+			
+			function isWhite(obj)
+			{
+				var num = obj.charCodeAt(0);
+				var numString = num+'';
+				num = numString.substr(2);
+				if(num >= 18) // blacks turn
+					return false;
+				else
+					return true;
+			}
+			
+			function highlightMoves(moves)
+			{		
+				for(var i = 0; i < moves.length; i++)
+				{
+					var position = '#' + moves[i].y + '' + moves[i].x;
+					$(position).addClass('valid');
+				}
+			}
+
+			function startOver()
+			{
+				loadGame();
+				master = new chessmaster(hard);
+				curPiece = null;
+				inCheck = false;
+				whiteTurn = true;
+
+				// replace all tds with correct stuff
+				$('td').each(function(){
+					$(this).html('');
+				});
+
+				$('#00').html(bRook);
+				$('#01').html(bKnight);
+				$('#02').html(bBishop);
+				$('#03').html(bQueen);
+				$('#04').html(bKing);
+				$('#05').html(bBishop);
+				$('#06').html(bKnight);
+				$('#07').html(bRook);
+
+				$('#10').html(bPawn);
+				$('#11').html(bPawn);
+				$('#12').html(bPawn);
+				$('#13').html(bPawn);
+				$('#14').html(bPawn);
+				$('#15').html(bPawn);
+				$('#16').html(bPawn);
+				$('#17').html(bPawn);
+
+				$('#70').html(wRook);
+				$('#71').html(wKnight);
+				$('#72').html(wBishop);
+				$('#73').html(wQueen);
+				$('#74').html(wKing);
+				$('#75').html(wBishop);
+				$('#76').html(wKnight);
+				$('#77').html(wRook);
+
+				$('#60').html(wPawn);
+				$('#61').html(wPawn);
+				$('#62').html(wPawn);
+				$('#63').html(wPawn);
+				$('#64').html(wPawn);
+				$('#65').html(wPawn);
+				$('#66').html(wPawn);
+				$('#67').html(wPawn);
+
+				$('#gameInfo').html('');
+			}
+
+			function getPieceString(piece)
+			{
+				var color = piece.color;
+
+				if(piece.type == 'pawn' && color == 'white')
+					return wPawn;
+				else if(piece.type == 'pawn' && color == 'black')
+					return bPawn;
+				else if(piece.type == 'knight' && color == 'white')
+					return wKnight;
+				else if(piece.type == 'knight' && color == 'black')
+					return bKnight;
+				else if(piece.type == 'bishop' && color == 'white')
+					return wBishop;
+				else if(piece.type == 'bishop' && color == 'black')
+					return bBishop;
+				else if(piece.type == 'rook' && color == 'white')
+					return wRook;
+				else if(piece.type == 'rook' && color == 'black')
+					return bRook;
+				else if(piece.type == 'queen' && color == 'white')
+					return wQueen;
+				else if(piece.type == 'queen' && color == 'black')
+					return bQueen;
+				else if(piece.type == 'king' && color == 'white')
+					return wKing
+				else
+					return bKing;
+			}
+
+			function addToBoard(piece)
+			{
+				// get x and y and string
+				var piecestring = getPieceString(piece);
+				$('#' + piece.y + piece.x).html(piecestring);
+			}
+
+			function setUpGame()
+			{
+				// replace all tds with correct stuff
+				$('td').each(function(){
+					$(this).html('');
+				});
+
+				for(var i = 0; i < gamePieces.length; i++)
+				{
+					addToBoard(gamePieces[i]);
+				}
+			}
+
+			function addStartOver(text)
+			{
+				$('#gameInfo').html('<button onclick="startOver();">Start Over</button><br>'+text);
+			}
+
+			function handlePieceChoice(pawn,chosenPiece)
+			{
+				// close the dialog box, grab the dead piece and put it in the live array
+				// remove it from dead array and update gameboard, removing pawn from play
+				$('#resurrectBox').dialog('close');
+				var piece = findDeadPieceWithTypeAndColor(chosenPiece,'white');
+				piece.x = pawn.x;
+				piece.y = pawn.y;
+				var index = deadPieces.indexOf(piece);
+				var pawnIndex = gamePieces.indexOf(pawn);
+				gamePieces.splice(pawnIndex,1);
+				deadPieces.splice(index,1);
+				deadPieces.push(pawn);
+				gamePieces.push(piece);
+
+				var position = '#' + pawn.y + pawn.x;
+				if(piece.type == 'pawn') {$(position).html(wPawn);}
+				if(piece.type == 'rook') {$(position).html(wRook);}
+				if(piece.type == 'knight') {$(position).html(wKnight);}
+				if(piece.type == 'bishop') {$(position).html(wBishop);}
+				if(piece.type == 'queen') {$(position).html(wQueen);}
+
+				master.takeTurn();
+			}
+
+			function resurrectPiece(pawn)
+			{
+				// choose a piece of pawn color to bring back from dead!
+				console.log('resurrect time');
+				var box = "#resurrectBox";
+				$(box).dialog({
+					autoOpen: false,
+					show: "blind",
+					hide: "fade",
+					resizable: "false"
+				});
+
+				var options = getAllDeadPiecesOfColor('white');
+				var content = '<p>Pick One...</p><select id="pieceChooser"><option>Choose One></option>';
+
+				if(options.length == 0){
+					master.takeTurn();
+				} else {
+
+					// loop through dead pieces adding options
+					for(var i = 0; i < options.length; i++)
+					{
+						content += '<option value="'+ options[i].type +'">' + options[i].type + '</option>';
+					}
+
+					content += '</select>';
+					$(box).html(content);
+					$('#pieceChooser').change(function(){
+						var chosen = $('select option:selected').val();
+						handlePieceChoice(pawn,chosen);
+					});
+
+					$(box).dialog('open');
+				}
+			}
+			
+			$(function(){
+				loadGame();
+				setUpGame();
+				var difficulty = prompt('Welcome to the chessmaster. Enter your difficulty... (1-3)',1);
+				hard = difficulty;
+				if(difficulty != null && difficulty != '')
+					master = new chessmaster(difficulty);
+				else
+					master = new chessmaster(1);
+				$('td').click(function(){
+					if($(this).hasClass('valid'))
+					{
+						// make the move!
+						//console.log('clicked on valid move, making move');
+						var location = $(this).attr('id');
+						var y = parseInt(location[0]);
+						var x = parseInt(location[1]);
+						var oldx = curPiece.x;
+						var oldy = curPiece.y;
+
+						curPiece.moveToSpace(x,y);
+						whiteTurn = !whiteTurn;
+						$('td').each(function(){
+							$(this).removeClass('valid');
+							$(this).removeClass('selected');
+						});
+						$(this).html($('#'+oldy+''+oldx).html());
+						$('#'+oldy+''+oldx).html('');
+						$('#gameInfo').html('');
+
+						if(curPiece.type == 'pawn'){
+							curPiece.hasMoved = true;
+							// check for pawn on other side
+							if(pawnMadeItAcross(curPiece))
+								resurrectPiece(curPiece);
+							else
+								master.takeTurn();
+						} else {
+							master.takeTurn();
+						}
+					}
+					else{
+						if($(this).html() == '')
+						{
+							// do nothing
+						}
+						else if((isWhite($(this).html()) && whiteTurn) /*|| (!isWhite($(this).html()) && !whiteTurn)*/)
+						{
+							$('td').each(function(){
+								$(this).removeClass('valid');
+								$(this).removeClass('selected');
+							});
+
+							var location = $(this).attr('id');
+							var y = parseInt(location[0]);
+							var x = parseInt(location[1]);
+							var piece = findPieceAtSpace(x,y);
+							//console.log(piece);
+							curPiece = piece;
+							var moves = piece.getValidMoves();
+							highlightMoves(moves);
+							$(this).addClass('selected');
+						}
+					}
+				});
+				
+			});
+		</script>
+    </head>
+    
+    <body>
+        <div id="wrapper">
+       		<table id="gameTable" border="0">
+            	<tr id="0">
+                	<td id="00" class="white"></td>
+                    <td id="01" class="black"></td>
+                    <td id="02" class="white"></td>
+                    <td id="03" class="black"></td>
+                    <td id="04" class="white"></td>
+                    <td id="05" class="black"></td>
+                    <td id="06" class="white"></td>
+                    <td id="07" class="black"></td>
+                </tr>
+                <tr id="1">
+                	<td id="10" class="black"></td>
+                    <td id="11" class="white"></td>
+                    <td id="12" class="black"></td>
+                    <td id="13" class="white"></td>
+                    <td id="14" class="black"></td>
+                    <td id="15" class="white"></td>
+                    <td id="16" class="black"></td>
+                    <td id="17" class="white"></td>
+                </tr>
+                <tr id="2">
+                	<td id="20" class="white"></td>
+                    <td id="21" class="black"></td>
+                    <td id="22" class="white"></td>
+                    <td id="23" class="black"></td>
+                    <td id="24" class="white"></td>
+                    <td id="25" class="black"></td>
+                    <td id="26" class="white"></td>
+                    <td id="27" class="black"></td>
+                </tr>
+                <tr id="3">
+                	<td id="30" class="black"></td>
+                    <td id="31" class="white"></td>
+                    <td id="32" class="black"></td>
+                    <td id="33" class="white"></td>
+                    <td id="34" class="black"></td>
+                    <td id="35" class="white"></td>
+                    <td id="36" class="black"></td>
+                    <td id="37" class="white"></td>
+                </tr>
+                <tr id="4">
+                	<td id="40" class="white"></td>
+                    <td id="41" class="black"></td>
+                    <td id="42" class="white"></td>
+                    <td id="43" class="black"></td>
+                    <td id="44" class="white"></td>
+                    <td id="45" class="black"></td>
+                    <td id="46" class="white"></td>
+                    <td id="47" class="black"></td>
+                </tr>
+                <tr id="5">
+                	<td id="50" class="black"></td>
+                    <td id="51" class="white"></td>
+                    <td id="52" class="black"></td>
+                    <td id="53" class="white"></td>
+                    <td id="54" class="black"></td>
+                    <td id="55" class="white"></td>
+                    <td id="56" class="black"></td>
+                    <td id="57" class="white"></td>
+                </tr>
+                <tr id="6">
+                	<td id="60" class="white"></td>
+                    <td id="61" class="black"></td>
+                    <td id="62" class="white"></td>
+                    <td id="63" class="black"></td>
+                    <td id="64" class="white"></td>
+                    <td id="65" class="black"></td>
+                    <td id="66" class="white"></td>
+                    <td id="67" class="black"></td>
+                </tr>
+                <tr id="7">
+                	<td id="70" class="black"></td>
+                    <td id="71" class="white"></td>
+                    <td id="72" class="black"></td>
+                    <td id="73" class="white"></td>
+                    <td id="74" class="black"></td>
+                    <td id="75" class="white"></td>
+                    <td id="76" class="black"></td>
+                    <td id="77" class="white"></td>
+                </tr>
+            </table>
+            <div id="gameInfo"></div>
+            <div id="resurrectBox" title="Choose A Piece"></div>
+    </body>
+</html>

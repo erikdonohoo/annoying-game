@@ -1,0 +1,128 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Follow the order?</title>
+<script src = "js/jQuery.js"></script>
+<style type="text/css">
+div {position:relative;width:700px;}
+#one:hover {cursor:pointer;}
+#two:hover {cursor:pointer;}
+#three:hover {cursor:pointer;}
+#four:hover {cursor:pointer;}
+img {width:100px;height:100px;}
+.hidden {opacity:0;}
+#wrapper {width:600px;height:600px;position:relative;margin 0 auto;}
+</style>
+<script type="text/javascript">
+var checkone = false;
+var checktwo = false;
+var checkthree = false;
+var checkfour = false;
+var Thepoorfool = 0;
+
+function help() {
+	Thepoorfool++;
+	if(Thepoorfool>=10)
+	{
+		alert("There are six repeating pictures\nThe first row of numbers is the picture number\nThe second set of numbers is the row its on")
+	}
+	else
+		alert("Click the orcs in the right order\n4  3  2  6\n1  2  3  3");
+}
+
+function check1() {
+	if(checkone||checktwo||checkthree||checkfour)
+	{
+			checkone = false;
+			checktwo = false;
+			checkthree = false;
+			checkfour = false;
+			alert("Wrong order: Retry");
+	}
+	else
+	{
+		checkone = true;
+		alert("Pass #1 accepted, 3 more to go!");
+	}
+}
+function check2() {
+	if(checktwo||!checkone||checkthree||checkfour)
+	{
+			checkone = false;
+			checktwo = false;
+			checkthree = false;
+			checkfour = false;
+			alert("Wrong order: Retry");
+	}
+	else
+	{
+		checktwo = true;
+		alert("Pass #2 accepted, keep it up!");
+	}
+}
+function check3() {
+	if(!checktwo||!checkone||checkthree||checkfour)
+	{
+			checktwo = false;
+			checkone = false;
+			checkthree = false;
+			checkfour = false;
+			alert("Wrong order: Retry");
+	}
+	else
+	{
+		checkthree = true;
+		alert("Pass #3 accepted, one more to Win!");
+	}
+}
+function check4() {
+	if(!checktwo||!checkthree||!checkone||checkfour)
+	{
+			checktwo = false;
+			checkthree = false;
+			checkone = false;
+			checkfour = false;
+			alert("Wrong order: Retry");
+	}
+	else
+	{
+		checkfour = true;
+		alert("Pass #4 accepted, click me to win!");
+		window.location = "hypnosis.html";
+	}
+}
+</script>
+</head>
+<body id = "body">
+	<div id = "wrapper">
+		<div>
+			<img src="images/orc1.jpg">
+			<img src="images/orc2.jpg">
+			<img src="images/orc3.jpg">
+			<img id = "one" src="images/orc4.jpg" onclick = "check1();">
+			<img src="images/orc5.jpg">
+			<img src="images/orc6.jpg">
+		</div>
+		<br/>
+		<div>
+			<img src="images/orc1.jpg">
+			<img src="images/orc2.jpg">
+			<img id = "two" src="images/orc3.jpg" onclick = "check2();">
+			<img src="images/orc4.jpg">
+			<img src="images/orc5.jpg">
+			<img src="images/orc6.jpg">
+		</div>
+		<br/>
+		<div>
+			<img src="images/orc1.jpg">
+			<img id = "three" src="images/orc2.jpg" onclick = "check3();">
+			<img src="images/orc3.jpg">
+			<img src="images/orc4.jpg">
+			<img src="images/orc5.jpg">
+			<img id = "four" src="images/orc6.jpg" onclick = "check4();">
+		</div>
+		<div><img src="images/question.jpg" onclick = "help();"></div>
+	</div>
+</body>
+</html>

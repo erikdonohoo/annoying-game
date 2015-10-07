@@ -1,0 +1,286 @@
+<html>
+<head>
+<title>who cares?</title>
+<script src = "js/jQuery.js"></script>
+<style type = "text/css">
+#Question {margin:0 auto;border:2px solid blue;width:400px;height:150px;text-align:center;}
+#Answer {margin:0 auto;border:2px solid blue;width:300px;height:100px;text-align:center;}
+.fail {margin:0 auto;border:2px solid blue;width:200px;height:50px;text-align:center;}
+</style>
+<script type="text/javascript">
+var questionnumber = 0;
+var incorrect = 0;
+var numberwrong= 0;
+var checktimes = false;
+
+function guess() {
+	if($('#guess').val() == "")
+	{
+		alert("invalid entry");
+	}
+	else
+	{
+		switch(questionnumber)
+		{
+			case 0:
+				if($('input').val().toLowerCase() == "devil")
+				{
+					numberwrong = 0;
+					alert("correct");
+					questionnumber++;
+					$('#thequestion').html("The color of the button you didn't press on the seventh screen?");
+					$('input').val("");
+				}
+				else
+				{
+					numberwrong++;
+					$('input').val("");
+					incorrect++;
+				}
+			break;
+			case 1:
+				if($('input').val().toLowerCase() == "red")
+					{
+						numberwrong = 0;
+						alert("correct");
+						questionnumber++;
+						$('#thequestion').html("How many keys were flying around for Harry to catch?");
+						$('input').val("");
+					}
+				else
+				{
+					numberwrong++;
+					$('input').val("");
+					incorrect++;
+				}
+			break;
+			case 2:
+				if($('input').val().toLowerCase() == "four"||$('input').val().toLowerCase() == "4")
+					{
+						numberwrong = 0;
+						alert("correct");
+						questionnumber++;
+						$('#thequestion').html("What service was the phone from?");
+						$('input').val("");
+					}
+				else
+				{
+					numberwrong++;
+					$('input').val("");
+					incorrect++;
+				}
+			break;
+			case 3:
+				if($('input').val().toLowerCase() == "verizon")
+					{
+						numberwrong = 0;
+						alert("correct");
+						questionnumber++;
+						$('#thequestion').html("What was the poor little dogs name?");
+						$('input').val("");
+					}
+				else
+				{
+					numberwrong++;
+					$('input').val("");
+					incorrect++;
+				}
+			break;
+			case 4:
+				if($('input').val().toLowerCase() == "lil brudder"||$('input').val().toLowerCase() == "li'l brudder")
+					{
+						numberwrong = 0;
+						alert("correct");
+						questionnumber++;
+						$('#thequestion').html("This game will test you in body and?...");
+						$('input').val("");
+					}
+				else
+				{
+					numberwrong++;
+					$('input').val("");
+					incorrect++;
+				}
+			break;
+			case 5:
+			if($('input').val().toLowerCase() == "soul")
+					{
+						numberwrong = 0;
+						alert("correct");
+						questionnumber++;
+						$('#thequestion').html("What was the first word you didn't use in your request?");
+						$('input').val("");
+					}
+				else
+				{
+					numberwrong++;
+					$('input').val("");
+					incorrect++;
+				}
+			break;
+			case 6:
+			if($('input').val().toLowerCase() == "cheese")
+					{
+						numberwrong = 0;
+						alert("correct");
+						questionnumber++;
+						$('#thequestion').html("Name the first person that appears on the shootem page");
+						$('input').val("");
+					}
+				else
+				{
+					numberwrong++;
+					$('input').val("");
+					incorrect++;
+				}
+			break;
+			case 7:
+			if($('input').val().toLowerCase() == "einstein"||$('input').val().toLowerCase() == "einstien")
+					{
+						numberwrong = 0;
+						if($('input').val().toLowerCase() == "einstien")
+							alert("correct but learn to spell");
+						else
+							alert("correct");
+						questionnumber++;
+						$('#thequestion').html("What is the title of the page with the red ball?");
+						$('input').val("");
+					}
+				else
+				{
+					numberwrong++;
+					$('input').val("");
+					incorrect++;
+				}
+			break;
+			case 8:
+			if($('input').val().toLowerCase() == "gamble")
+					{
+						numberwrong = 0;
+						alert("correct");
+						questionnumber++;
+						$('#thequestion').html("Is the monster a male or female?");
+						$('input').val("");
+					}
+				else
+				{
+					numberwrong++;
+					$('input').val("");
+					incorrect++;
+				}
+			break;
+			case 9:
+			if($('input').val().toLowerCase() == "both")
+					{
+						numberwrong = 0;
+						alert("correct");
+						questionnumber++;
+						$('#thequestion').html("Finishing options of the maze were END, FINISH, HOME and?");
+						$('input').val("");
+					}
+				else
+				{
+					numberwrong++;
+					$('input').val("");
+					incorrect++;
+				}
+			break;
+			case 10:
+			if($('input').val().toLowerCase() == "win here!"||$('input').val().toLowerCase() == "win here")
+					{
+						numberwrong = 0;
+						alert("correct");
+						questionnumber++;
+						$('#thequestion').html("What is my middle name?(it starts with L)");
+						$('input').val("");
+					}
+				else
+				{
+					numberwrong++;
+					$('input').val("");
+					incorrect++;
+				}
+			break;
+			case 11:
+			if($('input').val().toLowerCase() != "")
+					{
+						numberwrong = 0;
+						if($('input').val().toLowerCase() == "lavar")
+							alert("You are freakin amazin!");
+						else
+						{
+							alert("Incorrect but We'll let this one slide..;)")
+						}
+						window.location = "pattern.html";
+					}
+			break;
+		}
+		if(incorrect >0)
+		{
+			var tries = 7 - incorrect;
+			if(!$('#fail').hasClass("fail"))
+				$('#fail').addClass("fail");
+			$('#fail').html("<h4>You have "+tries+" tries left</h4>")
+			if(tries == 0)
+				window.location = "maze.html";
+		}
+		if(numberwrong >=3)
+			hint(questionnumber);
+	}
+}
+
+function hint(hintnumber) {
+	switch(hintnumber)
+	{
+		case 0:
+			alert("Its another name for satan");
+		break;
+		case 1:
+			alert("The color starts with r");
+		break;
+		case 2:
+			alert("Its the number of eyes a guy with glasses has");
+		break;
+		case 3:
+			alert("Its a lot like horizon");
+		break;
+		case 4:
+			alert("its lil plus how a black man with a fat lip would say brother");
+		break;
+		case 5:
+			alert("I got soul power...do you?");
+		break;
+		case 6:
+			alert("You say this when getting your picture taken");
+		break;
+		case 7:
+			alert("He was a really smart german guy that has his own theory of relativity");
+		break;
+		case 8:
+			alert("You do this at a casino");
+		break;
+		case 9:
+			alert("Not one or the other but ...los dos");
+		break;
+		case 10:
+			alert("Cmon it was the last screen all you had to do was win there");
+		break;
+	}
+}
+</script>
+</head>
+<body>
+	<div id = "Question">
+		<h2>The Ultimate Quiz</h2>
+		<h3 >Do you Remember....?</h3>
+		<p id = "thequestion">What type of baby appeared under the beach ball?</p>
+	</div>
+	<div id = "Answer">
+		<h3>Your Answer Please</h3>
+			<input onKeyPress="if(event.keyCode==13) guess();" placeholder="and your guess is..."/>
+			<button onclick="guess();">Submit</button>
+	</div>
+	<div id ='fail'>
+		</div>
+</body>
+</html>

@@ -1,0 +1,84 @@
+<html>
+<head>
+	<title>Save the Puppy!</title>
+	<script src="js/jQuery.js" type="text/javascript"></script>
+	<script src="js/jquery_ui.js" type="text/javascript"></script>
+
+	<!-- Custom Script for page -->
+	<script type="text/javascript">
+
+		var isPuppyTimerOn = false;
+
+		function startNewDivTimer()
+		{
+			// add new div, and initial img
+			$('body div:last-child').after('<div><img src="images/spiral.png" /></div>');
+
+			// restart timer
+			setTimeout('startSecondImageTimer();',5000);	
+		}
+
+		function startSecondImageTimer()
+		{	
+			// add second image to div
+			$('body div:last-child').append('<img src="images/spiral.png" />');
+
+			// restart timer
+			setTimeout('startNewDivTimer();',5000)
+		}
+
+		function puppyAppearance()
+		{
+			// make puppy appear!
+			$('body > img').show();
+		}
+
+		function startWaitingForSadPuppy()
+		{
+			// make sure this timer doesn't start more than once
+			if(!isPuppyTimerOn)
+			{
+				isPuppyTimerOn = true;
+				setTimeout('puppyAppearance();',60000)
+			}
+		}
+
+		$(function(){
+
+			// initially hide the sad puppy
+			$('body > img').hide();
+
+			// click event for saving puppy!
+			$('body > img').click(function() {window.location = 'whatyouwant.html';})
+
+			// start timers to rollout more puppy dangers!
+			setTimeout('startNewDivTimer();',5000);
+
+			// start waiting for the puppy
+			startWaitingForSadPuppy();
+		});
+
+	</script>
+
+	<!-- Custom Sytles for page -->
+	<style type="text/css">
+
+		body > div {width:1000px;margin:0 auto;position:relative;top:250px;}
+		body > div  img {height:300px;width:300px;-moz-animation: spinofdeath 120s linear infinite;-webkit-animation: spinofdeath 120s linear infinite;}
+		body > div  img + img {float:right;}
+		body > img {position:absolute;height:200px;width:200px;top:600px;left:600px;z-index:2;}
+		@-moz-keyframes spinofdeath {from {-moz-transform: rotate(0deg) scale(1);}to {-moz-transform: rotate(12000deg) scale(5);}}
+		@-webkit-keyframes spinofdeath{from {-webkit-transform: rotate(0deg) scale(1); }to {-webkit-transform: rotate(12000deg) scale(5); }}
+
+	</style>
+</head>
+
+<!-- Page Content -->
+<body>
+	<img src="images/sadpuppy.jpg"/>
+	<div>
+		<img src="images/spiral.png" />
+		<img src="images/spiral.png" />
+	</div>
+</body>
+</html>

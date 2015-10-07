@@ -1,0 +1,844 @@
+<html>
+<head>
+	<title>Super Mario Land</title>
+	<meta content="yes" name="apple-mobile-web-app-capable">
+	<script type="text/javascript" src="js/jQuery.js"></script>
+	<script type="text/javascript" src="js/jquery_ui.js"></script>
+	<script type="text/javascript" src="js/easing.js"></script>
+	<!--<script type="text/javascript" src="js/jquerymobile.js"></script>-->
+	<script>
+
+		var gravity = -1.2;
+		var jumping = false;
+		var doubleJumping = false;
+		var initialJumpSpeed = 17;
+		var curJumpSpeed = initialJumpSpeed;
+		var marioStartingGround = 445;
+		var obstacleGround = 25;
+		var windowSpeed = 3500000;
+		var groundSpeed = 1000000;
+		var marioWalkTimer;
+		var addObstacleTimer;
+		var collisionTimer;
+		var difficultyTimer;
+		var initmaxObstacleInterval = 6000;
+		var maxObstacleInterval = 6000;
+		var harderInterval = 7000;
+		var maxObstacleIntervalDecrease = 100;
+		var minObstacleInterval = 600;
+		var walkSpeed = 150;
+		var walkCount = 0;
+		var offScreen = -100;
+		var obstacleMove = 7000;
+		var billMove = 4500;
+		var koopaMove = 3000;
+		var flyingKoopaMove = 4500;
+		var pencilMove = 8000;
+		var collisionInterval = 40;
+		var marioWidth = 19;
+		var pageHeight = 500;
+		var deathposition = 550;
+		var dead = false;
+		var marioStartHorizontal = 200;
+		var coincount = 0;
+		var helddown = false;
+		var fallSpeed = 7;
+		var sliding = false;
+		var winningNumber = 40;
+		var castleWait = 5000;
+		var stopWait = 5000;
+		var health = 0;
+		var hurtFade = 0;
+
+		var enemiesKilled = 0;
+
+		var marioPushInterval = 50;
+		var marioPushDistance = 5;
+
+		// movement is 100pps
+
+		var totalObstacles = 20;
+		var extraDungeonStuff = 1;
+
+		// mario image position data
+		var origStandX = -194;
+		var origStandY = -46;
+		var switchImg = -19;
+		var switchY = -32;
+
+		var nextlevel = false;
+
+		function startFalling()
+		{
+			$('#mario').animate({top:'-='+curJumpSpeed},33,function(){
+				curJumpSpeed += gravity;
+				if(parseInt($('#mario').css('top')) < marioStartingGround)
+				{
+					startFalling();
+				}
+				else
+				{
+					curJumpSpeed = initialJumpSpeed;
+					doubleJumping = false;
+					jumping = false;
+					if(!sliding){
+						$('#mario').css('top',marioStartingGround);
+						$('#mario').css('background-position-x',origStandX);
+						clearTimeout(marioWalkTimer);
+						marioWalkTimer = setTimeout(walk,walkSpeed);
+					} else {
+						$('#mario').css('top',marioStartingGround + 10);
+					}
+					
+					if($('#mario').position().left < marioStartHorizontal)
+						$('#mario').animate({left:marioStartHorizontal},1500,'linear');
+				}
+			});
+		}
+
+		function doubleJump()
+		{
+			// give mario some extra air
+			$('#mario').animate({top:'-='+curJumpSpeed},33, function(){
+				curJumpSpeed += gravity;
+				if(parseInt($('#mario').css('top')) < marioStartingGround)
+				{
+					doubleJumping = true;
+					doubleJump();
+				}
+				else
+				{
+					curJumpSpeed = initialJumpSpeed;
+					doubleJumping = false;
+					jumping = false;
+					if(!sliding){
+						$('#mario').css('top',marioStartingGround);
+						$('#mario').css('background-position-x',origStandX);
+						clearTimeout(marioWalkTimer);
+						marioWalkTimer = setTimeout(walk,walkSpeed);
+					} else {
+						$('#mario').css('top',marioStartingGround + 10);
+					}
+					if($('#mario').position().left < marioStartHorizontal)
+						$('#mario').animate({left:marioStartHorizontal},1500,'linear');
+				}
+			});
+
+		}
+		function jump()
+		{
+			// give mario some air
+			$('#mario').animate({top:'-='+curJumpSpeed},33, function(){
+				curJumpSpeed += gravity;
+				if(parseInt($('#mario').css('top')) < marioStartingGround)
+				{
+					jumping = true;
+					jump();
+				}
+				else
+				{
+					curJumpSpeed = initialJumpSpeed;
+					jumping = false;
+					if(!sliding){
+						$('#mario').css('top',marioStartingGround);
+						$('#mario').css('background-position-x',origStandX);
+						clearTimeout(marioWalkTimer);
+						marioWalkTimer = setTimeout(walk,walkSpeed);
+					} else {
+						$('#mario').css('top',marioStartingGround + 10);
+					}
+					if($('#mario').position().left < marioStartHorizontal)
+						$('#mario').animate({left:marioStartHorizontal},1500,'linear');
+				}
+			});
+		}
+
+		function walk()
+		{
+			// switch images for walking
+			if(walkCount % 3 == 0)
+			{
+				$('#mario').css('background-position-x',origStandX+(switchImg));
+			}
+			else if (walkCount % 3 == 1)
+			{
+				$('#mario').css('background-position-x',origStandX+(switchImg * 2));
+			}
+			else
+			{
+				$('#mario').css('background-position-x',origStandX);
+			}
+
+			walkCount++;
+			marioWalkTimer = setTimeout(walk,walkSpeed);
+		}
+
+		function addBill()
+		{
+			// add bullet bill at random place on screen
+			var randomBottom = 25 + Math.floor(Math.random() * (pageHeight - 325));
+			$('#marioWindow').append('<div class="onScreen obstacle killable die bulletbill"></div>');
+			$('#marioWindow').children().last().css('bottom',randomBottom);
+		}
+
+		function addCoin()
+		{
+			var randomBottom = obstacleGround + Math.floor(Math.random() * (pageHeight - 275));
+			$('#marioWindow').append('<div class="onScreen obstacle coin"></div>');
+			$('#marioWindow').children().last().css('bottom',randomBottom);
+		}
+
+		function addKoopa()
+		{
+			$('#marioWindow').append('<div class="onScreen obstacle killable koopa die"></div>');
+		}
+
+		function addHole()
+		{
+			$('#marioWindow').append('<div class="onScreen obstacle hole die"></div>');
+		}
+
+		function bouncingKoopa()
+		{
+			$('#marioWindow').append('<div class="onScreen obstacle die killable bouncingKoopa"></div>');
+		}
+
+		function koopaBounce(koop)
+		{
+			var howLeft = Math.floor((Math.random() * (250 - 100) + 200));
+			var howHigh = Math.floor((Math.random() * (450 - 150) + 150));
+			var howLow = Math.floor((Math.random() * (125 - 25) + 15));
+
+			$(koop).css('bottom',howHigh);
+			$(koop).animate({
+			    left: [howLeft, 'easeInSine'],
+			    bottom:howLow
+			},flyingKoopaMove/2,'linear',function(){
+				$(this).animate({
+					left: [offScreen, 'easeOutSine'],
+					bottom:howHigh
+				},flyingKoopaMove/2,'linear',function(){
+					$(this).remove();
+				});
+			});
+		}
+
+		function obstacle()
+		{
+			// add random obstacles at a random interval between two numbers
+			var newInterval = Math.floor((Math.random() * (maxObstacleInterval - minObstacleInterval) + minObstacleInterval));
+			var whichOne = Math.floor(Math.random() * totalObstacles + 1);
+			var doit = true;
+			//console.log(whichOne);
+
+			if(!nextlevel)
+			{
+				var whichOne = Math.floor(Math.random() * totalObstacles + 1);
+				switch(whichOne)
+				{
+					case 1:
+						$('#marioWindow').append('<div class="onScreen push shortpipe"></div>');
+						break;
+					case 2:
+						$('#marioWindow').append('<div class="onScreen push tallpipe"></div>');
+						break;
+					case 3:
+						$('#marioWindow').append('<div class="onScreen obstacle die spikes"></div>');
+						break;
+					case 4:
+						$('#marioWindow').append('<div class="onScreen obstacle die smallspikes"></div>');
+						break;
+					case 5:
+						addBill();
+						break;
+					case 6:
+						addBill();
+						break;
+					case 7:
+						addCoin();
+						break;
+					case 8:
+						addCoin();
+						break;
+					case 9:
+						addCoin();
+						break;
+					case 10:
+						addCoin();
+						break;
+					case 11:
+						addCoin();
+						break;
+					case 12:
+						addCoin();
+						break;
+					case 13:
+						$('#marioWindow').append('<div class="onScreen obstacle die pencil"></div>');
+						break;
+					case 14:
+						addKoopa();
+						break;
+					case 15:
+						addKoopa();
+						break;
+					case 16:
+						addCoin();
+						break;
+					case 17:
+						addCoin();
+						break;
+					case 18:
+						var healthVar = Math.floor(Math.random() * 2 + 1);
+						if(healthVar == 1)
+							$('#marioWindow').append('<div class="onScreen obstacle shroom"></div>');
+						else
+							doit=false;;
+						break;
+					case 19:
+						addCoin();
+						break;
+					case 20:
+						bouncingKoopa();
+						break;
+				}
+			}
+			else
+			{
+				var whichOne = Math.floor(Math.random() * (totalObstacles + extraDungeonStuff) + 1);
+				switch(whichOne)
+				{
+					case 1:
+						$('#marioWindow').append('<div class="onScreen push shortpipe"></div>');
+						break;
+					case 2:
+						$('#marioWindow').append('<div class="onScreen push tallpipe"></div>');
+						break;
+					case 3:
+						$('#marioWindow').append('<div class="onScreen obstacle die spikes"></div>');
+						break;
+					case 4:
+						$('#marioWindow').append('<div class="onScreen obstacle die smallspikes"></div>');
+						break;
+					case 5:
+						addBill();
+						break;
+					case 6:
+						addBill();
+						break;
+					case 7:
+						addCoin();
+						break;
+					case 8:
+						addCoin();
+						break;
+					case 9:
+						addCoin();
+						break;
+					case 10:
+						addCoin();
+						break;
+					case 11:
+						addCoin();
+						break;
+					case 12:
+						addCoin();
+						break;
+					case 13:
+						$('#marioWindow').append('<div class="onScreen obstacle die pencil"></div>');
+						break;
+					case 14:
+						addKoopa();
+						break;
+					case 15:
+						addKoopa();
+						break;
+					case 16:
+						addCoin();
+						break;
+					case 17:
+						addCoin();
+						break;
+					case 18:
+						addHole();
+						break;
+					case 19:
+						var healthVar = Math.floor(Math.random() * 2 + 1);
+						if(healthVar == 1)
+							$('#marioWindow').append('<div class="onScreen obstacle shroom"></div>');
+						else
+							doit=false;;
+						break;
+					case 20:
+						addCoin();
+						break;
+					case 21:
+						bouncingKoopa();
+						break;
+				}
+			}
+			//console.log($('#marioWindow').children().last().cl
+			if(doit)
+			{
+				if($('#marioWindow').children().last().hasClass('bulletbill')){
+					$('#marioWindow').children().last().animate({left:offScreen},billMove,'linear',function() {
+						$(this).remove();
+					});
+				}
+				else if($('#marioWindow').children().last().hasClass('pencil')){
+					$('#marioWindow').children().last().css('bottom',50);
+					$('#marioWindow').children().last().css('left',700);
+					$('#marioWindow').children().last().animate({left: offScreen - 100},pencilMove,'linear',function() {
+						$(this).remove();
+					});
+				}
+				else if($('#marioWindow').children().last().hasClass('hole')){
+					$('#marioWindow').children().last().css('bottom',0);
+					$('#marioWindow').children().last().animate({left: offScreen},obstacleMove,'linear',function() {
+						$(this).remove();
+					});
+				}
+				else if($('#marioWindow').children().last().hasClass('koopa')){
+					$('#marioWindow').children().last().animate({left: offScreen},koopaMove,'linear',function() {
+						$(this).remove();
+					});
+				}
+				else if($('#marioWindow').children().last().hasClass('shroom')){
+					$('#marioWindow').children().last().animate({left:offScreen},koopaMove,'linear',function() {
+						$(this).remove();
+					});
+				}
+				else if($('#marioWindow').children().last().hasClass('bouncingKoopa')){
+					koopaBounce($('#marioWindow').children().last());
+				}
+				else {
+					$('#marioWindow').children().last().animate({left:offScreen},obstacleMove,'linear',function() {
+						$(this).remove();
+					});
+				}
+			}
+
+			// restart interval with random number
+			// if(enemiesKilled % 5 == 0)
+			// {
+			// 	$('#mario').css('-webkit-transform', 'scaleX(-1)');
+			// 	setTimeout(function(){$('#mario').css('-webkit-transform', 'scaleX(1)');},3000);
+			// }
+			addObstacleTimer = setTimeout(obstacle,newInterval);
+		}
+
+		function showLoserBanner()
+		{
+			//console.log('appending banner');
+			$('#marioWindow').append('<img class="gameover" src="images/gameover.png" style="cursor:pointer">');
+			$('#marioWindow').children().last().click(function(){
+				$(this).remove();
+				$('.onScreen').remove();
+				$('#marioWindow').css('background-position-x',0);
+				$('#marioGround').css('background-position-x',0);
+				$('#marioWindow').animate({'background-position-x': -99999},windowSpeed,'linear');
+				$('#marioGround').animate({'background-position-x': -99999},groundSpeed,'linear');
+				$('#marioWindow').css('background','url(images/marioworld.png)');
+				$('#marioGround').css('background','url(images/marioground.png)');
+				$('#mario').css('top',marioStartingGround);
+				$('#mario').css('background-position', '-194px -46px;');
+				$('#coins label').html('0');
+				maxObstacleInterval = initmaxObstacleInterval;
+				curJumpSpeed = initialJumpSpeed;
+				jumping = doubleJumping = false;
+				coincount = 0;
+				health = 0;
+				dead = false;
+				nextlevel = false;
+				enemiesKilled = 0;
+				winningNumber = 40;
+				$('#coins').html('<div class="coin" style="display:inline-block;position:relative;top:12px;left:-3px;"></div>&nbsp;<label>0</label>/40');
+				$('#killed').remove();
+
+				marioWalkTimer = setTimeout(walk,walkSpeed);
+				addObstacleTimer = setTimeout(obstacle,maxObstacleInterval);
+				collisionTimer = setTimeout(detectCollision,collisionInterval);
+				difficultyTimer = setTimeout(getHarder,harderInterval);
+
+				document.getElementById('song').load();
+				document.getElementById('song').play();
+			})
+			$('#marioWindow').children().last().animate({
+				left:0,
+				width:500,
+				height:200,
+				top:150
+			},1500);
+		}
+
+		function die()
+		{
+			// give mario some death
+			//console.log('animating death');
+			clearTimeout(collisionTimer);
+			clearTimeout(marioWalkTimer);
+			$('#mario').animate({top:'-='+curJumpSpeed},33, function(){
+				curJumpSpeed += gravity;
+				//console.log(parseInt($('#mario').css('top')));
+				clearTimeout(collisionTimer);
+				clearTimeout(marioWalkTimer);
+				if(parseInt($('#mario').css('top')) < deathposition)
+				{
+					console.log('calling die again');
+					die();
+				}
+				else
+				{
+					curJumpSpeed = initialJumpSpeed;
+					showLoserBanner();
+				}
+			});
+		}
+
+		function killMario()
+		{
+			// stop all movements
+			
+			clearTimeout(marioWalkTimer);
+			clearTimeout(collisionTimer);
+			clearTimeout(addObstacleTimer);
+			clearTimeout(difficultyTimer);
+			$('*').stop();
+			$('#marioWindow div.obstacle').remove();
+			$('#mario').height(30);
+			$('#mario').css('background-position-y',origStandY);
+			$('#mario').css('background-position-x',origStandX + (switchImg * 26) + 5);
+			document.getElementById('diesong').volume = .6;
+			document.getElementById('diesong').load();
+			document.getElementById('diesong').play();
+			document.getElementById('song').pause();
+			document.getElementById('underground').pause();
+			curJumpSpeed = initialJumpSpeed;
+			die();
+		}
+
+		function pushMario(obstaclePushingMario)
+		{
+			// make sure vertical matches
+			var marioBottom = $('#mario').position().top + $('#mario').height();
+			var obstTop = pageHeight - (obstacleGround + $(obstaclePushingMario).height());
+			console.log($(obstaclePushingMario).position().left);
+			if(marioBottom > obstTop)
+			{
+				// slide him over
+				$('#mario').animate({left:'-='+marioPushDistance},marioPushInterval,'linear',function(){
+					pushMario(obstaclePushingMario);
+				});
+			}
+			else
+			{
+				$('#mario').css('background-position-x',origStandX + (switchImg * 4));
+			}
+		}
+
+		function stopEverything()
+		{
+			$('*').stop();
+			if(nextlevel)
+				window.location="ConnectFour.html";
+			clearInterval(marioWalkTimer);
+			document.getElementById('song').pause();
+			document.getElementById('underground').pause();
+			$('#mario').css('background-position-x',origStandX);
+			$('#mario').css('background-position-y',origStandY);
+			$('#marioWindow').append('<img class="nextlevel" src="images/nextlevel.png" style="cursor:pointer">');
+			$('#marioWindow').children().last().click(function(){
+				$(this).remove();
+				$('.onScreen').remove();
+				$('#marioWindow').css('background-position-x',0);
+				$('#marioGround').css('background-position-x',0);
+				$('#marioWindow').css('background','url(images/marioworld2.png)');
+				$('#marioGround').css('background','url(images/marioground2.png)');
+				$('#marioWindow').animate({'background-position-x': -99999},windowSpeed,'linear');
+				$('#marioGround').animate({'background-position-x': -99999},groundSpeed,'linear');
+				$('#mario').css('top',marioStartingGround);
+				$('#mario').css('background-position', '-194px -46px;');
+				$('#coins label').html('0');
+				maxObstacleInterval = initmaxObstacleInterval;
+				curJumpSpeed = initialJumpSpeed;
+				jumping = doubleJumping = false;
+				coincount = 0;
+				dead = false;
+				enemiesKilled = 0;
+				nextlevel = true;
+				winningNumber = 50;
+				$('#coins').html('<div class="coin" style="display:inline-block;position:relative;top:12px;left:-3px;"></div>&nbsp;<label>0</label>/50');
+				$('#killed').children().remove();
+
+				marioWalkTimer = setTimeout(walk,walkSpeed);
+				addObstacleTimer = setTimeout(obstacle,maxObstacleInterval);
+				collisionTimer = setTimeout(detectCollision,collisionInterval);
+				difficultyTimer = setTimeout(getHarder,harderInterval);
+
+				document.getElementById('underground').load();
+				document.getElementById('underground').play();
+			});
+			
+			$('#marioWindow').children().last().animate({
+				left:0,
+				width:500,
+				height:200,
+				top:150
+			},1500);
+		}
+
+		function addCastle()
+		{
+			$('#marioWindow').append('<div class="onScreen castle"></div>');
+			$('#marioWindow').children().last().animate({left:offScreen},obstacleMove,'linear');
+			setTimeout(stopEverything,stopWait);
+		}
+
+		function nextLevel()
+		{
+			// make background go to castle
+			clearTimeout(addObstacleTimer);
+			setTimeout(addCastle,castleWait);
+		}
+
+		function blinkMario()
+		{
+			if(hurtFade < 5 && hurtFade % 2 == 0)
+			{
+				$('#mario').css('background-position-y', (origStandY + switchY));
+				hurtFade++;
+				setTimeout(blinkMario,150);
+			}
+			else if(hurtFade < 5)
+			{
+				$('#mario').css('background-position-y', (origStandY));
+				hurtFade++;
+				setTimeout(blinkMario,150);
+			}
+			else
+			{
+				$('#mario').css('background-position-y', origStandY);
+				hurtFade = 0;
+			}
+		}
+
+		function handleCollision(obst)
+		{
+			if($(obst).hasClass('die')){
+				if(health == 0){
+					dead = true;
+					killMario();
+				} else {
+					health--;
+					$('#health').children().last().remove();
+					$(obst).remove();
+					blinkMario();
+				}
+			}
+			else if($(obst).hasClass('push') && !$(obst).hasClass('handling'))
+			{
+				// $(obst).addClass('handling');
+				// $('#mario').css('background-position-x',origStandX + (switchImg * 3));
+				// clearInterval(marioWalkTimer);
+				// console.log('calling push mario');
+				// pushMario(obst);
+			}
+			else if($(obst).hasClass('coin'))
+			{
+				coincount++;
+				$(obst).remove();
+				document.getElementById('coinsound').volume = .3;
+				document.getElementById('coinsound').load();
+				document.getElementById('coinsound').play();
+				$('#coins label').html(coincount);
+				if(coincount == winningNumber)
+					nextLevel();
+			}
+			else if($(obst).hasClass('shroom'))
+			{
+				health++;
+				$(obst).remove();
+				$('#health').append('<div class="health"></div>');
+			}
+		}
+
+		function collisionFromTop(obj,marioBottom,objTop)
+		{
+			// determine if collision was from the top
+			console.log(Math.abs(marioBottom - objTop));
+			return (Math.abs(marioBottom - objTop) <= 15);
+		}
+
+		function marioKilledIt(obj)
+		{
+			if(!$(obj).hasClass('currentlyKilling')){
+				$(obj).css('webkit-transform','rotate(180deg)');
+				$(obj).addClass('currentlyKilling');
+				enemiesKilled++;
+				$('#killed').append('<div class="killedEnemy"></div>');
+				if(enemiesKilled % 7 == 0)
+				{
+					health++;
+					$('#health').append('<div class="health"></div>');
+					$('#killed').append('<br>');
+				}
+				$(obj).stop();
+				$('#mario').stop();
+				$('#mario').animate({top:'-='+30},350,function(){
+					curJumpSpeed=0; startFalling();
+				});
+				$(obj).animate({bottom: -100},750,'linear',function(){$(this).remove();});
+			}
+		}
+
+		function detectCollision()
+		{
+			// try to figure out if any obstacles are in our way
+			var marioLocation = $('#mario').position();
+			$('.obstacle').each(function(){
+				var obstHeight = $(this).height();
+				var obstWidth = $(this).width();
+				var obstBottom = pageHeight - parseInt($(this).css('bottom'));
+				var obstTop = obstBottom - obstHeight;
+				var obstLeft = $(this).position().left;
+				var obstRight = obstLeft + obstWidth;
+
+				var marioRight = marioLocation.left + marioWidth;
+				var marioLeft = marioLocation.left;
+				var marioBottom = marioLocation.top + $('#mario').height();
+				var marioTop = marioLocation.top;
+
+				// check if they hit mario horizontally
+				if((marioRight > obstLeft && marioRight < obstRight) || (marioLeft > obstLeft && marioLeft < obstRight))
+				{
+					// check vertically
+					if((marioTop <= obstBottom && marioTop >= obstTop) || (marioBottom <= obstBottom && marioBottom >= obstTop))
+					{	
+						//console.log(!$(this).hasClass('currentlyKilling'));
+						if($(this).hasClass('killable') && collisionFromTop(this,marioBottom,obstTop) && !$(this).hasClass('currentlyKilling'))
+							marioKilledIt(this);
+						else if(!$(this).hasClass('currentlyKilling'))
+							handleCollision(this);
+					}
+				}
+			});
+
+			collisionTimer = setTimeout(detectCollision,collisionInterval);
+		}
+
+		function getHarder()
+		{
+			//console.log('harder');
+
+			if(maxObstacleInterval > 1000)
+				maxObstacleInterval -= maxObstacleIntervalDecrease;
+
+			difficultyTimer = setTimeout(getHarder,harderInterval);
+		}
+
+		function startSliding()
+		{
+			$('#mario').css('background-position-x',origStandX + (switchImg * 10) + 8);
+			$('#mario').css('background-position-y',origStandY - 10);
+			$('#mario').css('top','+='+10);
+			$('#mario').height(20);
+		}
+
+		function stopSliding()
+		{
+			marioWalkTimer = setTimeout(walk,walkSpeed);
+
+			if(!jumping){
+				$('#mario').css('background-position-x',origStandX);
+			} else {
+				$('#mario').css('background-position-x',origStandX + (switchImg * 4));
+			}
+
+			$('#mario').css('background-position-y',origStandY);
+			$('#mario').css('top','-='+10);
+			$('#mario').height(30);
+		}
+
+		$(function(){
+			$('#marioWindow').animate({'background-position-x': -99999},windowSpeed,'linear');
+			$('#marioGround').animate({'background-position-x': -99999},groundSpeed,'linear');
+			marioWalkTimer = setTimeout(walk,walkSpeed);
+			addObstacleTimer = setTimeout(obstacle,maxObstacleInterval);
+			collisionTimer = setTimeout(detectCollision,collisionInterval);
+			difficultyTimer = setTimeout(getHarder,harderInterval);
+			document.getElementById('song').load();
+			document.getElementById('song').play();
+
+		})
+
+		$(document).keydown(function(e){
+				if(e.which == 38) { if(!jumping && !dead && !helddown){clearTimeout(marioWalkTimer);if(!sliding){$('#mario').css('background-position-x',origStandX + (switchImg * 4));}helddown=true;document.getElementById('boing').volume = .6;
+					document.getElementById('boing').load();document.getElementById('boing').play(); jump(); } else if(jumping && !doubleJumping && !dead  && !helddown) { $('#mario').stop(); curJumpSpeed = initialJumpSpeed;helddown=true;document.getElementById('boing').volume = .6;document.getElementById('boing').load();document.getElementById('boing').play(); doubleJump();}}
+				if(e.which == 40) {if(!sliding) {sliding = true;clearTimeout(marioWalkTimer); startSliding();}}
+			});
+		$(document).keyup(function(e){
+			if(e.which == 38) {helddown = false; if(curJumpSpeed >= fallSpeed && !dead){$('#mario').stop();curJumpSpeed=fallSpeed; startFalling();}}
+			if(e.which == 40) {sliding = false; if(!dead) stopSliding();}
+		});
+		$(document).on('vmousedown',function(e){
+				e.preventDefault();
+				if(!jumping && !dead && !helddown){clearTimeout(marioWalkTimer);$('#mario').css('background-position-x',origStandX + (switchImg * 4));helddown=true;document.getElementById('boing').volume = .6;
+					document.getElementById('boing').load();document.getElementById('boing').play(); jump(); } else if(jumping && !doubleJumping && !dead  && !helddown) { $('#mario').stop(); curJumpSpeed = initialJumpSpeed;helddown=true;document.getElementById('boing').volume = .6;document.getElementById('boing').load();document.getElementById('boing').play(); doubleJump();
+				}
+		});
+		$(document).on('vmouseup',function(e){
+				e.preventDefault();
+				helddown = false; if(curJumpSpeed >= fallSpeed && !dead){$('#mario').stop();curJumpSpeed=fallSpeed; startFalling();}
+		});
+	</script>
+	<style>
+		body{background:black;}
+		.tallpipe {background:url(images/pipe.png);height:120px;width:50px;}
+		.shortpipe {background:url(images/pipe.png);height:80px;width:50px;}
+		.spikes {background:url(images/spikes.png);height:20px;width:92px;}
+		.smallspikes {background:url(images/spikes.png);height:20px;width:45px;}
+		.bulletbill {background:url(images/bulletbill.png); height:50px;width:70px;}
+		.onScreen {position:absolute;bottom:25px;left:600px;}
+		.pencil {background:url(images/pencil.png);height:30px;width:200px;background-size:200px 30px;}
+		.koopa {background:url(images/shell.png);height:22px;width:28px;}
+		.castle {background:url(images/mariocastle.png);height:450px;width:268px;}
+		.killedEnemy {background:url(images/skull.png);height:20px;width:20px;display:inline-block;margin:0 2px;}
+		.shroom {background:url(images/shroom.png);height:23px;width:25px;display:inline-block;}
+		.hole {background:url(images/hole.png);height:25px;width:50px;}
+		.bouncingKoopa {background:url(images/flyingkoop.png);height:40px;width:40px;}
+		.coin {background:url(images/coin.png); height:40px;width:40px;background-size:40px 40px;}
+		.health {background:url(images/shroom.png);height:23px;width:25px;border:none;display:inline-block;margin:0 5px;}
+		.fancylabel {color:white;font-size:21px;font-family:verdana sans-serif; text-shadow: 1px 1px 3px #000000;filter: dropshadow(color=#000000, offx=1, offy=1);padding-left: 10px;padding-top: 10px;padding-bottom: 6px;}
+		.gameover {position:absolute;left:250px;top:250px;height:1px;width:1px;}
+		.nextlevel {position:absolute;left:250px;top:250px;height:1px;width:1px;z-index:3;}
+		.gameInfo {padding: 8px 0 5px 14px;}
+		#marioWindow {background: url(images/marioworld.png); background-size:3000px 500px; background-repeat:repeat;margin: 0 auto;height: 500px;width: 500px;overflow: hidden;position: relative;}
+		#marioGround {background: url(images/marioground.png); background-repeat:repeat; height: 25px;position: absolute;top:475px;width:100%;}
+		#mario {background: url(images/mariogood.png) no-repeat;height: 30px;width: 19px;position: absolute;z-index:2;top: 445px;left:200px;background-position: -194px -46px;}
+	</style>
+</head>
+<body>
+	<div id="marioWindow">
+		<div id="mario"></div>
+		<div id="marioGround">
+		</div>
+		<div id="coins" class="fancylabel"><div class="coin" style="display:inline-block;position:relative;top:12px;left:-3px;"></div>&nbsp;<label>0</label>/40</div>
+		<div id="health" class="gameInfo"></div>
+		<div id="killed" class="gameInfo"></div>
+	</div>
+	<audio id="song" loop="loop">
+		<source src="mario.mp3" type="audio/mpeg" />
+	</audio>
+	<audio id="diesong">
+		<source src="die.mp3" type="audio/mpeg" />
+	</audio>
+	<audio id="coinsound">
+		<source src="coin.mp3" type="audio/mpeg" />
+	</audio>
+	<audio id="boing">
+		<source src="boing.mp3" type="audio/mpeg" />
+	</audio>
+	<audio id="underground" loop="loop">
+		<source src="Underground.mp3" type="audio/mpeg" />
+	</audio>
+</body>
+</html>

@@ -1,0 +1,33 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="css/site.css" />
+<title>So Far So Good</title>
+<script src="js/jQuery.js" type="text/javascript"></script>
+<script src="js/jquery_ui.js" type="text/javascript"></script>
+<script>
+	function checkPosition(){
+		var left = parseInt($('#donkey-3').css('top'));	
+		var top = parseInt($('#donkey-3').css('left'));
+		
+		// check to see if it is close enough
+		if((top >= 41 && top <= 45) && (left >= 48 && left <= 52))
+		{
+			alert("You smart little monkey you!!!!");
+			window.location="howlong.html";
+		}
+	}
+	$(function(){
+		$('#donkey-3').draggable({stop: function(event, ui) {checkPosition();}});
+	});
+</script>
+</head>
+
+<body>
+<div>
+<img id="tail-3" src="images/tail.gif" />
+<img id="donkey-3" src="images/tail-less.gif"/>
+</div>
+</body>
+</html>

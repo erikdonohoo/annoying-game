@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>crossing</title>
+
+		<script src="js/jQuery.js" type="text/javascript"></script>
+		
+<script>
+	var canoeIsLeft = true;
+	var play = true;
+	var canoeCanMove = true;
+	var foxPos = 1;
+	var chickenPos = 1;
+	var feedPos = 1;
+
+	function moveCanoe(){
+		if(canoeIsLeft && canoeCanMove) {
+			canoeCanMove = false;
+			$('#canoe').addClass('canoeR');
+			setTimeout(function(){
+				$('#canoe').removeClass('canoeR');
+				$('#canoe').css('right', '180px');	
+				canoeCanMove = true;
+				checkGameStatus();
+			}, 2000);
+			canoeIsLeft = false;
+		}
+		else if (canoeCanMove){
+			canoeCanMove = false;
+			$('#canoe').addClass('canoeL');
+			setTimeout(function(){
+				$('#canoe').removeClass('canoeL');
+				$('#canoe').css('right', '450px');	
+				canoeCanMove = true;	
+				checkGameStatus();
+			}, 2000);
+			canoeIsLeft = true;
+		}
+	}
+
+
+
+	function moveFox(){
+		if(foxPos == 1 && canoeIsLeft && play) {
+			play = false;
+			canoeCanMove = false;
+			$('#fox').addClass('foxR');
+			setTimeout(function(){
+				$('#fox').removeClass('foxR');
+				$('#fox').css('display', 'none');
+				foxPos = 2;		
+			}, 1000);
+			setTimeout(function(){
+				canoeCanMove = true;
+				moveCanoe();
+				canoeCanMove = false;
+			}, 1000);
+			setTimeout(function(){
+				$('#fox').css('display', '');
+				moveFox();
+			}, 3000);
+		}
+		else if (foxPos == 2) {
+			$('#fox').addClass('foxR2');
+			setTimeout(function(){
+				$('#fox').removeClass('foxR2');
+				$('#fox').css({'top': '500px','right': '350px'});
+				foxPos = 3;	
+				play = true;
+				canoeCanMove = true;	
+				checkGameStatus();
+			}, 1000);	
+		}
+		if(foxPos == 3 && !canoeIsLeft && play) {
+			play = false;
+			canoeCanMove = false;
+			$('#fox').addClass('foxL');
+			setTimeout(function(){
+				$('#fox').removeClass('foxL');
+				$('#fox').css('display', 'none');
+				foxPos = 4;		
+			}, 1000);
+			setTimeout(function(){
+				canoeCanMove = true;
+				moveCanoe();
+				canoeCanMove = false;
+			}, 1000);
+			setTimeout(function(){
+				$('#fox').css('display', '');
+				moveFox();
+			}, 3000);
+		}
+		else if (foxPos == 4) {
+			$('#fox').addClass('foxL2');
+			setTimeout(function(){
+				$('#fox').removeClass('foxL2');
+				$('#fox').css({'top': '550px','right': '700px'});
+				foxPos = 1;	
+				play = true;
+				canoeCanMove = true;
+				checkGameStatus();	
+			}, 1000);
+		}
+	}
+
+
+
+	function moveChicken(){
+		if(chickenPos == 1 && canoeIsLeft && play) {
+			play = false;
+			canoeCanMove = false;
+			$('#chicken').addClass('chickenR');
+			setTimeout(function(){
+				$('#chicken').removeClass('chickenR');
+				$('#chicken').css('display', 'none');
+				chickenPos = 2;		
+			}, 1000);
+			setTimeout(function(){
+				canoeCanMove = true;
+				moveCanoe();
+				canoeCanMove = false;
+			}, 1000);
+			setTimeout(function(){
+				$('#chicken').css('display', '');
+				moveChicken();
+			}, 3000);
+		}
+		else if (chickenPos == 2) {
+			$('#chicken').addClass('chickenR2');
+			setTimeout(function(){
+				$('#chicken').removeClass('chickenR2');
+				$('#chicken').css({'top': '520px','right': '200px'});
+				chickenPos = 3;	
+				play = true;
+				canoeCanMove = true;	
+				checkGameStatus();
+			}, 1000);
+		}
+		if(chickenPos == 3 && !canoeIsLeft && play) {
+			play = false;
+			canoeCanMove = false;
+			$('#chicken').addClass('chickenL');
+			setTimeout(function(){
+				$('#chicken').removeClass('chickenL');
+				$('#chicken').css('display', 'none');
+				chickenPos = 4;		
+			}, 1000);
+			setTimeout(function(){
+				canoeCanMove = true;
+				moveCanoe();
+				canoeCanMove = false;
+			}, 1000);
+			setTimeout(function(){
+				$('#chicken').css('display', '');
+				moveChicken();
+			}, 3000);
+		}
+		else if (chickenPos == 4) {
+			$('#chicken').addClass('chickenL2');
+			setTimeout(function(){
+				$('#chicken').removeClass('chickenL2');
+				$('#chicken').css({'top': '640px','right': '750px'});
+				chickenPos = 1;	
+				play = true;
+				canoeCanMove = true;
+				checkGameStatus();	
+			}, 1000);
+			
+		}
+	}
+
+
+
+	function moveFeed(){
+		if(feedPos == 1 && canoeIsLeft && play) {
+			play = false;
+			canoeCanMove = false;
+			$('#feed').addClass('feedR');
+			setTimeout(function(){
+				$('#feed').removeClass('feedR');
+				$('#feed').css('display', 'none');
+				feedPos = 2;		
+			}, 1000);
+			setTimeout(function(){
+				canoeCanMove = true;
+				moveCanoe();
+				canoeCanMove = false;
+			}, 1000);
+			setTimeout(function(){
+				$('#feed').css('display', '');
+				moveFeed();
+			}, 3000);
+		}
+		else if (feedPos == 2) {
+			$('#feed').addClass('feedR2');
+			setTimeout(function(){
+				$('#feed').removeClass('feedR2');
+				$('#feed').css({'top': '600px','right': '75px'});
+				feedPos = 3;	
+				play = true;
+				canoeCanMove = true;
+				checkGameStatus();	
+			}, 1000);
+		}
+		if(feedPos == 3 && !canoeIsLeft && play) {
+			play = false;
+			canoeCanMove = false;
+			$('#feed').addClass('feedL');
+			setTimeout(function(){
+				$('#feed').removeClass('feedL');
+				$('#feed').css('display', 'none');
+				feedPos = 4;		
+			}, 1000);
+			setTimeout(function(){
+				canoeCanMove = true;
+				moveCanoe();
+				canoeCanMove = false;
+			}, 1000);
+			setTimeout(function(){
+				$('#feed').css('display', '');
+				moveFeed();
+			}, 3000);
+		}
+		else if (feedPos == 4) {
+			$('#feed').addClass('feedL2');
+			setTimeout(function(){
+				$('#feed').removeClass('feedL2');
+				$('#feed').css({'top': '750px', 'right':'650px'});
+				feedPos = 1;
+				play = true;
+				canoeCanMove = true;
+				checkGameStatus();		
+			}, 1000);
+		}
+	}
+
+
+
+
+	function checkGameStatus(){
+		if (foxPos == 3 && chickenPos == 3 && feedPos == 3) {
+			alert ("Congratulations!");
+			window.location="hangman.html";
+		}
+		else if (foxPos == 1 && chickenPos == 1 && feedPos == 1 && canoeIsLeft == false) {
+			alert ("The chicken was eating the feed as it was gorged by the fox! Fail");
+			window.location="crossing.html";
+		}
+		else if (foxPos == 1 && chickenPos == 1 && canoeIsLeft == false) {
+			alert ("The fox ate your chicken! Fail");
+			window.location="crossing.html";
+		}
+		else if (foxPos == 3 && chickenPos == 3 && canoeIsLeft == true) {
+			alert ("The fox ate your chicken! Fail");
+			window.location="crossing.html";
+		}
+		else if (chickenPos == 1 && feedPos == 1 && canoeIsLeft == false) {
+			alert ("The chicken ate your feed! Fail");
+			window.location="crossing.html";
+		}
+		else if (chickenPos == 3 && feedPos == 3 && canoeIsLeft == true) {
+			alert ("The chicken ate your feed! Fail");
+			window.location="crossing.html";
+		}
+	}
+
+
+
+
+
+
+</script>
+
+		<style type="text/css">
+			body {width:100%;margin:0 auto;}
+
+			#totalDiv
+			{
+				position:relative;
+				margin:0 auto;
+				text-align:center;
+				font-weight:bold;
+				width:1000px;
+				height:1200px;
+
+			}
+			#gameDiv
+			{
+				width:100%;
+				height:700px;
+				border:grey;
+				border-style:ridge;
+				border-width:8px;
+			}
+			#canoe
+			{
+				width:100; 
+				height:100;
+				position: absolute;
+				top: 600px;
+				right: 450px;
+			}
+			#fox
+			{
+				width:50px; 
+				height:50px;
+				position: absolute;
+				top: 550px;
+				right: 700px;  
+			}
+
+			#chicken
+			{
+				width:30px; 
+				height:40px;
+				position: absolute;
+				top: 640px;
+				right: 750px;
+			}
+			#feed
+			{
+				width:40px; 
+				height:40px;
+				position: absolute;
+				top: 750px;
+				right: 650px;
+			}
+
+
+			@-webkit-keyframes canoeRight{
+				0% {right:450px;}
+				25% {right:330px;}
+				50% {right:260px;}
+				100% {right:180px;}
+			}
+			@-webkit-keyframes canoeLeft{
+				0% {right:180px;}
+				25% {right:260px;}
+				50% {right:330px;}
+				100% {right:450px;}
+			}
+			
+
+			@-webkit-keyframes foxRight{
+				0% {top:550px;right:700px;}
+				25% {top:600px;right:675px;}
+				50% {top:620px;right:620px;}
+				100% {top:635px;right:500px;}
+			}
+			@-webkit-keyframes foxRightTwo{
+				0% {top:635px;right:230px;}
+				25% {top:600px;right:215px;}
+				50% {top:560px;right:260px;}
+				100% {top:500px;right:350px;}
+			}
+			@-webkit-keyframes foxLeft{
+				0% {top:500px;right:350px;}
+				25% {top:560px;right:260px;}
+				50% {top:600px;right:215px;}
+				100% {top:635px;right:230px;}
+			}
+			@-webkit-keyframes foxLeftTwo{
+				0% {top:635px;right:500px;}
+				25% {top:620px;right:620px;}
+				50% {top:600px;right:675px;}
+				100% {top:550px;right:700px;}
+			}
+
+
+
+
+
+
+			@-webkit-keyframes chickenRight{
+				0% {top:640px;right:750px;}
+				20% {top:650px;right:700px;}
+				40% {top:640px;right:650px;}
+				60% {top:650px;right:600px;}
+				80% {top:640px;right:550px;}
+				100% {top:635px;right:500px;}
+			}
+			@-webkit-keyframes chickenRightTwo{
+				0% {top:635px;right:230px;}
+				20% {top:610px;right:230px;}
+				40% {top:620px;right:220px;}
+				60% {top:580px;right:220px;}
+				80% {top:545px;right:210px;}
+				100% {top:520px;right:200px;}
+			}
+			@-webkit-keyframes chickenLeft{
+				0% {top:520px;right:200px;}
+				20% {top:545px;right:210px;}
+				40% {top:580px;right:220px;}
+				60% {top:620px;right:220px;}
+				80% {top:610px;right:230px;}
+				100% {top:6350px;right:230px;}
+			}
+
+			@-webkit-keyframes chickenLeftTwo{
+				0% {top:635px;right:500px;}
+				20% {top:650px;right:550px;}
+				40% {top:640px;right:600px;}
+				60% {top:650px;right:650px;}
+				80% {top:640px;right:700px;}
+				100% {top:640px;right:750px;}
+			}
+
+
+
+
+			@-webkit-keyframes feedRight{
+				0% {top:750px;right:650px;}
+				25% {top:650px;right:630px;}
+				50% {top:615px;right:540px;}
+				100% {top:635px;right:500px;}
+			}
+			@-webkit-keyframes feedRightTwo{
+				0% {top:635px;right:230px;}
+				25% {top:580px;right:180px;}
+				50% {top:590px;right:140px;}
+				100% {top:600px;right:75px;}
+			}  
+			@-webkit-keyframes feedLeft{
+				0% {top:600px;right:75px;}
+				25% {top:590px;right:140px;}
+				50% {top:580px;right:180px;}
+				100% {top:635px;right:230px;}
+			}
+			@-webkit-keyframes feedLeftTwo{
+				0% {top:635px;right:500px;}
+				25% {top:615px;right:540px;}
+				50% {top:650px;right:630px;}
+				100% {top:750px;right:650px;}
+			}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+			@-moz-keyframes canoeRight{
+				0% {right:450px;}
+				25% {right:330px;}
+				50% {right:260px;}
+				100% {right:180px;}
+			}
+			@-moz-keyframes canoeLeft{
+				0% {right:180px;}
+				25% {right:260px;}
+				50% {right:330px;}
+				100% {right:450px;}
+			}
+			
+
+			@-moz-keyframes foxRight{
+				0% {top:550px;right:700px;}
+				25% {top:600px;right:675px;}
+				50% {top:620px;right:620px;}
+				100% {top:635px;right:500px;}
+			}
+			@-moz-keyframes foxRightTwo{
+				0% {top:635px;right:230px;}
+				25% {top:600px;right:215px;}
+				50% {top:560px;right:260px;}
+				100% {top:500px;right:350px;}
+			}
+			@-moz-keyframes foxLeft{
+				0% {top:500px;right:350px;}
+				25% {top:560px;right:260px;}
+				50% {top:600px;right:215px;}
+				100% {top:635px;right:230px;}
+			}
+			@-moz-keyframes foxLeftTwo{
+				0% {top:635px;right:500px;}
+				25% {top:620px;right:620px;}
+				50% {top:600px;right:675px;}
+				100% {top:550px;right:700px;}
+			}
+
+
+
+			@-moz-keyframes chickenRight{
+				0% {top:640px;right:750px;}
+				20% {top:650px;right:700px;}
+				40% {top:640px;right:650px;}
+				60% {top:650px;right:600px;}
+				80% {top:640px;right:550px;}
+				100% {top:635px;right:500px;}
+			}
+			@-moz-keyframes chickenRightTwo{
+				0% {top:635px;right:230px;}
+				20% {top:610px;right:230px;}
+				40% {top:620px;right:220px;}
+				60% {top:580px;right:220px;}
+				80% {top:545px;right:210px;}
+				100% {top:520px;right:200px;}
+			}
+			@-moz-keyframes chickenLeft{
+				0% {top:520px;right:200px;}
+				20% {top:545px;right:210px;}
+				40% {top:580px;right:220px;}
+				60% {top:620px;right:220px;}
+				80% {top:610px;right:230px;}
+				100% {top:6350px;right:230px;}
+			}
+
+			@-moz-keyframes chickenLeftTwo{
+				0% {top:635px;right:500px;}
+				20% {top:650px;right:550px;}
+				40% {top:640px;right:600px;}
+				60% {top:650px;right:650px;}
+				80% {top:640px;right:700px;}
+				100% {top:640px;right:750px;}
+			}
+
+
+
+
+			@-moz-keyframes feedRight{
+				0% {top:750px;right:650px;}
+				25% {top:650px;right:630px;}
+				50% {top:615px;right:540px;}
+				100% {top:635px;right:500px;}
+			}
+			@-moz-keyframes feedRightTwo{
+				0% {top:635px;right:230px;}
+				25% {top:580px;right:180px;}
+				50% {top:590px;right:140px;}
+				100% {top:600px;right:75px;}
+			}  
+			@-moz-keyframes feedLeft{
+				0% {top:600px;right:75px;}
+				25% {top:590px;right:140px;}
+				50% {top:580px;right:180px;}
+				100% {top:635px;right:230px;}
+			}
+			@-moz-keyframes feedLeftTwo{
+				0% {top:635px;right:500px;}
+				25% {top:615px;right:540px;}
+				50% {top:650px;right:630px;}
+				100% {top:750px;right:650px;}
+			}
+
+
+
+
+
+
+
+
+
+
+
+			.canoeR{
+				animation: canoeRight 2s;
+				-moz-animation: canoeRight 2s linear; 
+				-webkit-animation: canoeRight 2s linear; 
+			}
+			.canoeL{
+				animation: canoeLeft 2s;
+				-moz-animation: canoeLeft 2s linear; 
+				-webkit-animation: canoeLeft 2s linear; 
+			}
+
+
+			.foxR{
+				animation: foxRight 1s;
+				-moz-animation: foxRight 1s linear; 
+				-webkit-animation: foxRight 1s linear;
+			}
+			.foxR2{
+				animation: foxRightTwo 1s;
+				-moz-animation: foxRightTwo 1s linear; 
+				-webkit-animation: foxRightTwo 1s linear;
+			}		
+			.foxL{
+				animation: foxLeft 1s;
+				-moz-animation: foxLeft 1s linear; 
+				-webkit-animation: foxLeft 1s linear; 
+			}
+			.foxL2{
+				animation: foxLeftTwo 1s;
+				-moz-animation: foxLeftTwo 1s linear; 
+				-webkit-animation: foxLeftTwo 1s linear;
+			}
+
+
+			.chickenR{
+				animation: chickenRight 1s;
+				-moz-animation: chickenRight 1s linear; 
+				-webkit-animation: chickenRight 1s linear;
+			}	
+			.chickenR2{
+				animation: chickenRightTwo 1s;
+				-moz-animation: chickenRightTwo 1s linear; 
+				-webkit-animation: chickenRightTwo 1s linear;
+			}
+			.chickenL{
+				animation: chickenLeft 1s;
+				-moz-animation: chickenLeft 1s linear; 
+				-webkit-animation: chickenLeft 1s linear; 
+			}
+			.chickenL2{
+				animation: chickenLeftTwo 1s;
+				-moz-animation: chickenLeftTwo 1s linear; 
+				-webkit-animation: chickenLeftTwo 1s linear;
+			}
+
+
+
+			.feedR{
+				animation: feedRight 1s;
+				-moz-animation: feedRight 1s linear; 
+				-webkit-animation: feedRight 1s linear;
+			}	
+			.feedR2{
+				animation: feedRightTwo 1s;
+				-moz-animation: feedRightTwo 1s linear; 
+				-webkit-animation: feedRightTwo 1s linear;
+			}
+			.feedL{
+				animation: feedLeft 1s;
+				-moz-animation: feedLeft 1s linear; 
+				-webkit-animation: feedLeft 1s linear; 
+			}
+			.feedL2{
+				animation: feedLeftTwo 1s;
+				-moz-animation: feedLeftTwo 1s linear; 
+				-webkit-animation: feedLeftTwo 1s linear;
+			}
+
+
+
+
+
+		</style>
+	</head>
+	
+<body>
+	<div id="totalDiv">
+		<h1> Crossing Riddle </h1>
+
+		<p id ="explanation">Get your fox, chicken and chicken feed across the river safely. Be warned, your fox and chicken are hungry and don't behave when left alone. </p>
+
+		<div id="gameDiv">
+			<img src="images/crossing/river.jpg" alt="river" width="100%" height="100%">
+			<img onclick="moveCanoe();" id="canoe" src="images/crossing/canoe.png" alt="canoe" >
+			<img onclick="moveFox();" id="fox" src="images/crossing/fox.png" alt="fox" >
+			<img onclick="moveChicken();" id="chicken" src="images/crossing/chicken.png" alt="chicken" >
+			<img onclick="moveFeed();" id="feed" src="images/crossing/feed.png" alt="feed" >
+		</div>
+
+	</div>
+</body>
+</html>

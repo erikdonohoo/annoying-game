@@ -1,0 +1,16 @@
+@charset "utf-8";
+/* CSS Document */
+
+/**** PAGE 3 CSS ****/
+#donkey-3{position:absolute; right:50px;z-index:1;}
+#tail-3{position:absolute; left:50px; top:100px; z-index:2;}
+
+/***** PAGE 5 CSS ****/
+.key-5{height:30px;position:absolute;}
+#key1{top:30px;left:200px;}
+#key2{top:180px; left:500px;}
+#key3{top:300px; left:75px;}
+#key4{top:400px; left:120px;}
+#key5{top:9000px; left:10000px; padding-right:30px;}
+body { width:100%; height:100% }
+#keyholder{width:10000px; height:10000px;}

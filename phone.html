@@ -1,0 +1,49 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Phone</title>
+
+	<link rel="stylesheet" type="text/css" href="css/site.css" />
+
+	<script src="js/jQuery.js" type="text/javascript"></script>
+	<script>
+		function addIt(num){
+			$('#list').html($('#list').html() + num);
+		}
+		function clearIt(){
+			$('#list').html('Output:');
+		}
+		
+		$(function(){
+			$("#end").click(function(){
+				window.location="whichone.html";
+			});
+		});
+	</script>
+
+</head>
+
+<body>
+
+	<div id="page6Wrapper">
+		<div id="title">How do you type "I hate you" old-school style?</div><br />
+    	<img id="phone" border="0" src="images/phone.png" />
+        
+        <div id="b1" onclick="addIt(1)" class="phoneButton"></div>
+        <div id="b2" onclick="addIt(2)" class="phoneButton"></div>
+        <div id="b3" onclick="addIt(3)"  class="phoneButton"></div>
+        <div id="b4" onclick="addIt(4)"  class="phoneButton"></div>
+        <div id="b5" onclick="addIt(5)"  class="phoneButton"></div>
+        <div id="b6" onclick="addIt(6)"  class="phoneButton"></div>
+        <div id="b7" onclick="addIt(7)"  class="phoneButton"></div>
+        <div id="b8" onclick="addIt(8)"  class="phoneButton"></div>
+        <div id="b9" onclick="addIt(9)"  class="phoneButton"></div>
+        <div id="b0" onclick="addIt(0)"  class="phoneButton"></div>
+        <div id="end"></div>
+        
+        <div id="list">Output:</div>
+        <button id="clearIt" onclick="clearIt();">Try Again</button>
+	</div>
+</body>
+</html>

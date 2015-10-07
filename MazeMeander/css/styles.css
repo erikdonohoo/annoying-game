@@ -1,0 +1,491 @@
+
+body 
+{
+	background: #1e5799; /* Old browsers */
+	background: -moz-linear-gradient(top,  #1e5799 0%, #207cca 30%, #2989d8 50%, #207cca 70%, #1e5799 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#1e5799), color-stop(30%,#207cca), color-stop(50%,#2989d8), color-stop(70%,#207cca), color-stop(100%,#1e5799)); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top,  #1e5799 0%,#207cca 30%,#2989d8 50%,#207cca 70%,#1e5799 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top,  #1e5799 0%,#207cca 30%,#2989d8 50%,#207cca 70%,#1e5799 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top,  #1e5799 0%,#207cca 30%,#2989d8 50%,#207cca 70%,#1e5799 100%); /* IE10+ */
+	background: linear-gradient(top,  #1e5799 0%,#207cca 30%,#2989d8 50%,#207cca 70%,#1e5799 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#1e5799', endColorstr='#1e5799',GradientType=0 ); /* IE6-9 */
+
+	/*color: #666666;*/
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+	font-size: 12px;
+}
+
+h1 
+{
+	color: #61c419;
+	text-decoration:underline;
+	font-family: Helveitca Neue, Helvetica, Arial, sans-serif;
+	font-weight: lighter;
+	text-align:center;
+	font-size: 35px;
+}
+
+#totalDiv
+{
+	width:900px;
+	margin:0 auto;
+}
+
+#titleDiv
+{
+	font-weight:bold;
+	width:100%;
+	text-align:top;
+	position: relative;
+}
+
+#menuDiv
+{
+	background: #b4e391; /* Old browsers */
+	background: -moz-linear-gradient(top,  #b4e391 0%, #61c419 50%, #b4e391 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#b4e391), color-stop(50%,#61c419), color-stop(100%,#b4e391)); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top,  #b4e391 0%,#61c419 50%,#b4e391 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top,  #b4e391 0%,#61c419 50%,#b4e391 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top,  #b4e391 0%,#61c419 50%,#b4e391 100%); /* IE10+ */
+	background: linear-gradient(top,  #b4e391 0%,#61c419 50%,#b4e391 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#b4e391', endColorstr='#b4e391',GradientType=0 ); /* IE6-9 */
+
+	border-style:ridge;    /*outset*/
+	border-width:4px;
+	font-weight:bold;
+	width:100%;  /*998px*/
+	height:45px;
+	margin:0 auto;
+}
+#menuDiv > button
+{
+	height:41px;
+	width:100px;	/*114*/
+	float:left;
+	font-weight:none;
+}
+
+#menuDiv2
+{
+	background: #b4e391; /* Old browsers */
+	background: -moz-linear-gradient(top,  #b4e391 0%, #61c419 50%, #b4e391 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#b4e391), color-stop(50%,#61c419), color-stop(100%,#b4e391)); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top,  #b4e391 0%,#61c419 50%,#b4e391 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top,  #b4e391 0%,#61c419 50%,#b4e391 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top,  #b4e391 0%,#61c419 50%,#b4e391 100%); /* IE10+ */
+	background: linear-gradient(top,  #b4e391 0%,#61c419 50%,#b4e391 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#b4e391', endColorstr='#b4e391',GradientType=0 ); /* IE6-9 */
+
+	border-style:ridge;    /*outset*/
+	border-width:4px;
+	font-weight:bold;
+	width:100%;  /*998px*/
+	height:60px;
+	margin:0 auto;
+}
+#menuDiv2 > form
+{
+	position: relative;
+	float: right;	
+	padding-right:10px;
+}
+
+
+#pauseButton
+{
+	float:left;
+	/*margin-left: 40%;*/
+}
+
+#message
+{
+	text-align:center;
+}
+
+#gameDiv
+{
+	/*border:blue;
+	border-style:ridge;
+	border-width:4px;   */ /*8*/
+	height:640px;	/*990*/
+	width:100%;	/*990*/
+	margin:5px auto;
+	position:relative;
+
+	/*background-color: blue;*/
+	background-image: url(../images/titleMouse.png);
+	background-repeat: no-repeat;
+	background-position: bottom;
+}
+
+#gameDiv > div{
+	height: 40px;	/*6.93*/
+	width: 40px;
+	/*border: 1px solid black;*/
+	position: relative;
+	float: left;
+}
+#gameDiv > button
+{
+	height:60px;
+	width:150px;
+
+	margin: 6px 40%;
+	position: relative;
+
+	/*left:50%;*/
+}
+#gameDiv > label{
+	height: 58px;
+	width: 58px;
+	border: 1px solid black;
+	position: relative;
+	float: left;
+	text-align:center;
+	font-size: 30px;
+	margin:15px 15px;
+}
+#howToText
+{
+	height: 60% !important;
+	width: 98% !important;
+	border: none !important;
+	font-size: 30px !important;
+	text-align:left !important;
+	margin: 15px 15px !important;
+}
+
+#copyrightDiv
+{
+	color: #25A014;
+	text-align:center;
+	clear:both;
+	width:100%
+}
+
+#cheeseCount{
+	padding-left:30px;
+	padding-right:20px;
+	float:right;
+}
+#level{
+	padding-left:30px;
+	padding-right:20px;
+	float:right;
+}
+#key1Count{
+	padding-left:30px;
+	padding-right:20px;
+	float:right;
+}
+#lock1Count{
+	padding-left:30px;
+	padding-right:20px;
+	float:right;
+}
+
+#sourceOutput{
+	width:100.5%;
+	height:200px;
+}
+
+
+.mouse {
+	background-image: url(../images/mouseDown.png);
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: 75%;
+}
+.inaccessibleByMouse{}
+
+.cheese {
+	background-image: url(../images/cheese.png);
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: 74%;
+}
+
+.portalBlue {
+	background-image: url(../images/portalBlue.jpg) !important;
+	background-size: 100%;
+	background-repeat: no-repeat;
+	background-position: center;
+}
+.portalRed {
+	background-image: url(../images/portalRed.png) !important;
+	background-size: 100%;
+	background-repeat: no-repeat;
+	background-position: center;
+}
+
+.key1 {
+	background-image: url(../images/key1.png);
+	background-size: 100%;
+}
+.locked1 {
+	background-image: url(../images/locked1.png);
+	background-size: 74%;
+	background-repeat: no-repeat;
+	background-position: center;
+}
+.unlocked1 {
+	background-image: url(../images/unlocked1.png) !important;
+	background-size: 100%;
+	background-repeat: no-repeat;
+	background-position: center;
+}
+
+.cat{}
+.cat1 {
+	background-image: url(../images/catOminous.png) !important;
+	background-size: 87%;
+	background-repeat: no-repeat;
+	background-position: center;
+	position:absolute;
+}
+.cat2 {
+	background-image: url(../images/catScary.png) !important;
+	background-size: 87%;
+	background-repeat: no-repeat;
+	background-position: center;
+	position:absolute;
+}
+.cat3 {
+	background-image: url(../images/catSeeker.png) !important;
+	background-size: 100%;
+	background-repeat: no-repeat;
+	background-position: center;
+	position:absolute;
+}
+.size{
+	width:52.2px;
+	height:60px;
+}
+.cat1Eyes {
+	background-image: url(../images/catEyesOminous.jpg) !important;
+	background-size: 100%;
+	background-repeat: no-repeat;
+	background-position: center;
+}
+.cat2Eyes {
+	background-image: url(../images/catEyesScary.jpg) !important;
+	background-size: 100%;
+	background-repeat: no-repeat;
+	background-position: center;
+}
+.cat3Eyes {
+	background-image: url(../images/catEyesSeeker.jpg) !important;
+	background-size: 100%;
+	background-repeat: no-repeat;
+	background-position: center;
+}
+.inaccessibleByCat{}
+
+
+.tombstone {
+	background-image: url(../images/tombstone.png) !important;
+	background-size: 87%;
+	background-repeat: no-repeat;
+	background-position: center;
+}
+.skeleton {
+	background-image: url(../images/mouseSkull.png) !important;
+	background-size: 100%;
+	background-repeat: no-repeat;
+	background-position: center;
+}
+
+.trail {
+	background-color: white;
+	animation:trailColor 5s;
+	-moz-animation:trailColor 5s;  
+	-webkit-animation:trailColor 5s;
+}
+
+.wall
+{
+	background-image: url(../images/grayWall.jpg);
+
+	/*background: rgb(140,140,140);
+	background: -moz-radial-gradient(center, ellipse cover,  rgba(140,140,140,1) 0%, rgba(66,66,66,1) 0%, rgba(140,140,140,1) 100%); 
+	background: -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(0%,rgba(140,140,140,1)), color-stop(0%,rgba(66,66,66,1)), color-stop(100%,rgba(140,140,140,1)));
+	background: -webkit-radial-gradient(center, ellipse cover,  rgba(140,140,140,1) 0%,rgba(66,66,66,1) 0%,rgba(140,140,140,1) 100%); 
+	background: -o-radial-gradient(center, ellipse cover,  rgba(140,140,140,1) 0%,rgba(66,66,66,1) 0%,rgba(140,140,140,1) 100%); 
+	background: -ms-radial-gradient(center, ellipse cover,  rgba(140,140,140,1) 0%,rgba(66,66,66,1) 0%,rgba(140,140,140,1) 100%);
+	background: radial-gradient(center, ellipse cover,  rgba(140,140,140,1) 0%,rgba(66,66,66,1) 0%,rgba(140,140,140,1) 100%); 
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#8c8c8c', endColorstr='#8c8c8c',GradientType=1 );   */
+
+}
+
+.fakeWall{
+	background-image: url(../images/grayWall.jpg) !important;
+}
+
+
+.pipeVert{
+	background-image: url(../images/grayWallVertPipe.jpg) !important;
+	background-size: 100%;
+	background-repeat: no-repeat;
+	background-position: center;
+}
+.pipeVertWithMouse{
+	background-image: url(../images/grayWallVertPipeWithMouse.jpg) !important;
+	background-size: 100%;
+	background-repeat: no-repeat;
+	background-position: center;
+}
+
+.pipeCorner{
+	background-image: url(../images/grayWallCornerPipe.jpg) !important;
+	background-size: 100%;
+	background-repeat: no-repeat;
+	background-position: center;
+}
+.pipeCornerWithMouse{
+	background-image: url(../images/grayWallCornerPipeWithMouse.jpg) !important;
+	background-size: 100%;
+	background-repeat: no-repeat;
+	background-position: center;
+}
+
+.rotate90{
+	transform:rotate(90deg);
+	-ms-transform:rotate(90deg);
+	-webkit-transform:rotate(90deg);
+	-moz-transform:rotate(90deg);
+}
+.rotate180{
+	transform:rotate(180deg);
+	-ms-transform:rotate(180deg);
+	-webkit-transform:rotate(180deg);
+	-moz-transform:rotate(180deg);
+}
+.rotate270{
+	transform:rotate(270deg);
+	-ms-transform:rotate(270deg);
+	-webkit-transform:rotate(270deg);
+	-moz-transform:rotate(270deg);
+}
+
+.pipe{}			/*it's a pipe*/
+.pipeUp{}		/*you can leave the pipe in these directions*/
+.pipeDown{}
+.pipeLeft{}
+.pipeRight{}
+
+
+
+.dark {
+	background: black !important;
+}
+.hidden{
+	display:none;
+}
+
+.smallButton {
+	height:50px !important;
+	width:80px !important;
+}
+
+.borderUp {
+	border-top-color: tan !important;
+}
+.borderDown {
+	border-bottom-color: tan !important;
+}
+.borderLeft {
+	border-left-color: tan !important;
+}
+.borderRight {
+	border-right-color: tan !important;
+}
+
+.glow{
+    background: white;
+    color: gray;
+    display: block;
+   /* margin: 30px; 
+    padding: 20px;*/
+ /*   text-align: center;
+    width: 150px;*/
+    -moz-box-shadow: 0px 0px 15px #ff99ff;    /*used to be 0099ff*/
+    -webkit-box-shadow: 0px 0px 15px #ff99ff;
+    box-shadow: 0px 0px 15px red;
+}
+}
+.makeObvious{
+	animation: emp 2s;
+	-moz-animation: emp 2s; 
+	-webkit-animation: emp 2s;
+
+	/*-webkit-transform: rotate(360deg);
+    -moz-transform: rotate(360deg);
+    -o-transform: rotate(360deg);
+    -ms-transform: rotate(360deg); */
+}
+
+
+.cat1MoveLeft{
+	animation: catOneMoveLeft .75s;
+	-moz-animation: catOneMoveLeft .75s linear; 
+	-webkit-animation: catOneMoveLeft .75s linear; 
+}
+
+
+
+
+
+
+
+@catOneMoveLeft{
+	from {background-color:white;}
+	to {background-color: tan;}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@-webkit-keyframes emp{
+	/*//rotate(360deg);*/
+
+	from {background-color:white;}
+	to {background-color: tan;}
+}
+
+
+
+@keyframes trailColor
+{
+	from {background-color:white;}
+	to {background-color: tan;}
+}
+@-moz-keyframes trailColor /* Firefox */
+{
+	from {background-color:white;}
+	to {background-color: tan;}
+}
+@-webkit-keyframes trailColor /* Safari and Chrome */
+{
+	from {background-color:white;}
+	to {background-color: tan;}
+}

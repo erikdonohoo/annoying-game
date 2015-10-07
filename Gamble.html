@@ -1,0 +1,208 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Gamble</title>
+	
+	<script src="js/jQuery.js"></script>
+    <script src="js/jquery_ui.js"></script>
+ 	<script>
+		$(window).load(function(){
+			$('#square').addClass('righty');
+			$('#ball').addClass('drop');
+			$('#square').delay(2000).animate({
+				left: 100,
+				top: 50,
+				height: 100,
+				width: 120
+			}, 300, 'linear', function(){
+					$('#square').animate({
+					left: 250,
+					top: 100,
+					height: 100,
+					width: 120
+				}, 300, 'linear', function(){
+						$('#square').animate({
+						left: 400,
+						top: 200,
+						height: 90,
+						width: 110
+					}, 300, 'linear', function(){
+							$('#square').animate({
+							left: 550,
+							top: 250,
+							height: 90,
+							width: 110
+						}, 300, 'linear');
+					});
+				});
+			});
+			$('#square2').delay(2000).animate({
+				left: 450,
+				top: 175,
+				height: 100,
+				width: 120
+			}, 300, 'linear', function(){
+					$('#square2').animate({
+					left: 250,
+					top: 100,
+					height: 100,
+					width: 120
+				}, 300, 'linear', function(){
+						$('#square2').animate({
+						left: 100,
+						top:200,
+						height: 90,
+						width: 110
+					}, 300, 'linear', function(){
+							$('#square2').animate({
+							left: 50,
+							top: 250,
+							height: 90,
+							width: 110
+						}, 300, 'linear');
+					});
+				});
+				$('#square').removeClass('righty');
+				$('#ball').removeClass('');
+			});	
+			$('#square').mouseup(function(){
+				if($('#square').position().left==550 && $('#square').position().top==250){
+					$('#square').addClass('lefty');
+					$('#square2').addClass('righty');
+					$('#ball').addClass('ballL');
+					
+					setTimeout(function(){
+						alert('You Lose. Try Again.');
+						window.location='Gamble.html';
+						}, 2000);
+				}else{
+					$('#ball').removeClass('drop');
+					$('#ball').css('left', $('#square').position().left+20);
+					$('#ball').css('top', $('#square').position().top+80);
+					alert('You win!');
+					window.location='legolas.html';
+				}
+			});
+			$('#square2').mouseup(function(){
+				if($('#square2').position().left==50 && $('#square2').position().top==250){
+					$('#square').addClass('lefty');
+					$('#square2').addClass('righty');
+					$('#ball').addClass('ballR');
+					
+					setTimeout(function(){
+						alert('You Lose. Try Again.');
+						window.location='Gamble.html';
+						}, 2000);
+				}else{
+					$('#ball').removeClass('drop');
+					$('#ball').css('left', $('#square2').position().left+20);
+					$('#ball').css('top', $('#square2').position().top+80);
+					alert('You win!');
+					window.location='legolas.html';
+				}
+			});
+			$('#square').draggable();
+			$('#square2').draggable();
+ 		});
+	</script>
+    
+    <style type="text/css">
+		@-webkit-keyframes toRight{
+			0% {-webkit-transform:rotate(0deg);}
+			50% {-webkit-transform:rotate(-50deg);}
+			100% {-webkit-transform:rotate(0deg);}
+		}
+		@-webkit-keyframes toLeft{
+			0% {-webkit-transform:rotate(0deg);}
+			50% {-webkit-transform:rotate(50deg);}
+			100% {-webkit-transform:rotate(0deg);}
+		}
+		@-webkit-keyframes ballDrop{
+			0% {top:-50px;left:200px;}
+			25% {top:25px;left:150px;}
+			50% {top:50px;left:100px;}
+			75% {top:40px;left:55px;}
+			100% {top:2px;left:25px;}
+		}
+		@-webkit-keyframes ballRight{
+			0% {top:300px;left:550px;}
+			25% {top:320px;left:540px;}
+			50% {top:340px;left:450px;}
+			75% {top:265px;left:400px;}
+			100% {top:220px;left:350px;}
+		}
+		@-webkit-keyframes ballLeft{
+			0% {top:300px;left:70px;}
+			25% {top:340px;left:150px;}
+			50% {top:320px;left:200px;}
+			100% {top:220px;left:250px;}
+		}
+		body{
+			width:100%;
+			margin:0 auto;
+		}
+		#wrapper {
+			position:relative;
+			margin:0 auto;
+			cursor:default;
+		}
+		#ball{
+			top:-50px;
+			left:200px;
+			width:50px;
+			height:50px;
+			border-radius:500px;
+			background-color:red;
+			position:absolute;
+		}
+		#square{
+			position:absolute;
+			background-color:black;
+			left:0px;top:0px;height:50px;width:100px;border-top-left-radius:500px;border-top-right-radius:500px;
+		}
+		.righty{
+			animation: toRight 2s;
+			-moz-animation: toRight 2s; 
+			-webkit-animation: toRight 2s; 
+		}
+		#square2{
+			position:absolute;
+			background-color:black;
+			left:550px;top:250px;height:50px;width:100px;border-top-left-radius:500px;border-top-right-radius:500px;
+		}
+		.lefty{
+			animation: toLeft 2s;
+			-moz-animation: toLeft 2s; 
+			-webkit-animation: toLeft 2s; 
+		}
+		.drop{
+			animation: ballDrop 2s;
+			-moz-animation: ballDrop 2s linear; 
+			-webkit-animation: ballDrop 2s linear; 
+		}
+		.ballR{
+			animation: ballRight 2s;
+			-moz-animation: ballRight 2s linear; 
+			-webkit-animation: ballRight 2s linear; 
+		}
+		.ballL{
+			animation: ballLeft 2s;
+			-moz-animation: ballLeft 2s linear; 
+			-webkit-animation: ballLeft 2s linear; 
+		}
+    </style>
+</head>
+
+<body>
+	<div id="wrapper"> <!--Begin header content's wrapper-->
+    	<div id="ball">
+        </div>
+    	<div id="square">
+        </div>
+        <div id="square2">
+        </div>
+	</div>
+</body>
+
+</html>

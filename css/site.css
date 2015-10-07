@@ -1,0 +1,54 @@
+@charset "utf-8";
+/* CSS Document */
+
+
+/**** INDEX PAGE CSS ******/
+body{margin:0; padding:0; text-align:center;}
+#startLink {text-decoration:none; cursor:text; color:black;}
+#indexDiv {margin: 0 auto; padding-top:50px;}
+
+/**** PAGE 2 CSS ******/
+#page2Wrapper{width:100%;text-align:center;margin-top:200px;}
+.qImage{position:relative;}
+#bottom{left:-25px;}
+
+/**** PAGE 3 CSS ****/
+#donkey-3{position:absolute; right:50px;z-index:1;}
+#tail-3{position:absolute; left:50px; top:100px; z-index:2;}
+
+/**** PAGE 4 CSS ****/
+
+
+/***** PAGE 5 CSS ****/
+.key-5{height:30px;position:absolute;}
+#key1{top:30px;left:200px;}
+#key2{top:180px; left:500px;}
+#key3{top:300px; left:75px;}
+#key4{top:400px; left:120px;}
+#key5{top:9000px; left:10000px; padding-right:30px;}
+body {width:100%; height:100% }
+#keyholder{width:10000px; height:10000px; cursor: url(../images/keys/potter.cur), default;}
+
+/***** PAGE 6 CSS ****/
+#page6Wrapper{position:relative; margin: 0 auto; width: 500px; height: 800px;}
+#phone{width:400px;height:600px;}
+.phoneButton{position: absolute;width:100px;height:60px;background-color: white;opacity: 0.01;float: left;cursor: pointer;}
+#b1{top: 216px;right:315px;}
+#b2{top:216px;right:200px;}
+#b3{top:216px;right:87px;}
+#b4{top:286px;right:315px;}
+#b5{top:286px;right:200px;}
+#b6{top:286px;right:87px;}
+#b7{top:356px;right:315px;}
+#b8{top:356px;right:200px;}
+#b9{top:356px;right:87px}
+#b0{top:426px;right:200px;}
+#end{position:absolute;top: 551px;right: 264px;background-color:green;width:157px;height:60px;border-radius:10px;opacity:0;}
+#list{position:relative;width:200px;height:20px;left: 161px;text-align: left;float: left;font-size: 25px;}
+#clearIt{position:absolute;top:680px;right: 231px;}
+
+/***********  PAGE 7 CSS ********/
+#buttonChooseWrapper{position:relative;width: 500px;margin: 0 auto;}
+#blueButton{ height: 175px; }
+#blueButtonHelper{position: relative;z-index:2;height: 20px;width: 20px;cursor:pointer;left: 100px;top: 156px;}
+#redButton{ height: 220px;position: relative;top: 20px; cursor:pointer;}

@@ -1,0 +1,157 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Shoot em down!</title>
+<script src = "js/jQuery.js"></script>
+<style type="text/css">
+body {	overflow: hidden;}
+img {	width:100px;	height 100px;}
+
+.moveit1 {position:absolute;animation:moveleft 2s 1;-moz-animation:moveleft 2s 1;-webkit-animation:moveleft 2s linear infinite;}
+.moveit1faster {position:absolute;animation:moveleft 1s 1;-moz-animation:moveleft 1s 1;-webkit-animation:moveleft 1s linear infinite;}
+@-webkit-keyframes moveleft{0%		{right:-100px;}100%	{right:1500px;}}
+
+.moveit2 {position:absolute;animation: 2s 1;-moz-animation:elizmove 2s 1;-webkit-animation:elizmove 2s linear infinite;}
+.moveit2faster {position:absolute;animation: 1s 1;-moz-animation:elizmove 1s 1;-webkit-animation:elizmove 1s linear infinite;}
+@-webkit-keyframes elizmove{0%		{top:200px;right:-100px;}100%	{top:200px;right:1500px;}}
+
+.moveit3 {position:absolute;animation: 3s 1;-moz-animation:elvismove 3s 1;-webkit-animation:elvismove 3s linear infinite;}
+.moveit3faster {position:absolute;animation: 1.5s 1;-moz-animation:elvismove 1.5s 1;-webkit-animation:elvismove 1.5s linear infinite;}
+@-webkit-keyframes elvismove{0%		{top:200px;right:-100px;}100%	{top:500px;right:1500px;}}
+
+.moveit4 {position:absolute;animation: 3.5s 1;-moz-animation:gandhimove 3.5s 1;-webkit-animation:gandhimove 3.5s linear infinite;}
+.moveit4faster {position:absolute;animation: 2s 1;-moz-animation:gandhimove 2s 1;-webkit-animation:gandhimove 2s linear infinite;}
+@-webkit-keyframes gandhimove{0%		{top:500px;left:-100px;}100%	{top:500px;left:1500px;}}
+
+.moveit5 {position:absolute;animation: 3.5s 1;-moz-animation:babyonemove 4s 1;-webkit-animation:babyonemove 4s linear infinite;}
+.moveit5faster {position:absolute;animation: 3.5s 1;-moz-animation:babyonemove 4s 1;-webkit-animation:babyonemove 4s linear infinite;}
+@-webkit-keyframes babyonemove{0%		{top:400px;right:-100px;}100%	{top:400px;right:1500px;}}
+
+.moveit6 {position:absolute;animation: 3.5s 1;-moz-animation:babythreemove 3.5s 1;-webkit-animation:babythreemove 3.5s linear infinite;}
+@-webkit-keyframes babythreemove{0%		{top:0px;left:-100px;}100%	{top:600px;left:1500px;}}
+
+.moveit7 {position:absolute;animation: 3.5s 1;-moz-animation:babyfourmove 4s 1;-webkit-animation:babyfourmove 4s linear infinite;}
+@-webkit-keyframes babyfourmove{0%		{top:500;left:-100px;}100%	{top:400px;left:1500px;}}
+
+.hidden {	display:none;}
+
+#shootingrange > div:first-child {	height:550px;	width:1200px;	margin: 0 auto;	border:2px solid black;	overflow:hidden;	position:relative;}
+
+#shootingrange > div + div {	border: 1px solid black;	width:1200px;	height:220px;	margin:0 auto;}
+
+</style>
+<script type="text/javascript">
+var hits = 0;
+var misses = 0;
+var donefor = false;
+var guess1 = 0;
+var guess2 = 0;
+var startgame = false;
+$(document).ready(function() {
+	$("img").addClass("hidden");
+});
+
+function start() {
+	startgame = true;
+	$('#stats_messages').html('<div><h3>Hit:0</h3></div><div><h3>Missed:0</h3></div>');
+	setTimeout(function() {
+	$("#einstein").removeClass("hidden");
+	$("#einstein").addClass("moveit1");},1000);
+	setTimeout(function() {
+	$("#baby1").removeClass("hidden");
+	$("#baby1").addClass("moveit5");},1500);
+	setTimeout(function() {
+	$("#elvis").removeClass("hidden");
+	$("#elvis").addClass("moveit3");},2000);
+	setTimeout(function() {
+	$("#jim").removeClass("hidden");
+	$("#jim").addClass("moveit1");},1500);
+	setTimeout(function() {
+	$("#gandhi").removeClass("hidden");
+	$("#gandhi").addClass("moveit4");},3000);
+	setTimeout(function() {
+	$("#baby2").removeClass("hidden");
+	$("#baby2").addClass("moveit1");},1750);
+	setTimeout(function() {
+	$("#hitler").removeClass("hidden");
+	$("#hitler").addClass("moveit1");},4000);
+	setTimeout(function() {
+	$("#eliz").removeClass("hidden");
+	$("#eliz").addClass("moveit2");},4500);
+	setTimeout(function() {
+	$("#baby3").removeClass("hidden");
+	$("#baby3").addClass("moveit6");},2500);
+	setTimeout(function() {
+	$("#baby4").removeClass("hidden");
+	$("#baby4").addClass("moveit7");},2750);
+
+}
+function faster() {
+	if(!$("#einstein").hasClass("hidden")&&!$("#einstein").hasClass("moveit1faster"))
+		$("#einstein").addClass("moveit1faster");
+	else if(!$("#elvis").hasClass("hidden")&&!$("#elvis").hasClass("moveit3faster"))
+		$("#elvis").addClass("moveit3faster");
+	else if(!$("#jim").hasClass("hidden")&&!$("#jim").hasClass("moveit1faster"))
+		$("#jim").addClass("moveit1faster");
+	else if(!$("#gandhi").hasClass("hidden")&&!$("#gandhi").hasClass("moveit4faster"))
+		$("#gandhi").addClass("moveit4faster");
+	else if(!$("#hitler").hasClass("hidden")&&!$("#hitler").hasClass("moveit1faster"))
+		$("#hitler").addClass("moveit1faster");
+	else if(!$("#eliz").hasClass("hidden")&&!$("#eliz").hasClass("moveit2faster"))
+		$("#eliz").addClass("moveit2faster");
+}
+
+function shot() {
+	if(startgame)
+	{
+	if(donefor)
+		hits++;
+	else
+		misses++;
+	if(donefor&&hits==3)
+		faster();
+	if(misses ==7)
+	{
+		window.location = "shootem.html";
+	}
+	$('#stats_messages').html('<div><h3>Hit:'+hits+'</h3></div><div><h3>Missed:'+misses+'</h3></div>');
+	donefor = false;
+	if(hits == 6)
+		window.location = "Gamble.html";
+	}
+}
+
+function dead() {
+	alert("you jerk you just killed a baby!! you lose!");
+		window.location = "shootem.html";
+}
+function hit(imagehit) {
+	donefor = true;
+	$(imagehit).removeClass();
+	$(imagehit).addClass("hidden");
+	faster();
+}
+</script>
+</head>
+<body id = "body">
+	<div id = "shootingrange">
+		<div id = "targets" onmousedown = "shot(null);">
+				<img src="images/einstein1.jpg" onmousedown = "hit(this);" id = "einstein">
+				<img src="images/innocentbaby1.jpg" onmousedown = "dead(this);" id = "baby1">
+				<img src="images/elvis1.jpg" onmousedown = "hit(this);" id = "elvis">
+				<img src="images/jim1.jpg" onmousedown = "hit(this);" id = "jim">
+				<img src="images/gandhi1.jpg" onmousedown = "hit(this);" id = "gandhi">
+				<img src="images/innocentbaby1.jpg" onmousedown = "dead(this);" id = "baby2">
+				<img src="images/hitler1.jpg" onmousedown = "hit(this);" id = "hitler">
+				<img src="images/queenelizabeth1.jpg" onmousedown = "hit(this);" id = "eliz">
+				<img src="images/innocentbaby1.jpg" onmousedown = "dead(this);" id = "baby3">
+				<img src="images/innocentbaby1.jpg" onmousedown = "dead(this);" id = "baby4">
+				
+		</div>
+		<div id = "stats_messages">
+			<h1 onclick = "start();">Start</h1>
+		</div>
+	</div>
+</body>
+</html>

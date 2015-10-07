@@ -1,0 +1,291 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+    	<meta content="yes" name="apple-mobile-web-app-capable">
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="viewport" content="width=device-width; initial-scale=1.0; user-scalable=0;">
+        <title>Othello</title>
+        <style>
+			body{width:310px;}
+			#wrapper{width:310px;}
+			#gameTable{width:310px;height:310px;background-image:url(images/wood.png);border:inset;}
+			td{width:30px;height:30px;}
+			td > div{margin:auto;}
+			#new{position:relative;left:114px;top:50px;}
+			.circle{width:30px;height:30px;border-radius:32px;position:relative;}
+			.black{background: rgb(76,76,76); /* Old browsers */
+/* IE9 SVG, needs conditional override of 'filter' to 'none' */
+background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIxMDAlIiB5Mj0iMTAwJSI+CiAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdG9wLWNvbG9yPSIjNGM0YzRjIiBzdG9wLW9wYWNpdHk9IjEiLz4KICAgIDxzdG9wIG9mZnNldD0iMTIlIiBzdG9wLWNvbG9yPSIjNTk1OTU5IiBzdG9wLW9wYWNpdHk9IjEiLz4KICAgIDxzdG9wIG9mZnNldD0iMjUlIiBzdG9wLWNvbG9yPSIjNjY2NjY2IiBzdG9wLW9wYWNpdHk9IjEiLz4KICAgIDxzdG9wIG9mZnNldD0iMzklIiBzdG9wLWNvbG9yPSIjNDc0NzQ3IiBzdG9wLW9wYWNpdHk9IjEiLz4KICAgIDxzdG9wIG9mZnNldD0iNDglIiBzdG9wLWNvbG9yPSIjMmMyYzJjIiBzdG9wLW9wYWNpdHk9IjEiLz4KICAgIDxzdG9wIG9mZnNldD0iNTYlIiBzdG9wLWNvbG9yPSIjMDAwMDAwIiBzdG9wLW9wYWNpdHk9IjEiLz4KICAgIDxzdG9wIG9mZnNldD0iNjAlIiBzdG9wLWNvbG9yPSIjMTExMTExIiBzdG9wLW9wYWNpdHk9IjEiLz4KICAgIDxzdG9wIG9mZnNldD0iNzYlIiBzdG9wLWNvbG9yPSIjMmIyYjJiIiBzdG9wLW9wYWNpdHk9IjEiLz4KICAgIDxzdG9wIG9mZnNldD0iOTElIiBzdG9wLWNvbG9yPSIjMWMxYzFjIiBzdG9wLW9wYWNpdHk9IjEiLz4KICAgIDxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iIzEzMTMxMyIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgPC9saW5lYXJHcmFkaWVudD4KICA8cmVjdCB4PSIwIiB5PSIwIiB3aWR0aD0iMSIgaGVpZ2h0PSIxIiBmaWxsPSJ1cmwoI2dyYWQtdWNnZy1nZW5lcmF0ZWQpIiAvPgo8L3N2Zz4=);
+background: -moz-linear-gradient(-45deg,  rgba(76,76,76,1) 0%, rgba(89,89,89,1) 12%, rgba(102,102,102,1) 25%, rgba(71,71,71,1) 39%, rgba(44,44,44,1) 48%, rgba(0,0,0,1) 56%, rgba(17,17,17,1) 60%, rgba(43,43,43,1) 76%, rgba(28,28,28,1) 91%, rgba(19,19,19,1) 100%); /* FF3.6+ */
+background: -webkit-gradient(linear, left top, right bottom, color-stop(0%,rgba(76,76,76,1)), color-stop(12%,rgba(89,89,89,1)), color-stop(25%,rgba(102,102,102,1)), color-stop(39%,rgba(71,71,71,1)), color-stop(48%,rgba(44,44,44,1)), color-stop(56%,rgba(0,0,0,1)), color-stop(60%,rgba(17,17,17,1)), color-stop(76%,rgba(43,43,43,1)), color-stop(91%,rgba(28,28,28,1)), color-stop(100%,rgba(19,19,19,1))); /* Chrome,Safari4+ */
+background: -webkit-linear-gradient(-45deg,  rgba(76,76,76,1) 0%,rgba(89,89,89,1) 12%,rgba(102,102,102,1) 25%,rgba(71,71,71,1) 39%,rgba(44,44,44,1) 48%,rgba(0,0,0,1) 56%,rgba(17,17,17,1) 60%,rgba(43,43,43,1) 76%,rgba(28,28,28,1) 91%,rgba(19,19,19,1) 100%); /* Chrome10+,Safari5.1+ */
+background: -o-linear-gradient(-45deg,  rgba(76,76,76,1) 0%,rgba(89,89,89,1) 12%,rgba(102,102,102,1) 25%,rgba(71,71,71,1) 39%,rgba(44,44,44,1) 48%,rgba(0,0,0,1) 56%,rgba(17,17,17,1) 60%,rgba(43,43,43,1) 76%,rgba(28,28,28,1) 91%,rgba(19,19,19,1) 100%); /* Opera 11.10+ */
+background: -ms-linear-gradient(-45deg,  rgba(76,76,76,1) 0%,rgba(89,89,89,1) 12%,rgba(102,102,102,1) 25%,rgba(71,71,71,1) 39%,rgba(44,44,44,1) 48%,rgba(0,0,0,1) 56%,rgba(17,17,17,1) 60%,rgba(43,43,43,1) 76%,rgba(28,28,28,1) 91%,rgba(19,19,19,1) 100%); /* IE10+ */
+background: linear-gradient(-45deg,  rgba(76,76,76,1) 0%,rgba(89,89,89,1) 12%,rgba(102,102,102,1) 25%,rgba(71,71,71,1) 39%,rgba(44,44,44,1) 48%,rgba(0,0,0,1) 56%,rgba(17,17,17,1) 60%,rgba(43,43,43,1) 76%,rgba(28,28,28,1) 91%,rgba(19,19,19,1) 100%); /* W3C */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#4c4c4c', endColorstr='#131313',GradientType=1 ); /* IE6-8 fallback on horizontal gradient */}
+			.white{background: rgb(255,255,255); /* Old browsers */
+/* IE9 SVG, needs conditional override of 'filter' to 'none' */
+background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIxMDAlIiB5Mj0iMTAwJSI+CiAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdG9wLWNvbG9yPSIjZmZmZmZmIiBzdG9wLW9wYWNpdHk9IjEiLz4KICAgIDxzdG9wIG9mZnNldD0iNDYlIiBzdG9wLWNvbG9yPSIjZjNmM2YzIiBzdG9wLW9wYWNpdHk9IjEiLz4KICAgIDxzdG9wIG9mZnNldD0iNTMlIiBzdG9wLWNvbG9yPSIjZWRlZGVkIiBzdG9wLW9wYWNpdHk9IjEiLz4KICAgIDxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iI2ZmZmZmZiIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgPC9saW5lYXJHcmFkaWVudD4KICA8cmVjdCB4PSIwIiB5PSIwIiB3aWR0aD0iMSIgaGVpZ2h0PSIxIiBmaWxsPSJ1cmwoI2dyYWQtdWNnZy1nZW5lcmF0ZWQpIiAvPgo8L3N2Zz4=);
+background: -moz-linear-gradient(-45deg,  rgba(255,255,255,1) 0%, rgba(243,243,243,1) 46%, rgba(237,237,237,1) 53%, rgba(255,255,255,1) 100%); /* FF3.6+ */
+background: -webkit-gradient(linear, left top, right bottom, color-stop(0%,rgba(255,255,255,1)), color-stop(46%,rgba(243,243,243,1)), color-stop(53%,rgba(237,237,237,1)), color-stop(100%,rgba(255,255,255,1))); /* Chrome,Safari4+ */
+background: -webkit-linear-gradient(-45deg,  rgba(255,255,255,1) 0%,rgba(243,243,243,1) 46%,rgba(237,237,237,1) 53%,rgba(255,255,255,1) 100%); /* Chrome10+,Safari5.1+ */
+background: -o-linear-gradient(-45deg,  rgba(255,255,255,1) 0%,rgba(243,243,243,1) 46%,rgba(237,237,237,1) 53%,rgba(255,255,255,1) 100%); /* Opera 11.10+ */
+background: -ms-linear-gradient(-45deg,  rgba(255,255,255,1) 0%,rgba(243,243,243,1) 46%,rgba(237,237,237,1) 53%,rgba(255,255,255,1) 100%); /* IE10+ */
+background: linear-gradient(-45deg,  rgba(255,255,255,1) 0%,rgba(243,243,243,1) 46%,rgba(237,237,237,1) 53%,rgba(255,255,255,1) 100%); /* W3C */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#ffffff',GradientType=1 ); /* IE6-8 fallback on horizontal gradient */}
+		</style>
+        <script src="js/jQuery.js"></script>
+        <script>
+			var arrayCap = 6;
+			var circleSize = 98;
+			var playerID = 'black';
+			var coordinatesToFlip = new Array();
+			
+			function Pair(newKey,newValue){
+				this.x = newKey;
+				this.y = newValue;
+			}
+			
+			function newGame(){
+				playerID = 0;
+				column0.length = 0;
+				column1.length = 0;
+				column2.length = 0;
+				column3.length = 0;
+				column4.length = 0;
+				column5.length = 0;
+				column6.length = 0;
+				connected = 1;
+				turns = 0;
+				allowClick = true;
+				$('.red, .blue').animate({'top':'2000px'}, 500, 'linear', function(){
+					$('.red, .blue').remove();
+				});
+			}
+			
+			function calculateCirclesToFlip(x, xOperator, y, yOperator){
+				var flipIt = false;
+				var $curBox = $('#'+(y+yOperator)+' > td[name='+ (x+xOperator) +']');
+				var $coinDiv = $($curBox).html();
+				console.log('coindDiv: '+$coinDiv);
+				if($coinDiv == ''	|| $coinDiv == null){
+					console.log('false');
+					return false;
+				}
+				if(!$($coinDiv).hasClass(playerID)){
+					x = x+xOperator;
+					y = y+yOperator;
+					flipIt = calculateCirclesToFlip(x, xOperator, y, yOperator);
+					if(flipIt){
+						$('#'+(y)+' > td[name='+ x +']').html(
+							'<div class="circle '+playerID+'"></div>'
+						);
+						return true;
+					}
+					else
+						return false;
+				}
+				else
+					return true;
+			}
+			
+			function checkForValidMove(tdContents, x, y){
+				var validMove = false;
+				var R;
+				var DR;
+				var D;
+				var DL;
+				var L;
+				var UL;
+				var U;
+				var UR;
+				
+				if(y>0){
+					U = $('#'+(y-1)+' > td[name='+ x +']').html();
+					if(x>0)
+						UL = $('#'+(y-1)+' > td[name='+ (x-1) +']').html();
+					if(x<7)
+						UR = $('#'+(y-1)+' > td[name='+ (x+1) +']').html();
+				}
+				if(x>0){
+					L = $('#'+ y +' > td[name='+ (x-1) +']').html();
+					if(y<7)
+						DL = $('#'+(y+1)+' > td[name='+ (x-1) +']').html();;
+				}
+				if(y<7){
+					D = $('#'+(y+1)+' > td[name='+ (x) +']').html();
+					if(x<7)
+						DR = $('#'+(y+1)+' > td[name='+ (x+1) +']').html();
+				}
+				if(x<7)
+					R = $('#'+(y)+' > td[name='+ (x+1) +']').html();
+				if((U != '' && U != null) && !$(U).hasClass(playerID)){
+					validMove = true;
+					$('#'+(y)+' > td[name='+ x +']').html(
+						'<div class="circle '+playerID+'"></div>'
+					);
+					calculateCirclesToFlip(x,0,y,-1);
+				}
+				if((UR != '' && UR != null) && !$(UR).hasClass(playerID)){
+					validMove = true;
+					$('#'+(y)+' > td[name='+ x +']').html(
+						'<div class="circle '+playerID+'"></div>'
+					);
+					calculateCirclesToFlip(x,1,y,-1);
+				}
+				if((R != '' && R != null) && !$(R).hasClass(playerID)){
+					validMove = true;
+					$('#'+(y)+' > td[name='+ x +']').html(
+						'<div class="circle '+playerID+'"></div>'
+					);
+					calculateCirclesToFlip(x,1,y,0);
+				}
+				if((DR != '' && DR != null) && !$(DR).hasClass(playerID)){
+					validMove = true;
+					$('#'+(y)+' > td[name='+ x +']').html(
+						'<div class="circle '+playerID+'"></div>'
+					);
+					calculateCirclesToFlip(x,1,y,1);
+				}
+				if((D != '' && D != null) && !$(D).hasClass(playerID)){
+					validMove = true;
+					$('#'+(y)+' > td[name='+ x +']').html(
+						'<div class="circle '+playerID+'"></div>'
+					);
+					calculateCirclesToFlip(x,0,y,1);
+				}
+				if((DL != '' && DL != null) && !$(DL).hasClass(playerID)){
+					validMove = true;
+					$('#'+(y)+' > td[name='+ x +']').html(
+						'<div class="circle '+playerID+'"></div>'
+					);
+					calculateCirclesToFlip(x,-1,y,1);
+				}
+				if((L != '' && L != null) && !$(L).hasClass(playerID)){
+					validMove = true;
+					$('#'+(y)+' > td[name='+ x +']').html(
+						'<div class="circle '+playerID+'"></div>'
+					);
+					calculateCirclesToFlip(x,-1,y,0);
+				}
+				if((UL != '' && UL != null) && !$(UL).hasClass(playerID)){
+					validMove = true;
+					$('#'+(y)+' > td[name='+ x +']').html(
+						'<div class="circle '+playerID+'"></div>'
+					);
+					calculateCirclesToFlip(x,-1,y,-1);
+				}
+				if(validMove){
+					if(playerID == 'black')
+						playerID = 'white';
+					else
+						playerID = 'black';
+				}
+			}
+			
+			function checkForEmptyBox(tdContents, x, y){
+				if(tdContents != '') //If the box already has a piece in it, do nothing
+					return;
+				else
+					checkForValidMove(tdContents, x, y);
+			}
+			
+			$(function(){
+				$('td').click(function(){
+					checkForEmptyBox($(this).html(), parseInt($(this).attr('name')), parseInt($(this).parent().attr('id')));
+				});
+				
+				$('#new').click(function(){newGame()});
+			});
+		</script>
+    </head>
+    
+    <body>
+        <div id="wrapper">
+       		<table id="gameTable" border="1">
+            	<tr id="0">
+                	<td name="0"></td>
+                    <td name="1"></td>
+                    <td name="2"></td>
+                    <td name="3"></td>
+                    <td name="4"></td>
+                    <td name="5"></td>
+                    <td name="6"></td>
+                    <td name="7"></td>
+                </tr>
+                <tr id="1">
+                	<td name="0"></td>
+                    <td name="1"></td>
+                    <td name="2"></td>
+                    <td name="3"></td>
+                    <td name="4"></td>
+                    <td name="5"></td>
+                    <td name="6"></td>
+                    <td name="7"></td>
+                </tr>
+                <tr id="2">
+                	<td name="0"></td>
+                    <td name="1"></td>
+                    <td name="2"></td>
+                    <td name="3"></td>
+                    <td name="4"></td>
+                    <td name="5"></td>
+                    <td name="6"></td>
+                    <td name="7"></td>
+                </tr>
+                <tr id="3">
+                	<td name="0"></td>
+                    <td name="1"></td>
+                    <td name="2"></td>
+                    <td name="3"><div class="circle black"></div></td>
+                    <td name="4"><div class="circle white"></div></td>
+                    <td name="5"></td>
+                    <td name="6"></td>
+                    <td name="7"></td>
+                </tr>
+                <tr id="4">
+                	<td name="0"></td>
+                    <td name="1"></td>
+                    <td name="2"></td>
+                    <td name="3"><div class="circle white"></div></td>
+                    <td name="4"><div class="circle black"></div></td>
+                    <td name="5"></td>
+                    <td name="6"></td>
+                    <td name="7"></td>
+                </tr>
+                <tr id="5">
+                	<td name="0"></td>
+                    <td name="1"></td>
+                    <td name="2"></td>
+                    <td name="3"></td>
+                    <td name="4"></td>
+                    <td name="5"></td>
+                    <td name="6"></td>
+                    <td name="7"></td>
+                </tr>
+                <tr id="6">
+                	<td name="0"></td>
+                    <td name="1"></td>
+                    <td name="2"></td>
+                    <td name="3"></td>
+                    <td name="4"></td>
+                    <td name="5"></td>
+                    <td name="6"></td>
+                    <td name="7"></td>
+                </tr>
+                <tr id="7">
+                	<td name="0"></td>
+                    <td name="1"></td>
+                    <td name="2"></td>
+                    <td name="3"></td>
+                    <td name="4"></td>
+                    <td name="5"></td>
+                    <td name="6"></td>
+                    <td name="7"></td>
+                </tr>
+            </table>
+        	<button id="new" onclick="window.location='http://dl.dropbox.com/u/67293674/referral/Othello.html';">New Game</button>
+        </div>
+    </body>
+</html>

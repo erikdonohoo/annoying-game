@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>Maze Maker</title>
+		<link rel="stylesheet" href="css/styles.css" type="text/css">
+		<link href='http://fonts.googleapis.com/css?family=Pacifico' rel='stylesheet' type='text/css'>
+		<script src="js/jQuery.js" type="text/javascript"></script>
+		<script type="text/javascript" src="js/mazeMeander.js"></script>
+		<script type="text/javascript" src="js/mazeMaking.js"></script>
+		<script type="text/javascript" src="js/mazes.js"></script>
+		
+	</head>
+	
+<body>
+	<div id="totalDiv">
+		<div id="titleDiv">
+			<h1>Maze Maker</h1>
+		</div>
+		
+		<div id="menuDiv">
+			<button type = "button" onclick = newMaze()>New Maze</button>
+			<button type = "button" onclick = saveMaze()>Save Maze</button>
+			<button type = "button" onclick = loadingMaze()>Load Maze</button>
+			<h2 id="level">Level: </h2>
+			<h2 id="cheeseCount">Cheeses: 0</h2>	
+			<h2 id="key1Count">Gold Keys: 0</h3>
+			<h2 id="lock1Count">Locks: 0</h3>
+		</div>
+
+		<div id="gameDiv">		
+		</div>
+
+		<div id="menuDiv2">
+			<button type = "button" class = "smallButton" onclick = allWall()>All be Walls</button>  <!-- style="margin-left:20px" -->
+			<button type = "button" class = "smallButton" onclick = wallOut()>Walls be Gone</button>
+			<form>
+				<input type="radio" name="type" onclick="placeWall()" checked="checked" value="wall" /> Place Wall/Path &nbsp
+				<input type="radio" name="type" onclick="placeMouse()" value="mouse" /> Place Mouse &nbsp
+				<input type="radio" name="type" onclick="placeCheese()" value="cheese" /> Place Cheese &nbsp
+				<input type="radio" name="type" onclick="placePortalRed()" value="red" /> Place Red Portal &nbsp 
+				<input type="radio" name="type" onclick="placePortalBlue()" value="blue" /> Place Blue Portal <br /> 
+				<input type="radio" name="type" onclick="placeKey1()" value="key1" /> Place Gold Key&nbsp 
+				<input type="radio" name="type" onclick="placeLock1()" value="lock1" /> Place Lock&nbsp 
+				<input type="radio" name="type" onclick="placeCat1()" value="cat1" /> Place Ominous Cat &nbsp
+				<input type="radio" name="type" onclick="placeCat2()" value="cat2" /> Place Scary Cat &nbsp
+				<input type="radio" name="type" onclick="placeCat3()" value="cat3" /> Place Seeker Cat<br /> 
+				<input type="radio" name="type" onclick="placePipeVert()" value="pipeVert" /> Place Straight Pipe &nbsp
+				<input type="radio" name="type" onclick="placePipeCorner()" value="pipeCorner" /> Place Corner Pipe
+			</form>
+		</div>
+
+		<br />
+		<textarea id='sourceOutput' type="text" placeholder = "The source for your maze will appear here when you save it." ></textarea>
+
+		<div id="copyrightDiv">
+			Pseudo Copyright  2012
+		</div>
+	</div>
+</body>
+</html>

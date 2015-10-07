@@ -1,0 +1,52 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>How Long</title>
+	<script src="js/jQuery.js" type="text/javascript"></script>
+    
+	<script>
+	var num = 1;
+	var p1 = 'nope...';
+	var p2 = 'wrong...';
+	var p3 = 'not even close...';
+	var p4 = 'are you even trying?...';
+	
+	function validate(){
+		var typed = $('#inputBox').val();
+		if(typed!='ok' && typed != 'OK' && typed!= 'yes' && typed != 'Yes' && typed != 'sure'){
+			if(num==4){
+				$('#inputBox').val('');
+				$('#inputBox').attr('placeholder', p4);
+				num = 1;
+			}
+			else if(num==1){
+				$('#inputBox').val('');
+				$('#inputBox').attr('placeholder', p1);
+				num++;
+			}
+			else if(num==2){
+				$('#inputBox').val('');
+				$('#inputBox').attr('placeholder', p2);
+				num++;
+			}
+			else if(num==3){
+				$('#inputBox').val('');
+				$('#inputBox').attr('placeholder', p3);
+				num++;
+			}
+		}
+		else{
+			alert("Get it? \"How Long\" is his name.");
+			window.location="keys.html";
+		}
+	}
+	</script>
+
+</head>
+
+<body>
+	<h1>How Long is a Chinaman</h1>
+    <input id="inputBox" autofocus placeholder="" onkeypress="if(event.keyCode==13) validate();"/>
+</body>
+</html>
